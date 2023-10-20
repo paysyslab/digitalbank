@@ -34,17 +34,6 @@
             "clientCredentials": []
           }
         ],
-        "parameters": [
-          {
-            "$ref": "#/components/parameters/grant_type"
-          },
-          {
-            "$ref": "#/components/parameters/client_id"
-          },
-          {
-            "$ref": "#/components/parameters/client_secret"
-          }
-        ],
         "responses": {
           "200": {
             "description": "JWT token generated successfully",
@@ -83,6 +72,16 @@
                   "error": "unauthorized",
                   "status": 401
                 }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Authentication"
               }
             }
           }
@@ -813,10 +812,12 @@
     "securitySchemes": {
       "jwtToken": {
         "type": "http",
-        "scheme": "bearer"
+        "scheme": "bearer",
+        "description": "JWT Token required in all APIs except /authentication enpoint which needs oaut2.1\n\nFor more information regarding JWT, check out [JWT](https://auth0.com/learn/json-web-tokens)."
       },
       "clientCredentials": {
         "type": "oauth2",
+        "description": "For more information regarding oauth, check out [OAUTH](https://auth0.com/intro-to-iam/what-is-oauth-2).",
         "flows": {
           "clientCredentials": {
             "tokenUrl": "https://apigw.paysyslabs.com/api/v1/paysyslabs/token",
@@ -825,36 +826,30 @@
         }
       }
     },
-    "parameters": {
-      "grant_type": {
-        "name": "grant_type",
-        "in": "query",
-        "required": true,
-        "example": "client_credentials",
-        "schema": {
-          "type": "string"
-        }
-      },
-      "client_id": {
-        "name": "client_id",
-        "in": "query",
-        "required": true,
-        "description": "client_id will be provided by PSL TEAM based on channel",
-        "schema": {
-          "type": "string"
-        }
-      },
-      "client_secret": {
-        "name": "client_secret",
-        "in": "query",
-        "required": true,
-        "description": "client_secret will be provided by PSL TEAM based on channel",
-        "schema": {
-          "type": "string"
-        }
-      }
-    },
     "schemas": {
+      "Authentication": {
+        "description": "Representation of a Authentication",
+        "type": "object",
+        "properties": {
+          "grant_type": {
+            "example": "client_credentials",
+            "type": "string"
+          },
+          "client_id": {
+            "description": "client_id will be provided by PSL TEAM based on channel",
+            "type": "string"
+          },
+          "client_secret": {
+            "description": "client_secret will be provided by PSL TEAM based on channel",
+            "type": "string"
+          }
+        },
+        "required": [
+          "grant_type",
+          "client_id",
+          "client_secret"
+        ]
+      },
       "UnifiedTitleFetch": {
         "description": "Representation of a Unified Title Fetch",
         "type": "object",
