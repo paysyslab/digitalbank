@@ -35,7 +35,7 @@
       versionDropdown.addEventListener('change', function() {
         const selectedVersion = versionDropdown.value;
         // Load the OpenAPI spec for the selected version
-        const specUrl = `path/to/openapi/${selectedVersion}.json`;
+        const specUrl = `dist/${selectedVersion}.json`;
         // Get the Redoc element
         const redocElement = document.getElementById('redoc');
         // Set the spec-url attribute dynamically
@@ -46,7 +46,7 @@
 
       // Load Redoc for the initial version
       const initialVersion = versionDropdown.value;
-      const initialSpecUrl = `path/to/openapi/${initialVersion}.json`;
+      const initialSpecUrl = `dist/${initialVersion}.json`;
       const redocElement = document.getElementById('redoc');
       redocElement.setAttribute('spec-url', initialSpecUrl);
       redocElement.load();
