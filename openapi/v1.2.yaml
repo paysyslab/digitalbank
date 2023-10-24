@@ -1,0 +1,1045 @@
+openapi: 3.0.3
+info:
+  title: Digital Bank API
+  version: V1.2
+  description: |-
+    Open Connect is a modern, integrated and a highly scalable payment switch platform with an efficient service-oriented architecture approach. The platform is completely independent and has a multiplayer design. The core technology for messaging is based on Queue manager, which is a highly scalable MQ system, which can be horizontally scaled to run on a cluster of machines. The deployment can be done on Virtual environment as well as containerized environment.
+
+  license:
+    name: Paysys Labs
+    url: https://www.paysyslabs.com/
+paths:
+   /v1/bank/payments/titlefetch:
+    post:
+      summary: titlefetch
+      tags:
+        - BANK CONTROLLER
+      description: |-
+        The service will be exposed by the bank. The purpose of the method is to allow member banks and schemes such as RAAST or 1LINK to get customer account info which is known as Title fetch request.
+        
+        
+        The title fetch usually comes before payment request where sender wants to verify beneficiary account title and account validation to make sure payment will be sent into the beneficiary account.
+
+      operationId: titlefetch
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              examples:
+                00:
+                  summary: Success Response Example
+                  value:
+                    response:
+                      responseCode: "00"
+                      responseDesc: Success
+                      stan: "010123"
+                      rrn: "010123010123"
+                    receiverInfo:
+                      account: "03132370605"
+                      iban: PK98MASH0000003132370605
+                      title: "Waqas Nizam"
+                      mobile: "03132370605"
+                      identity:
+                        - idType: CNIC
+                          idValue: 1234512345671
+                        - idType: Passport
+                          idValue: AX59856321
+                        - idType: NTN
+                          idValue: 6598532102
+              schema:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    minLength: 4
+                    maxLength: 4
+                    description: Response code for the request
+                  response_desc:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Description for the respective response code
+                  rrn:
+                    type: string
+                    minLength: 12
+                    maxLength: 12
+                    description: Echo back
+                  stan:
+                    type: string
+                    minLength: 6
+                    maxLength: 6
+                    description: Echo back
+                  account:
+                    type: string
+                    minLength: 24
+                    maxLength: 24
+                    description: |-
+                        Receiver account (Echo back)
+                  iban:
+                    type: string
+                    minLength: 24
+                    maxLength: 24
+                    description: Receiver IBAN
+                  title:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Receiver account title
+                  mobile:
+                    type: string
+                    minLength: 11
+                    maxLength: 11
+                    description: Receiver mobile number
+                  idType:
+                    type: string
+                    minLength: 20
+                    maxLength: 20
+                    description: |-
+                        Receiver account id type available in bank’s profile. Bank may return list of id type and values in case of joint account and if bank’s have multiple identity values for a customer. 
+                        
+                        
+                        The id types are as:
+                        
+                        
+                        •	CNIC
+                        
+                        •	NIC
+                        
+                        •	NICOP
+                        
+                        •	POC
+                        
+                        •	NTN
+                        
+                        •	PASSPORT
+                        
+                        •	REGNUM (Registration Number
+
+                  idValue:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: |-
+                        Identity value of respective identity type
+                required:
+                  - response_code
+                  - response_desc
+                  - rrn
+                  - stan  
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/b_TitleFetch'
+   /v1/bank/payments/creditposting:
+    post:
+      summary: creditposting
+      tags:
+        - BANK CONTROLLER
+      description: |-
+        The method is used to credit bank’s customer account whenever payment comes from RAAST. The Open connect sent credit request to the bank’s system using this method in the request mode. In case of rejection Open connect will instantly return payment to sender bank.
+        
+        
+        Description	Request to credit bank’s customer account, the request can be initiated by 1LINK and RAAST for following transactions:
+        
+        
+        •	IBFT inward payment
+        
+        •	RAAST P2P inward payment
+        
+        •	RAAST P2P outward return payment
+
+      operationId: creditposting
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              examples:
+                00:
+                  summary: Success Response Example
+                  value:
+                    response:
+                      response_code: "00"
+                      response_desc: SUCCESS
+                      stan: "010123"
+                      rrn: "010123010123"
+              schema:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    minLength: 4
+                    maxLength: 4
+                    description: Response code for the request
+                  response_desc:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Description for the respective response code
+                  rrn:
+                    type: string
+                    minLength: 12
+                    maxLength: 12
+                    description: Echo back
+                  stan:
+                    type: string
+                    minLength: 6
+                    maxLength: 6
+                    description: Echo back
+                required:
+                  - response_code
+                  - response_desc
+                  - rrn
+                  - stan
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/b_CreditPosting'
+   /v1/bank/payments/creditadvise:
+    post:
+      summary: creditadvise
+      tags:
+        - BANK CONTROLLER
+      description: |-
+        Advise means where bank is responsible to credit amount into the receiver account. As a guaranteed delivery mechanism (SAF), OC will be sent credit request as advise to bank’s system via SAF mechanism.
+        
+        
+        This method will be used in any of below case:
+
+
+        •	1LINK incoming credit advise
+
+        •	RAAST P2P Inward return payments, this happens when previously made outward P2P payment failed at receiving bank end and bank initiate return after sometime.
+
+        •	RAAST P2P Timeout transactions
+
+
+      operationId: creditadvise
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              examples:
+                00:
+                  summary: Success Response Example
+                  value:
+                    response:
+                      response_code: "00"
+                      response_desc: SUCCESS
+                      stan: "010123"
+                      rrn: "010123010123"
+              schema:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    minLength: 4
+                    maxLength: 4
+                    description: Response code for the request
+                  response_desc:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Description for the respective response code
+                  rrn:
+                    type: string
+                    minLength: 12
+                    maxLength: 12
+                    description: Echo back
+                  stan:
+                    type: string
+                    minLength: 6
+                    maxLength: 6
+                    description: Echo back
+                required:
+                  - response_code
+                  - response_desc
+                  - rrn
+                  - stan
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/b_CreditAdvise'
+   /v1/bank/payments/creditinquiry:
+    post:
+      summary: creditinquiry
+      tags:
+        - BANK CONTROLLER
+      description: |-
+        The purpose of this request to inquire the status of the previously posted credit request or advise.
+
+        
+        In case if original transaction got timeout, the Open Connect initiate transaction inquiry to the check the transaction faith.
+      operationId: creditinquiry
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              examples:
+                00:
+                  summary: Success Response Example
+                  value:
+                    response:
+                      response_code: "00"
+                      response_desc: SUCCESS
+                      stan: "010123"
+                      rrn: "010123010123"
+                    orgResponse:
+                      orgresponseCode: "00"
+                      orgresponseDesc: SUCCESS
+              schema:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    minLength: 4
+                    maxLength: 4
+                    description: Response code for the request
+                  response_desc:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Description for the respective response code
+                  rrn:
+                    type: string
+                    minLength: 12
+                    maxLength: 12
+                    description: Echo back
+                  stan:
+                    type: string
+                    minLength: 6
+                    maxLength: 6
+                    description: Echo back
+                  orgresponseCode:
+                    type: string
+                    minLength: 4
+                    maxLength: 4
+                    description: Response code for the original request
+                  orgresponseDesc:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Description for the respective original response code
+                required:
+                  - response_code
+                  - response_desc
+                  - rrn
+                  - stan
+                  - orgresponseCode
+                  - orgresponseDesc
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/b_CreditInquiry'
+servers:
+  - url: https://apigw.paysyslabs.com/api
+    description: Production server
+security:
+  - jwtToken: []
+components:
+  securitySchemes:
+    jwtToken:
+      type: http
+      scheme: bearer
+      description: >-
+        JWT Token required in all APIs except /authentication enpoint which needs oaut2.1
+        
+        
+        For more information regarding JWT, check out [JWT](https://auth0.com/learn/json-web-tokens).
+        
+        
+    clientCredentials:
+      type: oauth2
+      description: >-
+        For more information regarding oauth, check out [OAUTH](https://auth0.com/intro-to-iam/what-is-oauth-2).
+      flows:
+        clientCredentials:
+          tokenUrl: 'https://apigw.paysyslabs.com/api/v1/paysyslabs/token'
+          scopes: {} 
+  schemas:
+    b_TitleFetch:
+      description: Representation of a Bank's Controller Title Fetch
+      type: object
+      properties:
+        info:
+          type: object
+          properties:
+            rrn:
+              type: string
+              minLength: 12
+              maxLength: 12
+              description: Retrieval reference number
+              example: "002236987456"
+            stan:
+              type: string
+              minLength: 6
+              maxLength: 6
+              description: System trace audit number
+              example: "987456"
+            txndate:
+              type: string
+              minLength: 8
+              maxLength: 8
+              format: yyyymmdd
+              description: Transaction Date
+              example: "20231015"
+            txntime:
+              type: string
+              minLength: 6
+              maxLength: 6
+              format: hhmmss
+              description: Transaction Time
+              example: "182243"
+            initiator:
+              type: string
+              minLength: 10
+              maxLength: 10
+              description: |-
+                Fixed value from any of below:
+                
+                
+                •	1LINK
+                
+                •	RAAST
+                
+              example: "RAAST"
+          required:
+            - rrn
+            - stan
+            - txndate
+            - txntime
+            - initiator
+        receiverinfo:
+          type: object
+          properties:
+            toAccount:
+              type: string
+              minLength: 24
+              maxLength: 24
+              description: Beneficiary account# or IBAN
+              example: "00023137343951"
+          required:
+            - toAccount
+        paymentInfo:
+          type: object
+          properties:
+            amount:
+              type: number
+              description: |-
+                Amount of the transaction, it can be zero.
+              example: "5000"
+          required:
+            - amount
+        reserveFields:
+          type: object
+          properties:
+            r1:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved one
+            r2:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved two
+            r3:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved three
+            r4:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved four
+            r5:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved five
+    b_CreditPosting:
+      description: Representation of a Bank's Controller Credit Posting
+      type: object
+      properties:
+        info:
+          type: object
+          properties:
+            rrn:
+              type: string
+              minLength: 12
+              maxLength: 12
+              description: Retrieval reference number
+              example: "002236987456"
+            stan:
+              type: string
+              minLength: 6
+              maxLength: 6
+              description: System trace audit number
+              example: "987456"
+            txndate:
+              type: string
+              minLength: 8
+              maxLength: 8
+              format: yyyymmdd
+              description: Transaction Date
+              example: "20231015"
+            txntime:
+              type: string
+              minLength: 6
+              maxLength: 6
+              format: hhmmss
+              description: Transaction Time
+              example: "182243"
+          required:
+            - rrn
+            - stan
+            - txndate
+            - txntime
+        senderinfo: 
+          type: object
+          properties:  
+            senderBankIMD:
+              type: string
+              minLength: 24
+              maxLength: 24
+              description: The value comes if transaction received from 1LINK. In other case it will be blank
+              example: ""
+            senderBankBIC:
+              type: string
+              minLength: 24
+              maxLength: 24
+              description: The value comes if transaction received from RAAST. In other case it will be blank
+              example: "NBPBPKKA"              
+            fromAccount:
+              type: string
+              minLength: 24
+              maxLength: 24
+              description: Sender IBAN / account #
+              example: "PK56AIIN1234567890000001"
+            fromAccountTitle:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: Sender account title
+              example: "Muhammad Ali"
+            fromAccountCnic:
+              type: string
+              minLength: 13
+              maxLength: 13
+              description: Sender CNIC if value received in the payment request
+              example: "1234512345671"
+          required:         
+            - fromAccount
+            - fromAccountTitle
+        receiverinfo:
+          type: object
+          properties:
+            toAccount:
+              type: string
+              minLength: 24
+              maxLength: 24
+              description: Beneficiary account# or IBAN
+              example: "00023137343951"
+            toAccountTitle:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: Beneficiary account title
+              example: "Waqas Nizam"
+          required:
+            - toAccount
+            - toAccountTitle
+        paymentInfo:
+          type: object
+          properties:
+            purposeCode:
+              type: string
+              minLength: 4
+              maxLength: 4
+              description: |-
+                3 digits numeric RAAST assigned payment purpose code. If payment received from 1LINK the value will be of 4 digits.
+              example: "0152"
+            narration:
+              type: string
+              minLength: 140
+              maxLength: 140
+              description: |-
+                Any alpha numeric text upto 140 characters
+              example: "test transaction"
+            amount:
+              type: number
+              description: |-
+                Amount of the transaction
+              example: "5000"
+            instrId:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: |-
+                Instruction id received by RAAST.
+
+
+                In case of 1LINK the field will be blank
+              example: "TMIC230511125023876423"
+            endToEndId:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: |-
+                End to end id received by RAAST.
+
+
+                In case of 1LINK the field will be blank.
+              example: "1fc66b584e77-46e6-9dcb-fb12c00e7742"
+            txId:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: |-
+                Transaction id received by RAAST.
+
+
+                In case of 1LINK the field will be blank.
+              example: "TMIC230511125023876423"              
+            msgId:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: |-
+                Message id received by RAAST.
+
+                In case of 1LINK the field will be blank.
+              example: "TMICFBPK110523000111250233"
+          required:
+            - purposeCode
+            - amount
+        reserveFields:
+          type: object
+          properties:
+            r1:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved one
+            r2:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved two
+            r3:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved three
+            r4:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved four
+            r5:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved five
+    b_CreditAdvise:
+      description: Representation of a Bank's Controller Credit Advise
+      type: object
+      properties:
+        info:
+          type: object
+          properties:
+            rrn:
+              type: string
+              minLength: 12
+              maxLength: 12
+              description: Retrieval reference number
+              example: "002236987456"
+            stan:
+              type: string
+              minLength: 6
+              maxLength: 6
+              description: System trace audit number
+              example: "987456"
+            txndate:
+              type: string
+              minLength: 8
+              maxLength: 8
+              format: yyyymmdd
+              description: Transaction Date
+              example: "20231015"
+            txntime:
+              type: string
+              minLength: 6
+              maxLength: 6
+              format: hhmmss
+              description: Transaction Time
+              example: "182243"
+            initiator:
+              type: string
+              minLength: 5
+              maxLength: 5
+              description: |-
+                Transaction received by, any of followings:
+
+
+                •	RAAST
+
+                •	1LINK
+              example: "RAAST"
+            txnType:
+              type: string
+              minLength: 2
+              maxLength: 2
+              description: |-
+                Transaction type, any of followings:
+                
+                
+                •	01 – For RAAST P2P incoming
+                
+                •	02 – For 1LINK IBFT incoming
+                
+                •	03 – For RAAST return payment
+                
+                •	04 – For RAAST bulk receiving 
+              example: "01"
+          required:
+            - rrn
+            - stan
+            - txndate
+            - txntime
+            - initiator            
+            - txnType
+        senderinfo: 
+          type: object
+          properties:  
+            senderBankIMD:
+              type: string
+              minLength: 24
+              maxLength: 24
+              description: The value comes if transaction received from 1LINK. In other case it will be blank
+              example: ""
+            senderBankBIC:
+              type: string
+              minLength: 24
+              maxLength: 24
+              description: The value comes if transaction received from RAAST. In other case it will be blank
+              example: "NBPBPKKA"              
+            fromAccount:
+              type: string
+              minLength: 24
+              maxLength: 24
+              description: Sender IBAN / account #
+              example: "PK56AIIN1234567890000001"
+            fromAccountTitle:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: Sender account title
+              example: "Muhammad Ali"
+            fromAccountCnic:
+              type: string
+              minLength: 13
+              maxLength: 13
+              description: Sender CNIC if value received in the payment request
+              example: "1234512345671"
+          required:         
+            - fromAccount
+            - fromAccountTitle
+        receiverinfo:
+          type: object
+          properties:
+            toAccount:
+              type: string
+              minLength: 24
+              maxLength: 24
+              description: Beneficiary account# or IBAN
+              example: "00023137343951"
+            toAccountTitle:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: Beneficiary account title
+              example: "Waqas Nizam"
+          required:
+            - toAccount
+            - toAccountTitle
+        paymentInfo:
+          type: object
+          properties:
+            purposeCode:
+              type: string
+              minLength: 4
+              maxLength: 4
+              description: |-
+                3 digits numeric RAAST assigned payment purpose code. If payment received from 1LINK the value will be of 4 digits.
+              example: "0152"
+            narration:
+              type: string
+              minLength: 140
+              maxLength: 140
+              description: |-
+                Any alpha numeric text upto 140 characters
+              example: "test transaction"
+            amount:
+              type: number
+              description: |-
+                Amount of the transaction
+              example: "5000"
+            instrId:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: |-
+                Instruction id received by RAAST.
+
+
+                In case of 1LINK the field will be blank
+              example: "TMIC230511125023876423"
+            endToEndId:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: |-
+                End to end id received by RAAST.
+
+
+                In case of 1LINK the field will be blank.
+              example: "1fc66b584e77-46e6-9dcb-fb12c00e7742"
+            txId:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: |-
+                Transaction id received by RAAST.
+
+
+                In case of 1LINK the field will be blank.
+              example: "TMIC230511125023876423"              
+            msgId:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: |-
+                Message id received by RAAST.
+
+                In case of 1LINK the field will be blank.
+              example: "TMICFBPK110523000111250233"
+            oneLinkrrn:
+              type: string
+              minLength: 12
+              maxLength: 12
+              description: |-
+                Retrieval reference number.
+
+                In case of 1LINK, OC will send same value which comes from 1LINK in DE-37. 
+
+                In case of RAAST the field will be blank
+
+              example: "002236987456"
+            oneLinkstan:
+              type: string
+              minLength: 6
+              maxLength: 6
+              description: |-
+                System trace audit number.
+
+                In case of 1LINK, OC will send same value which comes from 1LINK in DE-11.
+
+                In case of RAAST the field will be blank.
+
+              example: "987456"              
+          required:
+            - purposeCode
+            - amount
+        orgTxnInfo:
+          type: object
+          properties:
+            orgtxndate:
+              type: string
+              minLength: 8
+              maxLength: 8
+              description: Original transaction date
+              format: yyyymmdd
+              example: "20231015"
+            orgtxntime:
+              type: string
+              minLength: 6
+              maxLength: 6
+              description: Original transaction time
+              format: hhmmss
+              example: "182243"
+            orginstrId:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: Original transaction instruction id
+              example: "TMIC230511125023876423"
+            orgendToEndId:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: Original transaction end to end id
+              example: "1fc66b584e77-46e6-9dcb-fb12c00e7742"
+            orgtxId:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: Original transaction id
+              example: "TMIC230511125023876423"
+            orgmsgId:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: Original transaction message id
+              example: "TMICFBPK110523000111250233"
+        reserveFields:
+          type: object
+          properties:
+            r1:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved one
+            r2:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved two
+            r3:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved three
+            r4:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved four
+            r5:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved five
+    b_CreditInquiry:
+      description: Representation of a Bank's Controller Credit Inquiry
+      type: object
+      properties:
+        info:
+          type: object
+          properties:
+            rrn:
+              type: string
+              minLength: 12
+              maxLength: 12
+              description: Retrieval reference number
+              example: "002236987456"
+            stan:
+              type: string
+              minLength: 6
+              maxLength: 6
+              description: System trace audit number
+              example: "987456"
+            txndate:
+              type: string
+              minLength: 8
+              maxLength: 8
+              format: yyyymmdd
+              description: Transaction Date
+              example: "20231015"
+            txntime:
+              type: string
+              minLength: 6
+              maxLength: 6
+              format: hhmmss
+              description: Transaction Time
+              example: "182243"
+        orgTxnInfo:
+          type: object
+          properties:
+            orgtxnrrn:
+              type: string
+              minLength: 12
+              maxLength: 12
+              description: Retrieval reference number
+              example: "002236987456"
+            orgtxnstan:
+              type: string
+              minLength: 6
+              maxLength: 6
+              description: System trace audit number
+              example: "987456"
+            orgtxndate:
+              type: string
+              minLength: 8
+              maxLength: 8
+              format: yyyymmdd
+              description: Transaction Date
+              example: "20231015"
+            orgtxntime:
+              type: string
+              minLength: 6
+              maxLength: 6
+              format: hhmmss
+              description: Transaction Time
+              example: "182243"
+          required:
+            - rrn
+            - stan
+            - txndate
+            - txntime
+            - orgtxnrrn
+            - orgtxnstan
+            - orgtxndate
+            - orgtxntime

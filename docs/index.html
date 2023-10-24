@@ -18,7 +18,39 @@
     </style>
   </head>
   <body>
-    <redoc spec-url='dist.json'></redoc>
-    <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script>
+
+    <!-- Version dropdown -->
+    <select id="versionDropdown">
+      <option value="v1.1">Version 1.1</option>
+      <option value="v1.22">Version 1.2</option>
+      <!-- Add more version options as needed -->
+    </select>
+
+    <redoc id="redoc"></redoc>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script> -->
+
+    <script>
+      // Get the selected version from the dropdown
+      const versionDropdown = document.getElementById('versionDropdown');
+      versionDropdown.addEventListener('change', function() {
+        const selectedVersion = versionDropdown.value;
+        // Load the OpenAPI spec for the selected version
+        const specUrl = `path/to/openapi/${selectedVersion}.json`;
+        // Get the Redoc element
+        const redocElement = document.getElementById('redoc');
+        // Set the spec-url attribute dynamically
+        redocElement.setAttribute('spec-url', specUrl);
+        // Reload Redoc
+        redocElement.load();
+      });
+
+      // Load Redoc for the initial version
+      const initialVersion = versionDropdown.value;
+      const initialSpecUrl = `path/to/openapi/${initialVersion}.json`;
+      const redocElement = document.getElementById('redoc');
+      redocElement.setAttribute('spec-url', initialSpecUrl);
+      redocElement.load();
+    </script>
+
   </body>
 </html>
