@@ -1,0 +1,2608 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Digital Bank API",
+    "version": "V1.1",
+    "description": "Open Connect is a modern, integrated and a highly scalable payment switch platform with an efficient service-oriented architecture approach. The platform is completely independent and has a multiplayer design. The core technology for messaging is based on Queue manager, which is a highly scalable MQ system, which can be horizontally scaled to run on a cluster of machines. The deployment can be done on Virtual environment as well as containerized environment.",
+    "license": {
+      "name": "Paysys Labs",
+      "url": "https://www.paysyslabs.com/"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://apigw.paysyslabs.com/api",
+      "description": "Production server"
+    }
+  ],
+  "security": [
+    {
+      "jwtToken": []
+    }
+  ],
+  "paths": {
+    "/v1/paysyslabs/token": {
+      "post": {
+        "summary": "authentication",
+        "tags": [
+          "OPEN CONNECT"
+        ],
+        "description": "This method is secure and includes enhancements that allow for more robust security mechanisms, which will ensure that the Open Connect integration is secure and reliable.\n\n\nThis is also the centralized authentication mechanism for all the APIs exposed by Open Connect. This will be running as a separate application on specific port.",
+        "operationId": "authenticate",
+        "security": [
+          {
+            "clientCredentials": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "JWT token generated successfully",
+            "content": {
+              "application/json": {
+                "example": {
+                  "access_token": "token",
+                  "expires_in": 300,
+                  "token_type": "Bearer"
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "access_token": {
+                      "type": "string",
+                      "description": "This token will be used in all APIs in header with header name “Authorization”. Token value will be followed by Bearer"
+                    },
+                    "expires_in": {
+                      "type": "integer",
+                      "description": "The value is in seconds"
+                    },
+                    "token_type": {
+                      "type": "string",
+                      "description": "Bearer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "unauthorized",
+                  "status": 401
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/p_Authentication"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/paysyslabs/payments/unifiedtitlefetch": {
+      "post": {
+        "summary": "unifiedtitlefetch",
+        "tags": [
+          "OPEN CONNECT"
+        ],
+        "description": "The unified title fetch is a generic method to get beneficiary (receiver) account details from the member bank.The method is having a following two additional functionalities compare to standard title fetch method:\n\n\n1- Preferred Rail: The initiator has provision to set the preferred rail either the title fetch will be done via RAAST or 1LINK. The request parameter will identify the preferred route\n\n\n2- Fall-back option: In case if title fetch failed with the preferred rail the system will auto attempt the title fetch from alternate rail. The option is controllable via request parameters.",
+        "operationId": "unifiedtitlefetch",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "0": {
+                    "summary": "Success Response Example",
+                    "value": {
+                      "response": {
+                        "response_code": "0000",
+                        "response_desc": "SUCCESS"
+                      },
+                      "info": {
+                        "stan": "010123",
+                        "rrn": "010123010123",
+                        "correlationId": "7ad7fb9f-99dc-4c2c-ab88-abddb87789a0"
+                      },
+                      "accountInfo": {
+                        "title": "Muhammad Khan",
+                        "toAccount": "00653000129536",
+                        "destinationPaymentSystem": "01",
+                        "iban": "PK30BANK0012000230000000"
+                      },
+                      "participantInfo": {
+                        "bankIMD": "100271",
+                        "bankBIC": "NBPBPKKA"
+                      }
+                    }
+                  },
+                  "1001": {
+                    "summary": "No account found",
+                    "value": {
+                      "response": {
+                        "response_code": "1001",
+                        "response_desc": "No account found"
+                      },
+                      "stan": "010123",
+                      "rrn": "010123010123",
+                      "correlationId": "7ad7fb9f-99dc-4c2c-ab88-abddb87789a0"
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response_code": {
+                      "type": "string",
+                      "minLength": 4,
+                      "maxLength": 4,
+                      "description": "Response code for the request"
+                    },
+                    "response_desc": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Description for the respective response code"
+                    },
+                    "rrn": {
+                      "type": "string",
+                      "minLength": 12,
+                      "maxLength": 12,
+                      "description": "Echo back"
+                    },
+                    "stan": {
+                      "type": "string",
+                      "minLength": 6,
+                      "maxLength": 6,
+                      "description": "Echo back"
+                    },
+                    "correlationId": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Unique correlation id for the title fetch request. The value is in GUID format and will be sent by the initiator in payment call."
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Beneficiary account title"
+                    },
+                    "toAccount": {
+                      "type": "string",
+                      "minLength": 24,
+                      "maxLength": 24,
+                      "description": "Echo back"
+                    },
+                    "destinationPaymentSystem": {
+                      "type": "string",
+                      "minLength": 2,
+                      "maxLength": 2,
+                      "description": "Identify the route from which title fetch has completed. \n\nThe values are as:\n\n\n\"01\" – For RAAST\n\n\n\"02\" – For 1LINK"
+                    },
+                    "iban": {
+                      "type": "string",
+                      "minLength": 24,
+                      "maxLength": 24,
+                      "description": "Beneficiary IBAN, the value will be returned if received from the scheme in response of title fetch"
+                    },
+                    "bankIMD": {
+                      "type": "string",
+                      "minLength": 8,
+                      "maxLength": 8,
+                      "description": "Receiving participant IMD (Member bank id), assigned by 1LINK"
+                    },
+                    "bankBIC": {
+                      "type": "string",
+                      "minLength": 16,
+                      "maxLength": 16,
+                      "description": "Receiving participant BIC (bank institution code), assigned by SBP"
+                    }
+                  },
+                  "required": [
+                    "response_code",
+                    "response_desc",
+                    "rrn",
+                    "stan",
+                    "correlationId"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "unauthorized",
+                  "status": 401
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/p_UnifiedTitleFetch"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/paysyslabs/alias/getdefaultaccount": {
+      "post": {
+        "summary": "getdefaultaccount",
+        "tags": [
+          "OPEN CONNECT"
+        ],
+        "description": "The request will be used to fetch beneficiary account details via RAAST ID. \n\n\nA \"RAAST ID\" is a unique identifier assigned to an individual for the purpose of collecting funds. This ID is registered through the individual's bank, which is then integrated into the State Bank of Pakistan's Central Addressing Scheme (CAS). This integration allows individuals to receive funds without the need to divulge their complete bank account details, including account number, bank and branch information.\n\n\nWhen a payee has to receive funds, they only need to provide their RAAST ID. The CAS system manages the beneficiary's account details and associated information. This information is shared when a payer initiates a fund transfer via a bank's digital channel, using the payee's RAAST ID. This streamlined process enhances the efficiency and security of interbank fund transfers by simplifying the recipient's identification and fund collection.",
+        "operationId": "getdefaultaccount",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "0": {
+                    "summary": "Success Response Example",
+                    "value": {
+                      "response": {
+                        "response_code": "0000",
+                        "response_desc": "SUCCESS"
+                      },
+                      "stan": "010123",
+                      "rrn": "010123010123",
+                      "correlationId": "7ad7fb9f-99dc-4c2c-ab88-abddb87789a0",
+                      "default-account-byalias": {
+                        "surname": "Mr.",
+                        "name": "Waqas",
+                        "currency": "PKR",
+                        "type": "DFLT",
+                        "servicer": {
+                          "memberId": "SONEPKKA"
+                        },
+                        "id": {
+                          "iban": "PK19SONE0000220006493697"
+                        }
+                      }
+                    }
+                  },
+                  "2011": {
+                    "summary": "Cannot find account",
+                    "value": {
+                      "response": {
+                        "response_code": "2011",
+                        "response_desc": "Cannot find account"
+                      },
+                      "stan": "010123",
+                      "rrn": "010123010123",
+                      "correlationId": "7ad7fb9f-99dc-4c2c-ab88-abddb87789a0"
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response_code": {
+                      "type": "string",
+                      "minLength": 4,
+                      "maxLength": 4,
+                      "description": "Response code for the request"
+                    },
+                    "response_desc": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Description for the respective response code"
+                    },
+                    "rrn": {
+                      "type": "string",
+                      "minLength": 12,
+                      "maxLength": 12,
+                      "description": "Echo back"
+                    },
+                    "stan": {
+                      "type": "string",
+                      "minLength": 6,
+                      "maxLength": 6,
+                      "description": "Echo back"
+                    },
+                    "correlationId": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Unique correlation id for the title fetch request. The value is in GUID format and will be sent by the initiator in payment call."
+                    },
+                    "surname": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Beneficiary surname"
+                    },
+                    "name": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Beneficiary nick name registered in central addressing scheme"
+                    },
+                    "currency": {
+                      "type": "string",
+                      "minLength": 3,
+                      "maxLength": 3,
+                      "description": "Receiver account currency"
+                    },
+                    "type": {
+                      "type": "string",
+                      "minLength": 4,
+                      "maxLength": 4,
+                      "description": "Receiver account type. The value will be like “DFLT”"
+                    },
+                    "memberId": {
+                      "type": "string",
+                      "minLength": 16,
+                      "maxLength": 16,
+                      "description": "Receiving participant BIC (bank institution code), assigned by SBP"
+                    },
+                    "iban": {
+                      "type": "string",
+                      "minLength": 24,
+                      "maxLength": 24,
+                      "description": "Receiver IBAN"
+                    }
+                  },
+                  "required": [
+                    "response_code",
+                    "response_desc",
+                    "rrn",
+                    "stan",
+                    "correlationId"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "unauthorized",
+                  "status": 401
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/p_GetDefaultAccount"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/paysyslabs/banklist": {
+      "get": {
+        "summary": "banklist",
+        "tags": [
+          "OPEN CONNECT"
+        ],
+        "description": "Request to get institution list",
+        "operationId": "banklist",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "0": {
+                    "summary": "Success Response Example",
+                    "value": {
+                      "response": {
+                        "response_code": "0000",
+                        "response_desc": "SUCCESS"
+                      },
+                      "participants": [
+                        {
+                          "bankId": 1,
+                          "bankDisplayName": "National bank of Pakistan",
+                          "bankShortBIC": "NBPBPKKA",
+                          "bankBIC": "NBPBPKKAXXX",
+                          "bankIMD": "601492",
+                          "accountNumberHelp": "Please provide 14 digits NBP account # or IBAN",
+                          "accountNumberREGEX": "^[0-9]+$",
+                          "isAvailable1LINKIBFT": "Y",
+                          "isAvailableRAASTP2P": "Y",
+                          "isAvailableRAASTBulk": "Y",
+                          "isAvailableRAASTP2M": "N",
+                          "isAvailableRAASTP2MRTP": "N",
+                          "isAvailableRAASTP2MPISP": "N"
+                        },
+                        {
+                          "bankId": 2,
+                          "bankDisplayName": "Telenor Microfinance Bank",
+                          "bankShortBIC": "TMFBPKKA",
+                          "bankBIC": "TMFBPKKAXXX",
+                          "bankIMD": "220872",
+                          "accountNumberHelp": "Please provide 11 digits mobile # or IBAN for beneficiary",
+                          "accountNumberREGEX": "^[0-9]+$",
+                          "isAvailable1LINKIBFT": "Y",
+                          "isAvailableRAASTP2P": "Y",
+                          "isAvailableRAASTBulk": "Y",
+                          "isAvailableRAASTP2M": "Y",
+                          "isAvailableRAASTP2MRTP": "Y",
+                          "isAvailableRAASTP2MPISP": "N"
+                        }
+                      ]
+                    }
+                  },
+                  "3001": {
+                    "summary": "Failure with No data found",
+                    "value": {
+                      "response": {
+                        "response_code": "3001",
+                        "response_desc": "No data found"
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response_code": {
+                      "type": "string",
+                      "minLength": 4,
+                      "maxLength": 4,
+                      "description": "Response code for the request"
+                    },
+                    "response_desc": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Description for the respective response code"
+                    },
+                    "bankId": {
+                      "type": "integer",
+                      "description": "Bank id assigned by open connect"
+                    },
+                    "bankDisplayName": {
+                      "type": "string",
+                      "minLength": 20,
+                      "maxLength": 20,
+                      "description": "Bank name"
+                    },
+                    "bankShortBIC": {
+                      "type": "string",
+                      "minLength": 16,
+                      "maxLength": 16,
+                      "description": "Bank BIC assigned by SBP"
+                    },
+                    "bankBIC": {
+                      "type": "string",
+                      "minLength": 16,
+                      "maxLength": 16,
+                      "description": "Bank BIC assigned by SBP"
+                    },
+                    "bankIMD": {
+                      "type": "string",
+                      "minLength": 6,
+                      "maxLength": 6,
+                      "description": "Bank IMD assigned by 1LINK"
+                    },
+                    "accountNumberHelp": {
+                      "type": "string",
+                      "minLength": 200,
+                      "maxLength": 200,
+                      "description": "Help Text which can be used to show format to customer on screen in user readable form."
+                    },
+                    "accountNumberREGEX": {
+                      "type": "string",
+                      "minLength": 200,
+                      "maxLength": 200,
+                      "description": "Account # format, the field will be displayed to user where user input beneficiary account #"
+                    },
+                    "isAvailable1LINKIBFT": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1,
+                      "description": "Indicate bank support IBFT payments followed by “Y” or “N”"
+                    },
+                    "isAvailableRAASTP2P": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1,
+                      "description": "Indicate bank support P2P payments followed by “Y” or “N”"
+                    },
+                    "isAvailableRAASTBulk": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1,
+                      "description": "Indicate bank support RAAST bulk receiving payments followed by “Y” or “N”"
+                    },
+                    "isAvailableRAASTP2M": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1,
+                      "description": "Indicate bank support P2M payments followed by “Y” or “N”"
+                    },
+                    "isAvailableRAASTP2MRTP": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1,
+                      "description": "Indicate bank support P2M “request to pay” payments followed by “Y” or “N”"
+                    },
+                    "isAvailableRAASTP2MPISP": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 1,
+                      "description": "Indicate bank support RAAST PISP features followed by “Y” or “N”"
+                    }
+                  },
+                  "required": [
+                    "response_code",
+                    "response_desc"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "unauthorized",
+                  "status": 401
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/paysyslabs/payments/ibfttransfer": {
+      "post": {
+        "summary": "ibfttransfer",
+        "tags": [
+          "OPEN CONNECT"
+        ],
+        "description": "To send funds to member bank account using 1LINK",
+        "operationId": "ibfttransfer",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "0": {
+                    "summary": "Success Response Example",
+                    "value": {
+                      "response": {
+                        "response_code": "0000",
+                        "response_desc": "SUCCESS"
+                      },
+                      "stan": "010123",
+                      "rrn": "010123010123",
+                      "correlationId": "7ad7fb9f-99dc-4c2c-ab88-abddb87789a0"
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response_code": {
+                      "type": "string",
+                      "minLength": 4,
+                      "maxLength": 4,
+                      "description": "Response code for the request"
+                    },
+                    "response_desc": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Description for the respective response code"
+                    },
+                    "rrn": {
+                      "type": "string",
+                      "minLength": 12,
+                      "maxLength": 12,
+                      "description": "Echo back"
+                    },
+                    "stan": {
+                      "type": "string",
+                      "minLength": 6,
+                      "maxLength": 6,
+                      "description": "Echo back"
+                    },
+                    "correlationId": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Unique correlation id for the title fetch request. The value is in GUID format and will be sent by the initiator in payment call."
+                    }
+                  },
+                  "required": [
+                    "response_code",
+                    "response_desc",
+                    "rrn",
+                    "stan",
+                    "correlationId"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "unauthorized",
+                  "status": 401
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/p_IBFTTransfer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/paysyslabs/payments/directposting": {
+      "post": {
+        "summary": "directposting",
+        "tags": [
+          "OPEN CONNECT"
+        ],
+        "description": "This service will be used to send P2P payment via Raast for interbank transfer. The service will be sent credit request directly to RAAST without sending any debit request to bank middleware/CBS. This service ideally needs to be used in scenario where bank’s system can debit customer account itself and sent only credit request to Raast via open connect. \n\n\nOpen connect return additional fields upon successful response, bank’s middleware needs to sent same values to CBS while debit confirmation or release. These key parameters will be used for RECON purpose. ",
+        "operationId": "directposting",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "0": {
+                    "summary": "Success Response Example",
+                    "value": {
+                      "response": {
+                        "response_code": "0000",
+                        "response_desc": "SUCCESS"
+                      },
+                      "stan": "010123",
+                      "rrn": "010123010123",
+                      "correlationId": "7ad7fb9f-99dc-4c2c-ab88-abddb87789a0",
+                      "paymentInfo": {
+                        "instrId": "TMIC230511125023876423",
+                        "endToEndId": "1fc66b584e77-46e6-9dcb-fb12c00e7742",
+                        "txId": "TMIC230511125023876423",
+                        "msgId": "TMICFBPK110523000111250233"
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response_code": {
+                      "type": "string",
+                      "minLength": 4,
+                      "maxLength": 4,
+                      "description": "Response code for the request"
+                    },
+                    "response_desc": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Description for the respective response code"
+                    },
+                    "rrn": {
+                      "type": "string",
+                      "minLength": 12,
+                      "maxLength": 12,
+                      "description": "Echo back"
+                    },
+                    "stan": {
+                      "type": "string",
+                      "minLength": 6,
+                      "maxLength": 6,
+                      "description": "Echo back"
+                    },
+                    "correlationId": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Unique correlation id for the title fetch request. The value is in GUID format and will be sent by the initiator in payment call."
+                    },
+                    "instrId": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Instruction id sent to RAAST"
+                    },
+                    "endToEndId": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "End to end id sent to RAAST"
+                    },
+                    "txId": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Transaction id sent to RAAST"
+                    },
+                    "msgId": {
+                      "type": "string",
+                      "minLength": 24,
+                      "maxLength": 24,
+                      "description": "Echo back"
+                    }
+                  },
+                  "required": [
+                    "response_code",
+                    "response_desc",
+                    "rrn",
+                    "stan",
+                    "correlationId",
+                    "msgId"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "unauthorized",
+                  "status": 401
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/p_RAASTTransfer"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/bank/payments/titlefetch": {
+      "post": {
+        "summary": "titlefetch",
+        "tags": [
+          "BANK CONTROLLER"
+        ],
+        "description": "The service will be exposed by the bank. The purpose of the method is to allow member banks and schemes such as RAAST or 1LINK to get customer account info which is known as Title fetch request.\n\n\nThe title fetch usually comes before payment request where sender wants to verify beneficiary account title and account validation to make sure payment will be sent into the beneficiary account.",
+        "operationId": "titlefetch",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "0": {
+                    "summary": "Success Response Example",
+                    "value": {
+                      "response": {
+                        "responseCode": "00",
+                        "responseDesc": "Success",
+                        "stan": "010123",
+                        "rrn": "010123010123"
+                      },
+                      "receiverInfo": {
+                        "account": "03132370605",
+                        "iban": "PK98MASH0000003132370605",
+                        "title": "Waqas Nizam",
+                        "mobile": "03132370605",
+                        "identity": [
+                          {
+                            "idType": "CNIC",
+                            "idValue": 1234512345671
+                          },
+                          {
+                            "idType": "Passport",
+                            "idValue": "AX59856321"
+                          },
+                          {
+                            "idType": "NTN",
+                            "idValue": 6598532102
+                          }
+                        ]
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response_code": {
+                      "type": "string",
+                      "minLength": 4,
+                      "maxLength": 4,
+                      "description": "Response code for the request"
+                    },
+                    "response_desc": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Description for the respective response code"
+                    },
+                    "rrn": {
+                      "type": "string",
+                      "minLength": 12,
+                      "maxLength": 12,
+                      "description": "Echo back"
+                    },
+                    "stan": {
+                      "type": "string",
+                      "minLength": 6,
+                      "maxLength": 6,
+                      "description": "Echo back"
+                    },
+                    "account": {
+                      "type": "string",
+                      "minLength": 24,
+                      "maxLength": 24,
+                      "description": "Receiver account (Echo back)"
+                    },
+                    "iban": {
+                      "type": "string",
+                      "minLength": 24,
+                      "maxLength": 24,
+                      "description": "Receiver IBAN"
+                    },
+                    "title": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Receiver account title"
+                    },
+                    "mobile": {
+                      "type": "string",
+                      "minLength": 11,
+                      "maxLength": 11,
+                      "description": "Receiver mobile number"
+                    },
+                    "idType": {
+                      "type": "string",
+                      "minLength": 20,
+                      "maxLength": 20,
+                      "description": "Receiver account id type available in bank’s profile. Bank may return list of id type and values in case of joint account and if bank’s have multiple identity values for a customer. \n\n\nThe id types are as:\n\n\n•\tCNIC\n\n•\tNIC\n\n•\tNICOP\n\n•\tPOC\n\n•\tNTN\n\n•\tPASSPORT\n\n•\tREGNUM (Registration Number"
+                    },
+                    "idValue": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Identity value of respective identity type"
+                    }
+                  },
+                  "required": [
+                    "response_code",
+                    "response_desc",
+                    "rrn",
+                    "stan"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/b_TitleFetch"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/bank/payments/creditposting": {
+      "post": {
+        "summary": "creditposting",
+        "tags": [
+          "BANK CONTROLLER"
+        ],
+        "description": "The method is used to credit bank’s customer account whenever payment comes from RAAST. The Open connect sent credit request to the bank’s system using this method in the request mode. In case of rejection Open connect will instantly return payment to sender bank.\n\n\nDescription\tRequest to credit bank’s customer account, the request can be initiated by 1LINK and RAAST for following transactions:\n\n\n•\tIBFT inward payment\n\n•\tRAAST P2P inward payment\n\n•\tRAAST P2P outward return payment",
+        "operationId": "creditposting",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "0": {
+                    "summary": "Success Response Example",
+                    "value": {
+                      "response": {
+                        "response_code": "00",
+                        "response_desc": "SUCCESS",
+                        "stan": "010123",
+                        "rrn": "010123010123"
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response_code": {
+                      "type": "string",
+                      "minLength": 4,
+                      "maxLength": 4,
+                      "description": "Response code for the request"
+                    },
+                    "response_desc": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Description for the respective response code"
+                    },
+                    "rrn": {
+                      "type": "string",
+                      "minLength": 12,
+                      "maxLength": 12,
+                      "description": "Echo back"
+                    },
+                    "stan": {
+                      "type": "string",
+                      "minLength": 6,
+                      "maxLength": 6,
+                      "description": "Echo back"
+                    }
+                  },
+                  "required": [
+                    "response_code",
+                    "response_desc",
+                    "rrn",
+                    "stan"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "unauthorized",
+                  "status": 401
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/b_CreditPosting"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/bank/payments/creditadvise": {
+      "post": {
+        "summary": "creditadvise",
+        "tags": [
+          "BANK CONTROLLER"
+        ],
+        "description": "Advise means where bank is responsible to credit amount into the receiver account. As a guaranteed delivery mechanism (SAF), OC will be sent credit request as advise to bank’s system via SAF mechanism.\n\n\nThis method will be used in any of below case:\n\n\n•\t1LINK incoming credit advise\n\n•\tRAAST P2P Inward return payments, this happens when previously made outward P2P payment failed at receiving bank end and bank initiate return after sometime.\n\n•\tRAAST P2P Timeout transactions",
+        "operationId": "creditadvise",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "0": {
+                    "summary": "Success Response Example",
+                    "value": {
+                      "response": {
+                        "response_code": "00",
+                        "response_desc": "SUCCESS",
+                        "stan": "010123",
+                        "rrn": "010123010123"
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response_code": {
+                      "type": "string",
+                      "minLength": 4,
+                      "maxLength": 4,
+                      "description": "Response code for the request"
+                    },
+                    "response_desc": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Description for the respective response code"
+                    },
+                    "rrn": {
+                      "type": "string",
+                      "minLength": 12,
+                      "maxLength": 12,
+                      "description": "Echo back"
+                    },
+                    "stan": {
+                      "type": "string",
+                      "minLength": 6,
+                      "maxLength": 6,
+                      "description": "Echo back"
+                    }
+                  },
+                  "required": [
+                    "response_code",
+                    "response_desc",
+                    "rrn",
+                    "stan"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "unauthorized",
+                  "status": 401
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/b_CreditAdvise"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/bank/payments/creditinquiry": {
+      "post": {
+        "summary": "creditinquiry",
+        "tags": [
+          "BANK CONTROLLER"
+        ],
+        "description": "The purpose of this request to inquire the status of the previously posted credit request or advise.\n\n\nIn case if original transaction got timeout, the Open Connect initiate transaction inquiry to the check the transaction faith.",
+        "operationId": "creditinquiry",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "examples": {
+                  "0": {
+                    "summary": "Success Response Example",
+                    "value": {
+                      "response": {
+                        "response_code": "00",
+                        "response_desc": "SUCCESS",
+                        "stan": "010123",
+                        "rrn": "010123010123"
+                      },
+                      "orgResponse": {
+                        "orgresponseCode": "00",
+                        "orgresponseDesc": "SUCCESS"
+                      }
+                    }
+                  }
+                },
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "response_code": {
+                      "type": "string",
+                      "minLength": 4,
+                      "maxLength": 4,
+                      "description": "Response code for the request"
+                    },
+                    "response_desc": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Description for the respective response code"
+                    },
+                    "rrn": {
+                      "type": "string",
+                      "minLength": 12,
+                      "maxLength": 12,
+                      "description": "Echo back"
+                    },
+                    "stan": {
+                      "type": "string",
+                      "minLength": 6,
+                      "maxLength": 6,
+                      "description": "Echo back"
+                    },
+                    "orgresponseCode": {
+                      "type": "string",
+                      "minLength": 4,
+                      "maxLength": 4,
+                      "description": "Response code for the original request"
+                    },
+                    "orgresponseDesc": {
+                      "type": "string",
+                      "minLength": 40,
+                      "maxLength": 40,
+                      "description": "Description for the respective original response code"
+                    }
+                  },
+                  "required": [
+                    "response_code",
+                    "response_desc",
+                    "rrn",
+                    "stan",
+                    "orgresponseCode",
+                    "orgresponseDesc"
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "example": {
+                  "error": "unauthorized",
+                  "status": 401
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/b_CreditInquiry"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "jwtToken": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "JWT Token required in all APIs except /authentication enpoint which needs oaut2.1\n\nFor more information regarding JWT, check out [JWT](https://auth0.com/learn/json-web-tokens)."
+      },
+      "clientCredentials": {
+        "type": "oauth2",
+        "description": "For more information regarding oauth, check out [OAUTH](https://auth0.com/intro-to-iam/what-is-oauth-2).",
+        "flows": {
+          "clientCredentials": {
+            "tokenUrl": "https://apigw.paysyslabs.com/api/v1/paysyslabs/token",
+            "scopes": {}
+          }
+        }
+      }
+    },
+    "schemas": {
+      "p_Authentication": {
+        "description": "Representation of a Authentication",
+        "type": "object",
+        "properties": {
+          "grant_type": {
+            "example": "client_credentials",
+            "type": "string"
+          },
+          "client_id": {
+            "description": "client_id will be provided by PSL TEAM based on channel",
+            "type": "string"
+          },
+          "client_secret": {
+            "description": "client_secret will be provided by PSL TEAM based on channel",
+            "type": "string"
+          }
+        },
+        "required": [
+          "grant_type",
+          "client_id",
+          "client_secret"
+        ]
+      },
+      "p_UnifiedTitleFetch": {
+        "description": "Representation of a Unified Title Fetch",
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "object",
+            "properties": {
+              "rrn": {
+                "type": "string",
+                "minLength": 12,
+                "maxLength": 12,
+                "description": "Retrieval reference number",
+                "example": "002236987456"
+              },
+              "stan": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "description": "System trace audit number",
+                "example": "987456"
+              },
+              "txndate": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 8,
+                "format": "yyyymmdd",
+                "description": "Transaction Date",
+                "example": "20231015"
+              },
+              "txntime": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "format": "hhmmss",
+                "description": "Transaction Time",
+                "example": "182243"
+              }
+            },
+            "required": [
+              "rrn",
+              "stan",
+              "txndate",
+              "txntime"
+            ]
+          },
+          "senderinfo": {
+            "type": "object",
+            "properties": {
+              "fromAccount": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "description": "Sender IBAN",
+                "example": "05421236547552"
+              },
+              "fromAccountType": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 2,
+                "description": "Sender account type (LOVs)\n\n\n•\t00 \tDefault Account (no account specified)\n\n•\t10 \tSavings Account\n\n•\t20 \tCurrent or Checking Account\n\n•\t30 \tCredit Account\n\n•\t40 \tBranchless Banking Account\n\n•\t50 \tBiometric Withdrawal\n\n•\t60 \tRoshan Digital Account",
+                "example": "00"
+              },
+              "fromAccountCurrency": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 3,
+                "description": "3 digits ISO8583 universal currency code",
+                "example": "586"
+              }
+            },
+            "required": [
+              "fromAccount",
+              "fromAccountType",
+              "fromAccountCurrency"
+            ]
+          },
+          "receiverinfo": {
+            "type": "object",
+            "properties": {
+              "bankId": {
+                "type": "integer",
+                "description": "Bank Id returned by the OC in get bank list service response.\n\n\nFor more information, see [Endpoint banklist](#tag/OPEN-CONNECT/operation/banklist).",
+                "example": 1
+              },
+              "toAccount": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "description": "Beneficiary account# or IBAN",
+                "example": "00023137343951"
+              }
+            },
+            "required": [
+              "bankId",
+              "toAccount"
+            ]
+          },
+          "otherinfo": {
+            "type": "object",
+            "properties": {
+              "priorityFlag": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 2,
+                "description": "The field determine the priority rail to perform title fetch.\n\n\nThe values are as:\n\n\n\"01\" – For RAAST\n\n\n\"02\" – For 1LINK",
+                "example": "01"
+              },
+              "fallbackFlag": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 2,
+                "description": "The field determine the fall back feature for the title fetch in case title fetch failed from \nthe 1st switch system will attempt to perform it from alternate route if fall back parameter \nset to “Yes”.\n\n\nThe values are as:\n\n\n\"01\" – Yes\n\n\n\"02\" – No",
+                "example": "01"
+              },
+              "amount": {
+                "type": "number",
+                "description": "Amount of the transaction, it is required as per EFT compliant that receiver must validate credit limit on title fetch to minimize rejection ratio while payment",
+                "example": "5000"
+              }
+            },
+            "required": [
+              "priorityFlag",
+              "fallbackFlag",
+              "amount"
+            ]
+          },
+          "reserveFields": {
+            "type": "object",
+            "properties": {
+              "r1": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved one"
+              },
+              "r2": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved two"
+              },
+              "r3": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved three"
+              },
+              "r4": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved four"
+              },
+              "r5": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved five"
+              }
+            }
+          }
+        }
+      },
+      "p_GetDefaultAccount": {
+        "description": "Representation of a Get Default Account",
+        "type": "object",
+        "properties": {
+          "rrn": {
+            "type": "string",
+            "minLength": 12,
+            "maxLength": 12,
+            "description": "Retrieval reference number",
+            "example": "002236987456"
+          },
+          "stan": {
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 6,
+            "description": "System trace audit number",
+            "example": "987456"
+          },
+          "type": {
+            "type": "string",
+            "minLength": 8,
+            "maxLength": 8,
+            "description": "Type of alias:\n\n\n•\tCNIC (13 digits)\n\n•\tMOBILE (11 digits)\n\n•\tEMAIL\n\n•\tTXT - free text",
+            "example": "MOBILE"
+          },
+          "value": {
+            "type": "string",
+            "minLength": 40,
+            "maxLength": 40,
+            "description": "Alias Value",
+            "example": "03132370605"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Transaction amount",
+            "example": "500.54"
+          }
+        },
+        "required": [
+          "rrn",
+          "stan",
+          "type",
+          "value",
+          "amount"
+        ]
+      },
+      "p_IBFTTransfer": {
+        "description": "Representation of a IBFT Transfer",
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "object",
+            "properties": {
+              "rrn": {
+                "type": "string",
+                "minLength": 12,
+                "maxLength": 12,
+                "description": "Retrieval reference number",
+                "example": "002236987456"
+              },
+              "stan": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "description": "System trace audit number",
+                "example": "987456"
+              },
+              "txndate": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 8,
+                "format": "yyyymmdd",
+                "description": "Transaction Date",
+                "example": "20231015"
+              },
+              "txntime": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "format": "hhmmss",
+                "description": "Transaction Time",
+                "example": "182243"
+              }
+            },
+            "required": [
+              "rrn",
+              "stan",
+              "txndate",
+              "txntime"
+            ]
+          },
+          "senderinfo": {
+            "type": "object",
+            "properties": {
+              "fromAccount": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "description": "Sender IBAN",
+                "example": "05421236547552"
+              },
+              "fromAccountType": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 2,
+                "description": "Sender account type (LOVs)\n\n\n•\t00 \tDefault Account (no account specified)\n\n•\t10 \tSavings Account\n\n•\t20 \tCurrent or Checking Account\n\n•\t30 \tCredit Account\n\n•\t40 \tBranchless Banking Account\n\n•\t50 \tBiometric Withdrawal\n\n•\t60 \tRoshan Digital Account",
+                "example": "00"
+              },
+              "fromAccountCurrency": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 3,
+                "description": "3 digits ISO8583 universal currency code",
+                "example": "586"
+              },
+              "fromAccountCnic": {
+                "type": "string",
+                "minLength": 13,
+                "maxLength": 13,
+                "description": "Sender CNIC",
+                "example": "1234512345671"
+              }
+            },
+            "required": [
+              "fromAccount",
+              "fromAccountType",
+              "fromAccountCurrency",
+              "fromAccountCnic"
+            ]
+          },
+          "receiverinfo": {
+            "type": "object",
+            "properties": {
+              "bankIMD": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "description": "Bank IMD, received in response of title fetch",
+                "example": "100271"
+              },
+              "toAccount": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "description": "Beneficiary account# or IBAN",
+                "example": "00023137343951"
+              },
+              "toAccountTitle": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Beneficiary account title, received in response of title fetch",
+                "example": "Waqas Nizam"
+              }
+            },
+            "required": [
+              "bankIMD",
+              "toAccount",
+              "toAccountTitle"
+            ]
+          },
+          "paymentInfo": {
+            "type": "object",
+            "properties": {
+              "purposeCode": {
+                "type": "string",
+                "minLength": 4,
+                "maxLength": 4,
+                "description": "4 digits numeric 1LINK assigned payment purpose code. 1LINK purpose codes",
+                "example": "0152"
+              },
+              "narration": {
+                "type": "string",
+                "minLength": 140,
+                "maxLength": 140,
+                "description": "Any alpha numeric text upto 140 characters",
+                "example": "test transaction"
+              },
+              "amount": {
+                "type": "number",
+                "description": "Amount of the transaction, bank make sure that the amount will be same which bank sent during title fetch",
+                "example": "5000"
+              },
+              "authId": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Debit authorization unique reference number return by core banking in response of debit hold request",
+                "example": "654123"
+              }
+            },
+            "required": [
+              "purposeCode",
+              "narration",
+              "amount",
+              "authId"
+            ]
+          },
+          "reserveFields": {
+            "type": "object",
+            "properties": {
+              "r1": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved one"
+              },
+              "r2": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved two"
+              },
+              "r3": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved three"
+              },
+              "r4": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved four"
+              },
+              "r5": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved five"
+              }
+            }
+          }
+        }
+      },
+      "p_RAASTTransfer": {
+        "description": "Representation of a RAAST Transfer",
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "object",
+            "properties": {
+              "rrn": {
+                "type": "string",
+                "minLength": 12,
+                "maxLength": 12,
+                "description": "Retrieval reference number",
+                "example": "002236987456"
+              },
+              "stan": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "description": "System trace audit number",
+                "example": "987456"
+              },
+              "txndate": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 8,
+                "format": "yyyymmdd",
+                "description": "Transaction Date",
+                "example": "20231015"
+              },
+              "txntime": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "format": "hhmmss",
+                "description": "Transaction Time",
+                "example": "182243"
+              },
+              "correlationId": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Unique correlation id for the title fetch request. The value will be same which channel received in response of title fetch",
+                "example": "18227ad7fb9f-99dc-4c2c-ab88-abddb87789a043"
+              }
+            },
+            "required": [
+              "rrn",
+              "stan",
+              "txndate",
+              "txntime",
+              "correlationId"
+            ]
+          },
+          "senderinfo": {
+            "type": "object",
+            "properties": {
+              "fromAccount": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "description": "Sender IBAN",
+                "example": "05421236547552"
+              },
+              "fromAccountTitle": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Sender account title",
+                "example": "Muhammad Ali"
+              },
+              "fromAccountType": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 2,
+                "description": "Sender account type (LOVs)\n\n\n•\t00 \tDefault Account (no account specified)\n\n•\t10 \tSavings Account\n\n•\t20 \tCurrent or Checking Account\n\n•\t30 \tCredit Account\n\n•\t40 \tBranchless Banking Account\n\n•\t50 \tBiometric Withdrawal\n\n•\t60 \tRoshan Digital Account",
+                "example": "00"
+              },
+              "fromAccountCurrency": {
+                "type": "string",
+                "minLength": 3,
+                "maxLength": 3,
+                "description": "3 digits ISO8583 universal currency code",
+                "example": "586"
+              },
+              "fromAccountCnic": {
+                "type": "string",
+                "minLength": 13,
+                "maxLength": 13,
+                "description": "Sender CNIC",
+                "example": "1234512345671"
+              }
+            },
+            "required": [
+              "fromAccount",
+              "fromAccountTitle",
+              "fromAccountType",
+              "fromAccountCurrency",
+              "fromAccountCnic"
+            ]
+          },
+          "receiverinfo": {
+            "type": "object",
+            "properties": {
+              "bankBIC": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "description": "Bank BIC, received in response of title fetch",
+                "example": "100271"
+              },
+              "toAccount": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "description": "Beneficiary account# or IBAN",
+                "example": "00023137343951"
+              },
+              "toAccountTitle": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Beneficiary account title, received in response of title fetch",
+                "example": "Waqas Nizam"
+              }
+            },
+            "required": [
+              "bankBIC",
+              "toAccount",
+              "toAccountTitle"
+            ]
+          },
+          "paymentInfo": {
+            "type": "object",
+            "properties": {
+              "purposeCode": {
+                "type": "string",
+                "minLength": 4,
+                "maxLength": 4,
+                "description": "4 digits numeric 1LINK assigned payment purpose code. 1LINK purpose codes",
+                "example": "0152"
+              },
+              "narration": {
+                "type": "string",
+                "minLength": 140,
+                "maxLength": 140,
+                "description": "Any alpha numeric text upto 140 characters",
+                "example": "test transaction"
+              },
+              "amount": {
+                "type": "number",
+                "description": "Amount of the transaction, bank make sure that the amount will be same which bank sent during title fetch",
+                "example": "5000"
+              },
+              "authId": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Debit authorization unique reference number return by core banking in response of debit hold request",
+                "example": "654123"
+              },
+              "msgId": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Unique reference number to sent RAAST. The key will be communicated end to end and will be used for e2e reconciliation. Bank is responsible to make sure that the id will not be duplicated in any case",
+                "example": "MASH231016140256592221"
+              }
+            },
+            "required": [
+              "purposeCode",
+              "authId",
+              "amount",
+              "authId",
+              "msgId"
+            ]
+          },
+          "reserveFields": {
+            "type": "object",
+            "properties": {
+              "r1": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved one"
+              },
+              "r2": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved two"
+              },
+              "r3": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved three"
+              },
+              "r4": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved four"
+              },
+              "r5": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved five"
+              }
+            }
+          }
+        }
+      },
+      "b_TitleFetch": {
+        "description": "Representation of a Bank's Controller Title Fetch",
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "object",
+            "properties": {
+              "rrn": {
+                "type": "string",
+                "minLength": 12,
+                "maxLength": 12,
+                "description": "Retrieval reference number",
+                "example": "002236987456"
+              },
+              "stan": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "description": "System trace audit number",
+                "example": "987456"
+              },
+              "txndate": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 8,
+                "format": "yyyymmdd",
+                "description": "Transaction Date",
+                "example": "20231015"
+              },
+              "txntime": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "format": "hhmmss",
+                "description": "Transaction Time",
+                "example": "182243"
+              },
+              "initiator": {
+                "type": "string",
+                "minLength": 10,
+                "maxLength": 10,
+                "description": "Fixed value from any of below:\n\n\n•\t1LINK\n\n•\tRAAST",
+                "example": "RAAST"
+              }
+            },
+            "required": [
+              "rrn",
+              "stan",
+              "txndate",
+              "txntime",
+              "initiator"
+            ]
+          },
+          "receiverinfo": {
+            "type": "object",
+            "properties": {
+              "toAccount": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "description": "Beneficiary account# or IBAN",
+                "example": "00023137343951"
+              }
+            },
+            "required": [
+              "toAccount"
+            ]
+          },
+          "paymentInfo": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "number",
+                "description": "Amount of the transaction, it can be zero.",
+                "example": "5000"
+              }
+            },
+            "required": [
+              "amount"
+            ]
+          },
+          "reserveFields": {
+            "type": "object",
+            "properties": {
+              "r1": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved one"
+              },
+              "r2": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved two"
+              },
+              "r3": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved three"
+              },
+              "r4": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved four"
+              },
+              "r5": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved five"
+              }
+            }
+          }
+        }
+      },
+      "b_CreditPosting": {
+        "description": "Representation of a Bank's Controller Credit Posting",
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "object",
+            "properties": {
+              "rrn": {
+                "type": "string",
+                "minLength": 12,
+                "maxLength": 12,
+                "description": "Retrieval reference number",
+                "example": "002236987456"
+              },
+              "stan": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "description": "System trace audit number",
+                "example": "987456"
+              },
+              "txndate": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 8,
+                "format": "yyyymmdd",
+                "description": "Transaction Date",
+                "example": "20231015"
+              },
+              "txntime": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "format": "hhmmss",
+                "description": "Transaction Time",
+                "example": "182243"
+              }
+            },
+            "required": [
+              "rrn",
+              "stan",
+              "txndate",
+              "txntime"
+            ]
+          },
+          "senderinfo": {
+            "type": "object",
+            "properties": {
+              "senderBankIMD": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "description": "The value comes if transaction received from 1LINK. In other case it will be blank",
+                "example": ""
+              },
+              "senderBankBIC": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "description": "The value comes if transaction received from RAAST. In other case it will be blank",
+                "example": "NBPBPKKA"
+              },
+              "fromAccount": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "description": "Sender IBAN / account",
+                "example": "PK56AIIN1234567890000001"
+              },
+              "fromAccountTitle": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Sender account title",
+                "example": "Muhammad Ali"
+              },
+              "fromAccountCnic": {
+                "type": "string",
+                "minLength": 13,
+                "maxLength": 13,
+                "description": "Sender CNIC if value received in the payment request",
+                "example": "1234512345671"
+              }
+            },
+            "required": [
+              "fromAccount",
+              "fromAccountTitle"
+            ]
+          },
+          "receiverinfo": {
+            "type": "object",
+            "properties": {
+              "toAccount": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "description": "Beneficiary account# or IBAN",
+                "example": "00023137343951"
+              },
+              "toAccountTitle": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Beneficiary account title",
+                "example": "Waqas Nizam"
+              }
+            },
+            "required": [
+              "toAccount",
+              "toAccountTitle"
+            ]
+          },
+          "paymentInfo": {
+            "type": "object",
+            "properties": {
+              "purposeCode": {
+                "type": "string",
+                "minLength": 4,
+                "maxLength": 4,
+                "description": "3 digits numeric RAAST assigned payment purpose code. If payment received from 1LINK the value will be of 4 digits.",
+                "example": "0152"
+              },
+              "narration": {
+                "type": "string",
+                "minLength": 140,
+                "maxLength": 140,
+                "description": "Any alpha numeric text upto 140 characters",
+                "example": "test transaction"
+              },
+              "amount": {
+                "type": "number",
+                "description": "Amount of the transaction",
+                "example": "5000"
+              },
+              "instrId": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Instruction id received by RAAST.\n\n\nIn case of 1LINK the field will be blank",
+                "example": "TMIC230511125023876423"
+              },
+              "endToEndId": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "End to end id received by RAAST.\n\n\nIn case of 1LINK the field will be blank.",
+                "example": "1fc66b584e77-46e6-9dcb-fb12c00e7742"
+              },
+              "txId": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Transaction id received by RAAST.\n\n\nIn case of 1LINK the field will be blank.",
+                "example": "TMIC230511125023876423"
+              },
+              "msgId": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Message id received by RAAST.\n\nIn case of 1LINK the field will be blank.",
+                "example": "TMICFBPK110523000111250233"
+              }
+            },
+            "required": [
+              "purposeCode",
+              "amount"
+            ]
+          },
+          "reserveFields": {
+            "type": "object",
+            "properties": {
+              "r1": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved one"
+              },
+              "r2": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved two"
+              },
+              "r3": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved three"
+              },
+              "r4": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved four"
+              },
+              "r5": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved five"
+              }
+            }
+          }
+        }
+      },
+      "b_CreditAdvise": {
+        "description": "Representation of a Bank's Controller Credit Advise",
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "object",
+            "properties": {
+              "rrn": {
+                "type": "string",
+                "minLength": 12,
+                "maxLength": 12,
+                "description": "Retrieval reference number",
+                "example": "002236987456"
+              },
+              "stan": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "description": "System trace audit number",
+                "example": "987456"
+              },
+              "txndate": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 8,
+                "format": "yyyymmdd",
+                "description": "Transaction Date",
+                "example": "20231015"
+              },
+              "txntime": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "format": "hhmmss",
+                "description": "Transaction Time",
+                "example": "182243"
+              },
+              "initiator": {
+                "type": "string",
+                "minLength": 5,
+                "maxLength": 5,
+                "description": "Transaction received by, any of followings:\n\n\n•\tRAAST\n\n•\t1LINK",
+                "example": "RAAST"
+              },
+              "txnType": {
+                "type": "string",
+                "minLength": 2,
+                "maxLength": 2,
+                "description": "Transaction type, any of followings:\n\n\n•\t01 – For RAAST P2P incoming\n\n•\t02 – For 1LINK IBFT incoming\n\n•\t03 – For RAAST return payment\n\n•\t04 – For RAAST bulk receiving ",
+                "example": "01"
+              }
+            },
+            "required": [
+              "rrn",
+              "stan",
+              "txndate",
+              "txntime",
+              "initiator",
+              "txnType"
+            ]
+          },
+          "senderinfo": {
+            "type": "object",
+            "properties": {
+              "senderBankIMD": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "description": "The value comes if transaction received from 1LINK. In other case it will be blank",
+                "example": ""
+              },
+              "senderBankBIC": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "description": "The value comes if transaction received from RAAST. In other case it will be blank",
+                "example": "NBPBPKKA"
+              },
+              "fromAccount": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "description": "Sender IBAN / account",
+                "example": "PK56AIIN1234567890000001"
+              },
+              "fromAccountTitle": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Sender account title",
+                "example": "Muhammad Ali"
+              },
+              "fromAccountCnic": {
+                "type": "string",
+                "minLength": 13,
+                "maxLength": 13,
+                "description": "Sender CNIC if value received in the payment request",
+                "example": "1234512345671"
+              }
+            },
+            "required": [
+              "fromAccount",
+              "fromAccountTitle"
+            ]
+          },
+          "receiverinfo": {
+            "type": "object",
+            "properties": {
+              "toAccount": {
+                "type": "string",
+                "minLength": 24,
+                "maxLength": 24,
+                "description": "Beneficiary account# or IBAN",
+                "example": "00023137343951"
+              },
+              "toAccountTitle": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Beneficiary account title",
+                "example": "Waqas Nizam"
+              }
+            },
+            "required": [
+              "toAccount",
+              "toAccountTitle"
+            ]
+          },
+          "paymentInfo": {
+            "type": "object",
+            "properties": {
+              "purposeCode": {
+                "type": "string",
+                "minLength": 4,
+                "maxLength": 4,
+                "description": "3 digits numeric RAAST assigned payment purpose code. If payment received from 1LINK the value will be of 4 digits.",
+                "example": "0152"
+              },
+              "narration": {
+                "type": "string",
+                "minLength": 140,
+                "maxLength": 140,
+                "description": "Any alpha numeric text upto 140 characters",
+                "example": "test transaction"
+              },
+              "amount": {
+                "type": "number",
+                "description": "Amount of the transaction",
+                "example": "5000"
+              },
+              "instrId": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Instruction id received by RAAST.\n\n\nIn case of 1LINK the field will be blank",
+                "example": "TMIC230511125023876423"
+              },
+              "endToEndId": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "End to end id received by RAAST.\n\n\nIn case of 1LINK the field will be blank.",
+                "example": "1fc66b584e77-46e6-9dcb-fb12c00e7742"
+              },
+              "txId": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Transaction id received by RAAST.\n\n\nIn case of 1LINK the field will be blank.",
+                "example": "TMIC230511125023876423"
+              },
+              "msgId": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Message id received by RAAST.\n\nIn case of 1LINK the field will be blank.",
+                "example": "TMICFBPK110523000111250233"
+              },
+              "oneLinkrrn": {
+                "type": "string",
+                "minLength": 12,
+                "maxLength": 12,
+                "description": "Retrieval reference number.\n\nIn case of 1LINK, OC will send same value which comes from 1LINK in DE-37. \n\nIn case of RAAST the field will be blank",
+                "example": "002236987456"
+              },
+              "oneLinkstan": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "description": "System trace audit number.\n\nIn case of 1LINK, OC will send same value which comes from 1LINK in DE-11.\n\nIn case of RAAST the field will be blank.",
+                "example": "987456"
+              }
+            },
+            "required": [
+              "purposeCode",
+              "amount"
+            ]
+          },
+          "orgTxnInfo": {
+            "type": "object",
+            "properties": {
+              "orgtxndate": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 8,
+                "description": "Original transaction date",
+                "format": "yyyymmdd",
+                "example": "20231015"
+              },
+              "orgtxntime": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "description": "Original transaction time",
+                "format": "hhmmss",
+                "example": "182243"
+              },
+              "orginstrId": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Original transaction instruction id",
+                "example": "TMIC230511125023876423"
+              },
+              "orgendToEndId": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Original transaction end to end id",
+                "example": "1fc66b584e77-46e6-9dcb-fb12c00e7742"
+              },
+              "orgtxId": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Original transaction id",
+                "example": "TMIC230511125023876423"
+              },
+              "orgmsgId": {
+                "type": "string",
+                "minLength": 40,
+                "maxLength": 40,
+                "description": "Original transaction message id",
+                "example": "TMICFBPK110523000111250233"
+              }
+            }
+          },
+          "reserveFields": {
+            "type": "object",
+            "properties": {
+              "r1": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved one"
+              },
+              "r2": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved two"
+              },
+              "r3": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved three"
+              },
+              "r4": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved four"
+              },
+              "r5": {
+                "type": "string",
+                "minLength": 100,
+                "maxLength": 100,
+                "description": "Reserved for future use",
+                "example": "reserved five"
+              }
+            }
+          }
+        }
+      },
+      "b_CreditInquiry": {
+        "description": "Representation of a Bank's Controller Credit Inquiry",
+        "type": "object",
+        "properties": {
+          "info": {
+            "type": "object",
+            "properties": {
+              "rrn": {
+                "type": "string",
+                "minLength": 12,
+                "maxLength": 12,
+                "description": "Retrieval reference number",
+                "example": "002236987456"
+              },
+              "stan": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "description": "System trace audit number",
+                "example": "987456"
+              },
+              "txndate": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 8,
+                "format": "yyyymmdd",
+                "description": "Transaction Date",
+                "example": "20231015"
+              },
+              "txntime": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "format": "hhmmss",
+                "description": "Transaction Time",
+                "example": "182243"
+              }
+            }
+          },
+          "orgTxnInfo": {
+            "type": "object",
+            "properties": {
+              "orgtxnrrn": {
+                "type": "string",
+                "minLength": 12,
+                "maxLength": 12,
+                "description": "Retrieval reference number",
+                "example": "002236987456"
+              },
+              "orgtxnstan": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "description": "System trace audit number",
+                "example": "987456"
+              },
+              "orgtxndate": {
+                "type": "string",
+                "minLength": 8,
+                "maxLength": 8,
+                "format": "yyyymmdd",
+                "description": "Transaction Date",
+                "example": "20231015"
+              },
+              "orgtxntime": {
+                "type": "string",
+                "minLength": 6,
+                "maxLength": 6,
+                "format": "hhmmss",
+                "description": "Transaction Time",
+                "example": "182243"
+              }
+            },
+            "required": [
+              "rrn",
+              "stan",
+              "txndate",
+              "txntime",
+              "orgtxnrrn",
+              "orgtxnstan",
+              "orgtxndate",
+              "orgtxntime"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
