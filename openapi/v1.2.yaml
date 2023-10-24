@@ -9,6 +9,642 @@ info:
     name: Paysys Labs
     url: https://www.paysyslabs.com/
 paths:
+   /v1/paysyslabs/token:
+    post:
+      summary: authentication
+      tags:
+        - OPEN CONNECT
+      description: |-
+        This method is secure and includes enhancements that allow for more robust security mechanisms, which will ensure that the Open Connect integration is secure and reliable.
+        
+        
+        This is also the centralized authentication mechanism for all the APIs exposed by Open Connect. This will be running as a separate application on specific port.
+      operationId: authenticate
+      security:
+        - clientCredentials: []
+      responses:
+        '200':
+          description: JWT token generated successfully
+          content:
+            application/json:
+              example:
+                access_token: token
+                expires_in: 300
+                token_type: Bearer             
+              schema:
+                type: object
+                properties:
+                  access_token:
+                    type: string
+                    description: |-
+                        This token will be used in all APIs in header with header name “Authorization”. Token value will be followed by Bearer
+                  expires_in:
+                    type: integer
+                    description: The value is in seconds
+                  token_type:
+                    type: string
+                    description: Bearer
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401 
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/p_Authentication'                
+   /v1/paysyslabs/payments/unifiedtitlefetch:
+    post:
+      summary: unifiedtitlefetch
+      tags:
+        - OPEN CONNECT
+      description: |-
+        The unified title fetch is a generic method to get beneficiary (receiver) account details from the member bank.The method is having a following two additional functionalities compare to standard title fetch method:
+        
+        
+        1- Preferred Rail: The initiator has provision to set the preferred rail either the title fetch will be done via RAAST or 1LINK. The request parameter will identify the preferred route
+        
+        
+        2- Fall-back option: In case if title fetch failed with the preferred rail the system will auto attempt the title fetch from alternate rail. The option is controllable via request parameters.
+
+      operationId: unifiedtitlefetch
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              examples:
+                0000:
+                  summary: Success Response Example
+                  value:
+                    response:
+                      response_code: "0000"
+                      response_desc: SUCCESS
+                    info:
+                      stan: "010123"
+                      rrn: "010123010123"
+                      correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+                    accountInfo:
+                      title: Muhammad Khan
+                      toAccount: "00653000129536"
+                      destinationPaymentSystem: "01"
+                      iban: PK30BANK0012000230000000
+                    participantInfo:
+                      bankIMD: "100271"
+                      bankBIC: NBPBPKKA
+                1001:
+                  summary: No account found
+                  value:
+                    response:
+                      response_code: "1001"
+                      response_desc: "No account found"
+                    stan: "010123"
+                    rrn: "010123010123"
+                    correlationId: "7ad7fb9f-99dc-4c2c-ab88-abddb87789a0"
+              schema:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    minLength: 4
+                    maxLength: 4
+                    description: Response code for the request
+                  response_desc:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Description for the respective response code
+                  rrn:
+                    type: string
+                    minLength: 12
+                    maxLength: 12
+                    description: Echo back
+                  stan:
+                    type: string
+                    minLength: 6
+                    maxLength: 6
+                    description: Echo back
+                  correlationId:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: |-
+                        Unique correlation id for the title fetch request. The value is in GUID format and will be sent by the initiator in payment call.
+                  title:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Beneficiary account title
+                  toAccount:
+                    type: string
+                    minLength: 24
+                    maxLength: 24
+                    description: Echo back
+                  destinationPaymentSystem:
+                    type: string
+                    minLength: 2
+                    maxLength: 2
+                    description: |-
+                        Identify the route from which title fetch has completed. 
+                        
+                        The values are as:
+                        
+                        
+                        "01" – For RAAST
+                        
+                        
+                        "02" – For 1LINK
+
+                  iban:
+                    type: string
+                    minLength: 24
+                    maxLength: 24
+                    description: |-
+                        Beneficiary IBAN, the value will be returned if received from the scheme in response of title fetch
+                  bankIMD:
+                    type: string
+                    minLength: 8
+                    maxLength: 8
+                    description: |-
+                        Receiving participant IMD (Member bank id), assigned by 1LINK
+                  bankBIC:
+                    type: string
+                    minLength: 16
+                    maxLength: 16
+                    description: |-
+                        Receiving participant BIC (bank institution code), assigned by SBP
+                required:
+                  - response_code
+                  - response_desc
+                  - rrn
+                  - stan
+                  - correlationId     
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/p_UnifiedTitleFetch'
+   /v1/paysyslabs/alias/getdefaultaccount:
+    post:
+      summary: getdefaultaccount
+      tags:
+        - OPEN CONNECT
+      description: |-
+        The request will be used to fetch beneficiary account details via RAAST ID. 
+
+
+        A "RAAST ID" is a unique identifier assigned to an individual for the purpose of collecting funds. This ID is registered through the individual's bank, which is then integrated into the State Bank of Pakistan's Central Addressing Scheme (CAS). This integration allows individuals to receive funds without the need to divulge their complete bank account details, including account number, bank and branch information.
+
+
+        When a payee has to receive funds, they only need to provide their RAAST ID. The CAS system manages the beneficiary's account details and associated information. This information is shared when a payer initiates a fund transfer via a bank's digital channel, using the payee's RAAST ID. This streamlined process enhances the efficiency and security of interbank fund transfers by simplifying the recipient's identification and fund collection.
+      operationId: getdefaultaccount
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              examples:
+                0000:
+                  summary: Success Response Example
+                  value:
+                    response:
+                      response_code: "0000"
+                      response_desc: SUCCESS
+                    stan: "010123"
+                    rrn: "010123010123"
+                    correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+                    default-account-byalias:
+                      surname: "Mr."
+                      name: "Waqas"
+                      currency: "PKR"
+                      type: "DFLT"
+                      servicer:
+                        memberId: "SONEPKKA"
+                      id:
+                        iban: PK19SONE0000220006493697
+                2011:
+                  summary: Cannot find account
+                  value:
+                    response:
+                      response_code: "2011"
+                      response_desc: "Cannot find account"
+                    stan: "010123"
+                    rrn: "010123010123"
+                    correlationId: "7ad7fb9f-99dc-4c2c-ab88-abddb87789a0"
+              schema:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    minLength: 4
+                    maxLength: 4
+                    description: Response code for the request
+                  response_desc:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Description for the respective response code
+                  rrn:
+                    type: string
+                    minLength: 12
+                    maxLength: 12
+                    description: Echo back
+                  stan:
+                    type: string
+                    minLength: 6
+                    maxLength: 6
+                    description: Echo back
+                  correlationId:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: |-
+                        Unique correlation id for the title fetch request. The value is in GUID format and will be sent by the initiator in payment call.
+                  surname:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Beneficiary surname
+                  name:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Beneficiary nick name registered in central addressing scheme
+                  currency:
+                    type: string
+                    minLength: 3
+                    maxLength: 3
+                    description: Receiver account currency
+                  type:
+                    type: string
+                    minLength: 4
+                    maxLength: 4
+                    description: Receiver account type. The value will be like “DFLT”
+                  memberId:
+                    type: string
+                    minLength: 16
+                    maxLength: 16
+                    description: Receiving participant BIC (bank institution code), assigned by SBP
+                  iban:
+                    type: string
+                    minLength: 24
+                    maxLength: 24
+                    description: Receiver IBAN
+                required:
+                  - response_code
+                  - response_desc
+                  - rrn
+                  - stan
+                  - correlationId     
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/p_GetDefaultAccount'
+   /v1/paysyslabs/banklist:
+    get:
+      summary: banklist
+      tags:
+        - OPEN CONNECT
+      description: |-
+        Request to get institution list
+      operationId: banklist
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              examples:
+                0000:
+                  summary: Success Response Example
+                  value:
+                    response:
+                      response_code: "0000"
+                      response_desc: SUCCESS
+                    participants:
+                      - bankId: 1
+                        bankDisplayName: "National bank of Pakistan"
+                        bankShortBIC: "NBPBPKKA"
+                        bankBIC: "NBPBPKKAXXX"
+                        bankIMD: "601492"
+                        accountNumberHelp: "Please provide 14 digits NBP account # or IBAN"
+                        "accountNumberREGEX": "^[0-9]+$"
+                        isAvailable1LINKIBFT: "Y"
+                        isAvailableRAASTP2P: "Y"
+                        isAvailableRAASTBulk: "Y"
+                        isAvailableRAASTP2M: "N"
+                        isAvailableRAASTP2MRTP: "N"
+                        isAvailableRAASTP2MPISP: "N"
+                      - bankId: 2
+                        bankDisplayName: "Telenor Microfinance Bank"
+                        bankShortBIC: "TMFBPKKA"
+                        bankBIC: "TMFBPKKAXXX"
+                        bankIMD: "220872"
+                        accountNumberHelp: "Please provide 11 digits mobile # or IBAN for beneficiary"
+                        "accountNumberREGEX": "^[0-9]+$"
+                        isAvailable1LINKIBFT: "Y"
+                        isAvailableRAASTP2P: "Y"
+                        isAvailableRAASTBulk: "Y"
+                        isAvailableRAASTP2M: "Y"
+                        isAvailableRAASTP2MRTP: "Y"
+                        isAvailableRAASTP2MPISP: "N"
+                3001:
+                  summary: Failure with No data found
+                  value:
+                    response:
+                      response_code: "3001"
+                      response_desc: No data found
+              schema:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    minLength: 4
+                    maxLength: 4
+                    description: Response code for the request
+                  response_desc:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Description for the respective response code
+                  bankId:
+                    type: integer
+                    description: Bank id assigned by open connect
+                  bankDisplayName:
+                    type: string
+                    minLength: 20
+                    maxLength: 20
+                    description: Bank name
+                  bankShortBIC:
+                    type: string
+                    minLength: 16
+                    maxLength: 16
+                    description: Bank BIC assigned by SBP
+                  bankBIC:
+                    type: string
+                    minLength: 16
+                    maxLength: 16
+                    description: Bank BIC assigned by SBP
+                  bankIMD:
+                    type: string
+                    minLength: 6
+                    maxLength: 6
+                    description: Bank IMD assigned by 1LINK
+                  accountNumberHelp:
+                    type: string
+                    minLength: 200
+                    maxLength: 200
+                    description: |-
+                        Help Text which can be used to show format to customer on screen in user readable form.
+                  accountNumberREGEX:
+                    type: string
+                    minLength: 200
+                    maxLength: 200
+                    description: |-
+                        Account # format, the field will be displayed to user where user input beneficiary account #
+                  isAvailable1LINKIBFT:
+                    type: string
+                    minLength: 1
+                    maxLength: 1
+                    description: |-
+                        Indicate bank support IBFT payments followed by “Y” or “N”
+                  isAvailableRAASTP2P:
+                    type: string
+                    minLength: 1
+                    maxLength: 1
+                    description: |-
+                        Indicate bank support P2P payments followed by “Y” or “N”
+                  isAvailableRAASTBulk:
+                    type: string
+                    minLength: 1
+                    maxLength: 1
+                    description: |-
+                        Indicate bank support RAAST bulk receiving payments followed by “Y” or “N”
+                  isAvailableRAASTP2M:
+                    type: string
+                    minLength: 1
+                    maxLength: 1
+                    description: |-
+                        Indicate bank support P2M payments followed by “Y” or “N”
+                  isAvailableRAASTP2MRTP:
+                    type: string
+                    minLength: 1
+                    maxLength: 1
+                    description: |-
+                        Indicate bank support P2M “request to pay” payments followed by “Y” or “N”
+                  isAvailableRAASTP2MPISP:
+                    type: string
+                    minLength: 1
+                    maxLength: 1
+                    description: |-
+                        Indicate bank support RAAST PISP features followed by “Y” or “N”
+                required:
+                  - response_code
+                  - response_desc    
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+   /v1/paysyslabs/payments/ibfttransfer:
+    post:
+      summary: ibfttransfer
+      tags:
+        - OPEN CONNECT
+      description: |-
+        To send funds to member bank account using 1LINK
+
+      operationId: ibfttransfer
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              examples:
+                0000:
+                  summary: Success Response Example
+                  value:
+                    response:
+                      response_code: "0000"
+                      response_desc: SUCCESS
+                    stan: "010123"
+                    rrn: "010123010123"
+                    correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+              schema:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    minLength: 4
+                    maxLength: 4
+                    description: Response code for the request
+                  response_desc:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Description for the respective response code
+                  rrn:
+                    type: string
+                    minLength: 12
+                    maxLength: 12
+                    description: Echo back
+                  stan:
+                    type: string
+                    minLength: 6
+                    maxLength: 6
+                    description: Echo back
+                  correlationId:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: |-
+                        Unique correlation id for the title fetch request. The value is in GUID format and will be sent by the initiator in payment call.
+                required:
+                  - response_code
+                  - response_desc
+                  - rrn
+                  - stan
+                  - correlationId     
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/p_IBFTTransfer'
+   /v1/paysyslabs/payments/directposting:
+    post:
+      summary: directposting
+      tags:
+        - OPEN CONNECT
+      description: |-
+        This service will be used to send P2P payment via Raast for interbank transfer. The service will be sent credit request directly to RAAST without sending any debit request to bank middleware/CBS. This service ideally needs to be used in scenario where bank’s system can debit customer account itself and sent only credit request to Raast via open connect. 
+
+
+        Open connect return additional fields upon successful response, bank’s middleware needs to sent same values to CBS while debit confirmation or release. These key parameters will be used for RECON purpose. 
+      operationId: directposting
+      parameters: []
+      responses:
+        '200':
+          description: Success
+          content:
+            application/json:
+              examples:
+                0000:
+                  summary: Success Response Example
+                  value:
+                    response:
+                      response_code: "0000"
+                      response_desc: SUCCESS
+                    stan: "010123"
+                    rrn: "010123010123"
+                    correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+                    paymentInfo:
+                      instrId: "TMIC230511125023876423"
+                      endToEndId: "1fc66b584e77-46e6-9dcb-fb12c00e7742"
+                      txId: "TMIC230511125023876423"
+                      msgId: "TMICFBPK110523000111250233"
+              schema:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    minLength: 4
+                    maxLength: 4
+                    description: Response code for the request
+                  response_desc:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Description for the respective response code
+                  rrn:
+                    type: string
+                    minLength: 12
+                    maxLength: 12
+                    description: Echo back
+                  stan:
+                    type: string
+                    minLength: 6
+                    maxLength: 6
+                    description: Echo back
+                  correlationId:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: |-
+                        Unique correlation id for the title fetch request. The value is in GUID format and will be sent by the initiator in payment call.
+                  instrId:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Instruction id sent to RAAST
+                  endToEndId:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: End to end id sent to RAAST
+                  txId:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Transaction id sent to RAAST
+                  msgId:
+                    type: string
+                    minLength: 24
+                    maxLength: 24
+                    description: Echo back
+                required:
+                  - response_code
+                  - response_desc
+                  - rrn
+                  - stan
+                  - correlationId  
+                  - msgId                   
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              example:
+                error: unauthorized
+                status: 401
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/p_RAASTTransfer'
    /v1/bank/payments/titlefetch:
     post:
       summary: titlefetch
@@ -393,6 +1029,635 @@ components:
           tokenUrl: 'https://apigw.paysyslabs.com/api/v1/paysyslabs/token'
           scopes: {} 
   schemas:
+    p_Authentication:
+      description: Representation of a Authentication
+      type: object
+      properties:
+        grant_type:
+          example: client_credentials
+          type: string 
+        client_id:
+          description: client_id will be provided by PSL TEAM based on channel
+          type: string  
+        client_secret:
+          description: client_secret will be provided by PSL TEAM based on channel
+          type: string 
+      required:
+        - grant_type
+        - client_id
+        - client_secret
+    p_UnifiedTitleFetch:
+      description: Representation of a Unified Title Fetch
+      type: object
+      properties:
+        info:
+          type: object
+          properties:
+            rrn:
+              type: string
+              minLength: 12
+              maxLength: 12
+              description: Retrieval reference number
+              example: "002236987456"
+            stan:
+              type: string
+              minLength: 6
+              maxLength: 6
+              description: System trace audit number
+              example: "987456"
+            txndate:
+              type: string
+              minLength: 8
+              maxLength: 8
+              format: yyyymmdd
+              description: Transaction Date
+              example: "20231015"
+            txntime:
+              type: string
+              minLength: 6
+              maxLength: 6
+              format: hhmmss
+              description: Transaction Time
+              example: "182243"
+          required:
+            - rrn
+            - stan
+            - txndate
+            - txntime
+        senderinfo: 
+          type: object
+          properties:        
+            fromAccount:
+              type: string
+              minLength: 24
+              maxLength: 24
+              description: Sender IBAN
+              example: "05421236547552"
+            fromAccountType:
+              type: string
+              minLength: 2
+              maxLength: 2
+              description: |-
+                Sender account type (LOVs)
+                
+                
+                •	00 	Default Account (no account specified)
+                
+                •	10 	Savings Account
+                
+                •	20 	Current or Checking Account
+                
+                •	30 	Credit Account
+                
+                •	40 	Branchless Banking Account
+                
+                •	50 	Biometric Withdrawal
+                
+                •	60 	Roshan Digital Account
+            
+              example: "00"
+            fromAccountCurrency:
+              type: string
+              minLength: 3
+              maxLength: 3
+              description: 3 digits ISO8583 universal currency code
+              example: "586"
+          required:
+            - fromAccount
+            - fromAccountType
+            - fromAccountCurrency
+        receiverinfo:
+          type: object
+          properties:
+            bankId:
+              type: integer
+              description: |-
+                Bank Id returned by the OC in get bank list service response.
+                
+                
+                For more information, see [Endpoint banklist](#tag/OPEN-CONNECT/operation/banklist).
+              example: 1
+            toAccount:
+              type: string
+              minLength: 24
+              maxLength: 24
+              description: Beneficiary account# or IBAN
+              example: "00023137343951"
+          required:
+            - bankId
+            - toAccount
+        otherinfo:
+          type: object
+          properties:
+            priorityFlag:
+              type: string
+              minLength: 2
+              maxLength: 2
+              description: |-
+                The field determine the priority rail to perform title fetch.
+                
+                
+                The values are as:
+                
+                
+                "01" – For RAAST
+                
+                
+                "02" – For 1LINK
+              example: "01"
+            fallbackFlag:
+              type: string
+              minLength: 2
+              maxLength: 2
+              description: |-
+                The field determine the fall back feature for the title fetch in case title fetch failed from 
+                the 1st switch system will attempt to perform it from alternate route if fall back parameter 
+                set to “Yes”.
+                
+                
+                The values are as:
+                
+                
+                "01" – Yes
+                
+                
+                "02" – No
+            
+              example: "01"
+            amount:
+              type: number
+              description: |-
+                Amount of the transaction, it is required as per EFT compliant that receiver must validate credit limit on title fetch to minimize rejection ratio while payment
+              example: "5000"
+          required:
+            - priorityFlag
+            - fallbackFlag
+            - amount
+        reserveFields:
+          type: object
+          properties:
+            r1:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved one
+            r2:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved two
+            r3:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved three
+            r4:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved four
+            r5:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved five
+    p_GetDefaultAccount:
+      description: Representation of a Get Default Account
+      type: object
+      properties:
+        rrn:
+          type: string
+          minLength: 12
+          maxLength: 12
+          description: Retrieval reference number
+          example: "002236987456"
+        stan:
+          type: string
+          minLength: 6
+          maxLength: 6
+          description: System trace audit number
+          example: "987456"
+        type:
+          type: string
+          minLength: 8
+          maxLength: 8
+          description: |-
+            Type of alias:
+    
+    
+            •	CNIC (13 digits)
+            
+            •	MOBILE (11 digits)
+            
+            •	EMAIL
+            
+            •	TXT - free text
+    
+          example: "MOBILE"
+        value:
+          type: string
+          minLength: 40
+          maxLength: 40
+          description: Alias Value
+          example: "03132370605"
+        amount:
+          type: number
+          description: Transaction amount
+          example: "500.54"
+      required:
+        - rrn
+        - stan
+        - type
+        - value
+        - amount
+    p_IBFTTransfer:
+      description: Representation of a IBFT Transfer
+      type: object
+      properties:
+        info:
+          type: object
+          properties:
+            rrn:
+              type: string
+              minLength: 12
+              maxLength: 12
+              description: Retrieval reference number
+              example: "002236987456"
+            stan:
+              type: string
+              minLength: 6
+              maxLength: 6
+              description: System trace audit number
+              example: "987456"
+            txndate:
+              type: string
+              minLength: 8
+              maxLength: 8
+              format: yyyymmdd
+              description: Transaction Date
+              example: "20231015"
+            txntime:
+              type: string
+              minLength: 6
+              maxLength: 6
+              format: hhmmss
+              description: Transaction Time
+              example: "182243"
+          required:
+            - rrn
+            - stan
+            - txndate
+            - txntime
+        senderinfo: 
+          type: object
+          properties:        
+            fromAccount:
+              type: string
+              minLength: 24
+              maxLength: 24
+              description: Sender IBAN
+              example: "05421236547552"
+            fromAccountType:
+              type: string
+              minLength: 2
+              maxLength: 2
+              description: |-
+                Sender account type (LOVs)
+                
+                
+                •	00 	Default Account (no account specified)
+                
+                •	10 	Savings Account
+                
+                •	20 	Current or Checking Account
+                
+                •	30 	Credit Account
+                
+                •	40 	Branchless Banking Account
+                
+                •	50 	Biometric Withdrawal
+                
+                •	60 	Roshan Digital Account
+                
+              example: "00"
+            fromAccountCurrency:
+              type: string
+              minLength: 3
+              maxLength: 3
+              description: 3 digits ISO8583 universal currency code
+              example: "586"
+            fromAccountCnic:
+              type: string
+              minLength: 13
+              maxLength: 13
+              description: Sender CNIC
+              example: "1234512345671"
+          required:
+            - fromAccount
+            - fromAccountType
+            - fromAccountCurrency
+            - fromAccountCnic
+        receiverinfo:
+          type: object
+          properties:
+            bankIMD:
+              type: string
+              minLength: 6
+              maxLength: 6
+              description: |-
+                Bank IMD, received in response of title fetch
+              example: "100271"
+            toAccount:
+              type: string
+              minLength: 24
+              maxLength: 24
+              description: Beneficiary account# or IBAN
+              example: "00023137343951"
+            toAccountTitle:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: Beneficiary account title, received in response of title fetch
+              example: "Waqas Nizam"
+          required:
+            - bankIMD
+            - toAccount
+            - toAccountTitle
+        paymentInfo:
+          type: object
+          properties:
+            purposeCode:
+              type: string
+              minLength: 4
+              maxLength: 4
+              description: |-
+                4 digits numeric 1LINK assigned payment purpose code. 1LINK purpose codes
+              example: "0152"
+            narration:
+              type: string
+              minLength: 140
+              maxLength: 140
+              description: |-
+                Any alpha numeric text upto 140 characters
+              example: "test transaction"
+            amount:
+              type: number
+              description: |-
+                Amount of the transaction, bank make sure that the amount will be same which bank sent during title fetch
+              example: "5000"
+            authId:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: |-
+                Debit authorization unique reference number return by core banking in response of debit hold request
+              example: "654123"
+          required:
+            - purposeCode
+            - narration
+            - amount
+            - authId
+        reserveFields:
+          type: object
+          properties:
+            r1:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved one
+            r2:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved two
+            r3:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved three
+            r4:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved four
+            r5:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved five
+    p_RAASTTransfer:
+      description: Representation of a RAAST Transfer
+      type: object
+      properties:
+        info:
+          type: object
+          properties:
+            rrn:
+              type: string
+              minLength: 12
+              maxLength: 12
+              description: Retrieval reference number
+              example: "002236987456"
+            stan:
+              type: string
+              minLength: 6
+              maxLength: 6
+              description: System trace audit number
+              example: "987456"
+            txndate:
+              type: string
+              minLength: 8
+              maxLength: 8
+              format: yyyymmdd
+              description: Transaction Date
+              example: "20231015"
+            txntime:
+              type: string
+              minLength: 6
+              maxLength: 6
+              format: hhmmss
+              description: Transaction Time
+              example: "182243" 
+            correlationId:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: |-
+                Unique correlation id for the title fetch request. The value will be same which channel received in response of title fetch
+              example: "18227ad7fb9f-99dc-4c2c-ab88-abddb87789a043"
+          required:
+            - rrn
+            - stan
+            - txndate
+            - txntime
+            - correlationId
+        senderinfo: 
+          type: object
+          properties:        
+            fromAccount:
+              type: string
+              minLength: 24
+              maxLength: 24
+              description: Sender IBAN
+              example: "05421236547552"
+            fromAccountTitle:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: Sender account title
+              example: "Muhammad Ali"
+            fromAccountType:
+              type: string
+              minLength: 2
+              maxLength: 2
+              description: |-
+                Sender account type (LOVs)
+                
+                
+                •	00 	Default Account (no account specified)
+                
+                •	10 	Savings Account
+                
+                •	20 	Current or Checking Account
+                
+                •	30 	Credit Account
+                
+                •	40 	Branchless Banking Account
+                
+                •	50 	Biometric Withdrawal
+                
+                •	60 	Roshan Digital Account
+                
+              example: "00"
+            fromAccountCurrency:
+              type: string
+              minLength: 3
+              maxLength: 3
+              description: 3 digits ISO8583 universal currency code
+              example: "586"
+            fromAccountCnic:
+              type: string
+              minLength: 13
+              maxLength: 13
+              description: Sender CNIC
+              example: "1234512345671"
+          required:
+            - fromAccount
+            - fromAccountTitle
+            - fromAccountType
+            - fromAccountCurrency
+            - fromAccountCnic
+        receiverinfo:
+          type: object
+          properties:
+            bankBIC:
+              type: string
+              minLength: 6
+              maxLength: 6
+              description: |-
+                Bank BIC, received in response of title fetch
+              example: "100271"
+            toAccount:
+              type: string
+              minLength: 24
+              maxLength: 24
+              description: Beneficiary account# or IBAN
+              example: "00023137343951"
+            toAccountTitle:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: Beneficiary account title, received in response of title fetch
+              example: "Waqas Nizam"
+          required:
+            - bankBIC
+            - toAccount
+            - toAccountTitle
+        paymentInfo:
+          type: object
+          properties:
+            purposeCode:
+              type: string
+              minLength: 4
+              maxLength: 4
+              description: |-
+                4 digits numeric 1LINK assigned payment purpose code. 1LINK purpose codes
+              example: "0152"
+            narration:
+              type: string
+              minLength: 140
+              maxLength: 140
+              description: |-
+                Any alpha numeric text upto 140 characters
+              example: "test transaction"
+            amount:
+              type: number
+              description: |-
+                Amount of the transaction, bank make sure that the amount will be same which bank sent during title fetch
+              example: "5000"
+            authId:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: |-
+                Debit authorization unique reference number return by core banking in response of debit hold request
+              example: "654123"
+            msgId:
+              type: string
+              minLength: 40
+              maxLength: 40
+              description: |-
+                Unique reference number to sent RAAST. The key will be communicated end to end and will be used for e2e reconciliation. Bank is responsible to make sure that the id will not be duplicated in any case
+              example: "MASH231016140256592221"
+          required:
+            - purposeCode
+            - authId
+            - amount
+            - authId
+            - msgId
+        reserveFields:
+          type: object
+          properties:
+            r1:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved one
+            r2:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved two
+            r3:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved three
+            r4:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved four
+            r5:
+              type: string
+              minLength: 100
+              maxLength: 100
+              description: Reserved for future use
+              example: reserved five
     b_TitleFetch:
       description: Representation of a Bank's Controller Title Fetch
       type: object

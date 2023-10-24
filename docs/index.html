@@ -11,6 +11,12 @@
     ReDoc doesn't change outer page styles
     -->
     <style>
+      .fixed-dropdown {
+        position: fixed;
+        top: 5%; /* Adjust the top position as needed */
+        left: 58%; /* Adjust the left position as needed */
+        z-index: 1000; /* Ensure the dropdown stays on top of other elements */
+      }
       body {
         margin: 0;
         padding: 0;
@@ -20,9 +26,9 @@
   <body>
 
     <!-- Version dropdown -->
-    <select id="versionDropdown">
+    <select id="versionDropdown" class="fixed-dropdown">
       <option value="v1.1">Version 1.1</option>
-      <option value="v1.22">Version 1.2</option>
+      <option value="v1.2">Version 1.2</option>
       <!-- Add more version options as needed -->
     </select>
 
@@ -30,8 +36,17 @@
     <script src="https://cdn.jsdelivr.net/npm/redoc@next/bundles/redoc.standalone.js"> </script>
 
     <script>
+
       // Get the selected version from the dropdown
       const versionDropdown = document.getElementById('versionDropdown');
+
+      // Initialize Redoc for the initial version
+      const initialVersion = versionDropdown.value;
+      const initialSpecUrl = `dist/${initialVersion}.json`;
+      const redocElement = document.getElementById('redoc');
+      redocElement.setAttribute('spec-url', initialSpecUrl);
+      Redoc.init(initialSpecUrl, {}, redocElement);
+
       versionDropdown.addEventListener('change', function() {
         const selectedVersion = versionDropdown.value;
         // Load the OpenAPI spec for the selected version
@@ -41,15 +56,9 @@
         // Set the spec-url attribute dynamically
         redocElement.setAttribute('spec-url', specUrl);
         // Reload Redoc
-        redocElement.load();
+        Redoc.init(specUrl, {}, redocElement);
       });
 
-      // Load Redoc for the initial version
-      const initialVersion = versionDropdown.value;
-      const initialSpecUrl = `dist/${initialVersion}.json`;
-      const redocElement = document.getElementById('redoc');
-      redocElement.setAttribute('spec-url', initialSpecUrl);
-      redocElement.load();
     </script>
 
   </body>
