@@ -1841,7 +1841,7 @@ paths:
             schema:
               $ref: '#/components/schemas/b_CreditInquiry'
 servers:
-  - url: https://apigw.paysyslabs.com/api/v1.1
+  - url: https://apigw.paysyslabs.com/api/v1.2
     description: Production server
 security:
   - jwtToken: []
