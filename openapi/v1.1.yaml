@@ -9,7 +9,7 @@ info:
     name: Paysys Labs
     url: https://www.paysyslabs.com/
 paths:
-   /v1/paysyslabs/token:
+   /paysyslabs/token:
     post:
       summary: authentication
       tags:
@@ -57,7 +57,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/p_Authentication'                
-   /v1/paysyslabs/payments/unifiedtitlefetch:
+   /paysyslabs/payments/unifiedtitlefetch:
     post:
       summary: unifiedtitlefetch
       tags:
@@ -197,7 +197,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_UnifiedTitleFetch'
-   /v1/paysyslabs/alias/getdefaultaccount:
+   /paysyslabs/alias/getdefaultaccount:
     post:
       summary: getdefaultaccount
       tags:
@@ -323,7 +323,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_GetDefaultAccount'
-   /v1/paysyslabs/banklist:
+   /paysyslabs/banklist:
     get:
       summary: banklist
       tags:
@@ -471,7 +471,7 @@ paths:
               example:
                 error: unauthorized
                 status: 401
-   /v1/paysyslabs/payments/ibfttransfer:
+   /paysyslabs/payments/ibfttransfer:
     post:
       summary: ibfttransfer
       tags:
@@ -544,7 +544,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_IBFTTransfer'
-   /v1/paysyslabs/payments/directposting:
+   /paysyslabs/payments/directposting:
     post:
       summary: directposting
       tags:
@@ -645,7 +645,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_RAASTTransfer'
-   /v1/bank/payments/titlefetch:
+   /bank/payments/titlefetch:
     post:
       summary: titlefetch
       tags:
@@ -770,7 +770,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/b_TitleFetch'
-   /v1/bank/payments/creditposting:
+   /bank/payments/creditposting:
     post:
       summary: creditposting
       tags:
@@ -845,7 +845,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/b_CreditPosting'
-   /v1/bank/payments/creditadvise:
+   /bank/payments/creditadvise:
     post:
       summary: creditadvise
       tags:
@@ -921,7 +921,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/b_CreditAdvise'
-   /v1/bank/payments/creditinquiry:
+   /bank/payments/creditinquiry:
     post:
       summary: creditinquiry
       tags:
@@ -1004,7 +1004,7 @@ paths:
             schema:
               $ref: '#/components/schemas/b_CreditInquiry'
 servers:
-  - url: https://apigw.paysyslabs.com/api
+  - url: https://apigw.paysyslabs.com/api/v1.1
     description: Production server
 security:
   - jwtToken: []
