@@ -11,7 +11,7 @@
   },
   "servers": [
     {
-      "url": "https://apigw.paysyslabs.com/api",
+      "url": "https://apigw.paysyslabs.com/api/v1.1",
       "description": "Production server"
     }
   ],
@@ -21,7 +21,7 @@
     }
   ],
   "paths": {
-    "/v1/paysyslabs/token": {
+    "/paysyslabs/token": {
       "post": {
         "summary": "authentication",
         "tags": [
@@ -88,7 +88,7 @@
         }
       }
     },
-    "/v1/paysyslabs/payments/unifiedtitlefetch": {
+    "/paysyslabs/payments/unifiedtitlefetch": {
       "post": {
         "summary": "unifiedtitlefetch",
         "tags": [
@@ -245,7 +245,7 @@
         }
       }
     },
-    "/v1/paysyslabs/alias/getdefaultaccount": {
+    "/paysyslabs/alias/getdefaultaccount": {
       "post": {
         "summary": "getdefaultaccount",
         "tags": [
@@ -402,7 +402,7 @@
         }
       }
     },
-    "/v1/paysyslabs/banklist": {
+    "/paysyslabs/banklist": {
       "get": {
         "summary": "banklist",
         "tags": [
@@ -582,7 +582,7 @@
         }
       }
     },
-    "/v1/paysyslabs/payments/ibfttransfer": {
+    "/paysyslabs/payments/ibfttransfer": {
       "post": {
         "summary": "ibfttransfer",
         "tags": [
@@ -679,7 +679,7 @@
         }
       }
     },
-    "/v1/paysyslabs/payments/directposting": {
+    "/paysyslabs/payments/directposting": {
       "post": {
         "summary": "directposting",
         "tags": [
@@ -807,7 +807,7 @@
         }
       }
     },
-    "/v1/bank/payments/titlefetch": {
+    "/bank/payments/titlefetch": {
       "post": {
         "summary": "titlefetch",
         "tags": [
@@ -941,7 +941,7 @@
         }
       }
     },
-    "/v1/bank/payments/creditposting": {
+    "/bank/payments/creditposting": {
       "post": {
         "summary": "creditposting",
         "tags": [
@@ -1030,7 +1030,7 @@
         }
       }
     },
-    "/v1/bank/payments/creditadvise": {
+    "/bank/payments/creditadvise": {
       "post": {
         "summary": "creditadvise",
         "tags": [
@@ -1119,7 +1119,7 @@
         }
       }
     },
-    "/v1/bank/payments/creditinquiry": {
+    "/bank/payments/creditinquiry": {
       "post": {
         "summary": "creditinquiry",
         "tags": [
