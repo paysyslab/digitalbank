@@ -3071,6 +3071,11 @@ components:
               format: hhmmss
               description: Transaction Time
               example: "182243"
+          required: 
+            - rrn
+            - stan
+            - txndate
+            - txntime
         orgTxnInfo:
           type: object
           properties:
@@ -3101,10 +3106,6 @@ components:
               description: Transaction Time
               example: "182243"
           required:
-            - rrn
-            - stan
-            - txndate
-            - txntime
             - orgtxnrrn
             - orgtxnstan
             - orgtxndate
