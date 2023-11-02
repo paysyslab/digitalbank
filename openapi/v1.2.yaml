@@ -453,7 +453,6 @@ info:
       | 03               | For RAAST return payment         |
       | 04               | For RAAST bulk receiving         |
 
-
   x-logo:
     url: 'logo.png'
     altText: paysys logo
@@ -547,9 +546,14 @@ paths:
         
         
         - <b>Fall-back option</b>: In case if title fetch failed with the preferred rail the system will auto attempt the title fetch from alternate rail. The option is controllable via request parameters.
-
       operationId: unifiedtitlefetch
-      parameters: []
+      parameters: 
+        - name: Content-Type
+          in: header
+          description: 'Content-Type of Request Body'
+          required: true
+          schema:
+            type: string
       x-codeSamples:
         - lang: 'CURL'
           source: |
@@ -732,7 +736,13 @@ paths:
 
         When a payee has to receive funds, they only need to provide their RAAST ID. The CAS system manages the beneficiary's account details and associated information. This information is shared when a payer initiates a fund transfer via a bank's digital channel, using the payee's RAAST ID. This streamlined process enhances the efficiency and security of interbank fund transfers by simplifying the recipient's identification and fund collection.
       operationId: getdefaultaccount
-      parameters: []
+      parameters:
+        - name: Content-Type
+          in: header
+          description: 'Content-Type of Request Body'
+          required: true
+          schema:
+            type: string
       x-codeSamples:
         - lang: 'CURL'
           source: |
@@ -880,7 +890,13 @@ paths:
         <a id="bank-list"></a>
         Request to get institution list
       operationId: banklist
-      parameters: []
+      parameters: 
+        - name: Content-Type
+          in: header
+          description: 'Content-Type of Request Body'
+          required: true
+          schema:
+            type: string
       x-codeSamples:
         - lang: 'CURL'
           source: |
@@ -1038,7 +1054,13 @@ paths:
         To send funds to member bank account using 1LINK
 
       operationId: ibfttransfer
-      parameters: []
+      parameters: 
+        - name: Content-Type
+          in: header
+          description: 'Content-Type of Request Body'
+          required: true
+          schema:
+            type: string
       x-codeSamples:
         - lang: 'CURL'
           source: |
@@ -1167,7 +1189,13 @@ paths:
 
         Open connect return additional fields upon successful response, bank’s middleware needs to sent same values to CBS while debit confirmation or release. These key parameters will be used for RECON purpose. 
       operationId: directposting
-      parameters: []
+      parameters: 
+        - name: Content-Type
+          in: header
+          description: 'Content-Type of Request Body'
+          required: true
+          schema:
+            type: string
       x-codeSamples:
         - lang: 'CURL'
           source: |
@@ -1323,9 +1351,14 @@ paths:
         
         
         The title fetch usually comes before payment request where sender wants to verify beneficiary account title and account validation to make sure payment will be sent into the beneficiary account.
-
       operationId: titlefetch
-      parameters: []
+      parameters: 
+        - name: Content-Type
+          in: header
+          description: 'Content-Type of Request Body'
+          required: true
+          schema:
+            type: string
       x-codeSamples:
         - lang: 'CURL'
           source: |
@@ -1495,7 +1528,13 @@ paths:
         •	RAAST P2P outward return payment
 
       operationId: creditposting
-      parameters: []
+      parameters: 
+        - name: Content-Type
+          in: header
+          description: 'Content-Type of Request Body'
+          required: true
+          schema:
+            type: string
       x-codeSamples:
         - lang: 'CURL'
           source: |
@@ -1622,7 +1661,13 @@ paths:
 
 
       operationId: creditadvise
-      parameters: []
+      parameters: 
+        - name: Content-Type
+          in: header
+          description: 'Content-Type of Request Body'
+          required: true
+          schema:
+            type: string
       x-codeSamples:
         - lang: 'CURL'
           source: |
@@ -1753,7 +1798,13 @@ paths:
         
         In case if original transaction got timeout, the Open Connect initiate transaction inquiry to the check the transaction faith.
       operationId: creditinquiry
-      parameters: []
+      parameters: 
+        - name: Content-Type
+          in: header
+          description: 'Content-Type of Request Body'
+          required: true
+          schema:
+            type: string
       x-codeSamples:
         - lang: 'CURL'
           source: |
@@ -1874,9 +1925,7 @@ components:
       type: http
       scheme: bearer
       description: >-
-        JWT Token required in all APIs except /authentication enpoint which needs oaut2.1
-        
-        
+        JWT Token required in all APIs except /authentication enpoint which needs oaut2.1  
         For more information regarding JWT, check out [JWT](https://auth0.com/learn/json-web-tokens).
         
         
@@ -3133,5 +3182,6 @@ components:
             - orgtxnstan
             - orgtxndate
             - orgtxntime
+
 
         

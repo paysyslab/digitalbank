@@ -126,7 +126,17 @@
         ],
         "description": "<a id=\"unified-tf\"></a>\nThe unified title fetch is a generic method to get beneficiary (receiver) account details from the member bank.The method is having a following two additional functionalities compare to standard title fetch method:\n\n\n- <b>Preferred Rail</b>: The initiator has provision to set the preferred rail either the title fetch will be done via RAAST or 1LINK. The request parameter will identify the preferred route\n\n\n- <b>Fall-back option</b>: In case if title fetch failed with the preferred rail the system will auto attempt the title fetch from alternate rail. The option is controllable via request parameters.",
         "operationId": "unifiedtitlefetch",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content-Type of Request Body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "x-codeSamples": [
           {
             "lang": "CURL",
@@ -301,7 +311,17 @@
         ],
         "description": "The request will be used to fetch beneficiary account details via RAAST ID. \n\n\nA \"RAAST ID\" is a unique identifier assigned to an individual for the purpose of collecting funds. This ID is registered through the individual's bank, which is then integrated into the State Bank of Pakistan's Central Addressing Scheme (CAS). This integration allows individuals to receive funds without the need to divulge their complete bank account details, including account number, bank and branch information.\n\n\nWhen a payee has to receive funds, they only need to provide their RAAST ID. The CAS system manages the beneficiary's account details and associated information. This information is shared when a payer initiates a fund transfer via a bank's digital channel, using the payee's RAAST ID. This streamlined process enhances the efficiency and security of interbank fund transfers by simplifying the recipient's identification and fund collection.",
         "operationId": "getdefaultaccount",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content-Type of Request Body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "x-codeSamples": [
           {
             "lang": "CURL",
@@ -475,7 +495,17 @@
         ],
         "description": "<a id=\"bank-list\"></a>\nRequest to get institution list",
         "operationId": "banklist",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content-Type of Request Body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "x-codeSamples": [
           {
             "lang": "CURL",
@@ -661,7 +691,17 @@
         ],
         "description": "<a id=\"ibft\"></a>\nTo send funds to member bank account using 1LINK",
         "operationId": "ibfttransfer",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content-Type of Request Body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "x-codeSamples": [
           {
             "lang": "CURL",
@@ -780,7 +820,17 @@
         ],
         "description": "<a id=\"direct-posting\"></a>\nThis service will be used to send P2P payment via Raast for interbank transfer. The service will be sent credit request directly to RAAST without sending any debit request to bank middleware/CBS. This service ideally needs to be used in scenario where bank’s system can debit customer account itself and sent only credit request to Raast via open connect. \n\nOpen connect return additional fields upon successful response, bank’s middleware needs to sent same values to CBS while debit confirmation or release. These key parameters will be used for RECON purpose. ",
         "operationId": "directposting",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content-Type of Request Body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "x-codeSamples": [
           {
             "lang": "CURL",
@@ -933,7 +983,17 @@
         ],
         "description": "The service will be exposed by the bank. The purpose of the method is to allow member banks and schemes such as RAAST or 1LINK to get customer account info which is known as Title fetch request.\n\n\nThe title fetch usually comes before payment request where sender wants to verify beneficiary account title and account validation to make sure payment will be sent into the beneficiary account.",
         "operationId": "titlefetch",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content-Type of Request Body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "x-codeSamples": [
           {
             "lang": "CURL",
@@ -1084,7 +1144,17 @@
         ],
         "description": "The method is used to credit bank’s customer account whenever payment comes from RAAST. The Open connect sent credit request to the bank’s system using this method in the request mode. In case of rejection Open connect will instantly return payment to sender bank.\n\n\nDescription\tRequest to credit bank’s customer account, the request can be initiated by 1LINK and RAAST for following transactions:\n\n\n•\tIBFT inward payment\n\n•\tRAAST P2P inward payment\n\n•\tRAAST P2P outward return payment",
         "operationId": "creditposting",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content-Type of Request Body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "x-codeSamples": [
           {
             "lang": "CURL",
@@ -1190,7 +1260,17 @@
         ],
         "description": "Advise means where bank is responsible to credit amount into the receiver account. As a guaranteed delivery mechanism (SAF), OC will be sent credit request as advise to bank’s system via SAF mechanism.\n\n\nThis method will be used in any of below case:\n\n\n•\t1LINK incoming credit advise\n\n•\tRAAST P2P Inward return payments, this happens when previously made outward P2P payment failed at receiving bank end and bank initiate return after sometime.\n\n•\tRAAST P2P Timeout transactions",
         "operationId": "creditadvise",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content-Type of Request Body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "x-codeSamples": [
           {
             "lang": "CURL",
@@ -1296,7 +1376,17 @@
         ],
         "description": "The purpose of this request to inquire the status of the previously posted credit request or advise.\n\n\nIn case if original transaction got timeout, the Open Connect initiate transaction inquiry to the check the transaction faith.",
         "operationId": "creditinquiry",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "description": "Content-Type of Request Body",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "x-codeSamples": [
           {
             "lang": "CURL",
@@ -1432,7 +1522,7 @@
       "jwtToken": {
         "type": "http",
         "scheme": "bearer",
-        "description": "JWT Token required in all APIs except /authentication enpoint which needs oaut2.1\n\nFor more information regarding JWT, check out [JWT](https://auth0.com/learn/json-web-tokens)."
+        "description": "JWT Token required in all APIs except /authentication enpoint which needs oaut2.1   For more information regarding JWT, check out [JWT](https://auth0.com/learn/json-web-tokens)."
       },
       "clientCredentials": {
         "type": "oauth2",
