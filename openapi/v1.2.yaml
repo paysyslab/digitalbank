@@ -3108,7 +3108,7 @@ components:
           required:
             - orgtxnrrn
             - orgtxnstan
-            - orgtxndate
+            - orgtxndatecd 
             - orgtxntime
 
         
