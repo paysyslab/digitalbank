@@ -1567,11 +1567,7 @@
             "type": "object",
             "properties": {
               "rrn": {
-                "type": "string",
-                "minLength": 12,
-                "maxLength": 12,
-                "description": "Retrieval reference number",
-                "example": "002236987456"
+                "$ref": "#/components/schemas/rrn"
               },
               "stan": {
                 "type": "string",
@@ -1751,11 +1747,7 @@
         "type": "object",
         "properties": {
           "rrn": {
-            "type": "string",
-            "minLength": 12,
-            "maxLength": 12,
-            "description": "Retrieval reference number",
-            "example": "002236987456"
+            "$ref": "#/components/schemas/rrn"
           },
           "stan": {
             "type": "string",
@@ -1805,11 +1797,7 @@
             "type": "object",
             "properties": {
               "rrn": {
-                "type": "string",
-                "minLength": 12,
-                "maxLength": 12,
-                "description": "Retrieval reference number",
-                "example": "002236987456"
+                "$ref": "#/components/schemas/rrn"
               },
               "stan": {
                 "type": "string",
@@ -1835,10 +1823,7 @@
                 "example": "182243"
               },
               "tfcorrelationId": {
-                "type": "string",
-                "minimum": 36,
-                "maxLength": 40,
-                "example": "7ad7fb9f-99dc-4c2c-ab88-abddb87789a0"
+                "$ref": "#/components/schemas/tfcorrelationId"
               }
             },
             "required": [
@@ -1953,11 +1938,7 @@
                 "example": 5000
               },
               "authId": {
-                "type": "string",
-                "minLength": 40,
-                "maxLength": 40,
-                "description": "Debit authorization unique reference number return by core banking in response of debit hold request",
-                "example": "654123"
+                "$ref": "#/components/schemas/authId"
               }
             },
             "required": [
@@ -2017,11 +1998,7 @@
             "type": "object",
             "properties": {
               "rrn": {
-                "type": "string",
-                "minLength": 12,
-                "maxLength": 12,
-                "description": "Retrieval reference number",
-                "example": "002236987456"
+                "$ref": "#/components/schemas/rrn"
               },
               "stan": {
                 "type": "string",
@@ -2047,11 +2024,7 @@
                 "example": "182243"
               },
               "tfcorrelationId": {
-                "type": "string",
-                "minLength": 36,
-                "maxLength": 40,
-                "description": "Unique correlation id for the title fetch request. The value will be same which channel received in response of title fetch",
-                "example": "7ad7fb9f-99dc-4c2c-ab88-abddb87789a0"
+                "$ref": "#/components/schemas/tfcorrelationId"
               }
             },
             "required": [
@@ -2171,18 +2144,10 @@
                 "example": 5000
               },
               "authId": {
-                "type": "string",
-                "minLength": 40,
-                "maxLength": 40,
-                "description": "Debit authorization unique reference number return by core banking in response of debit hold request",
-                "example": "654123"
+                "$ref": "#/components/schemas/authId"
               },
               "msgId": {
-                "type": "string",
-                "minLength": 40,
-                "maxLength": 40,
-                "description": "Unique reference number to sent RAAST. The key will be communicated end to end and will be used for e2e reconciliation. Bank is responsible to make sure that the id will not be duplicated in any case",
-                "example": "MASH231016140256592221"
+                "$ref": "#/components/schemas/msgId"
               }
             },
             "required": [
@@ -2243,11 +2208,7 @@
             "type": "object",
             "properties": {
               "rrn": {
-                "type": "string",
-                "minLength": 12,
-                "maxLength": 12,
-                "description": "Retrieval reference number",
-                "example": "002236987456"
+                "$ref": "#/components/schemas/rrn"
               },
               "stan": {
                 "type": "string",
@@ -2368,11 +2329,7 @@
             "type": "object",
             "properties": {
               "rrn": {
-                "type": "string",
-                "minLength": 12,
-                "maxLength": 12,
-                "description": "Retrieval reference number",
-                "example": "002236987456"
+                "$ref": "#/components/schemas/rrn"
               },
               "stan": {
                 "type": "string",
@@ -2578,11 +2535,7 @@
             "type": "object",
             "properties": {
               "rrn": {
-                "type": "string",
-                "minLength": 12,
-                "maxLength": 12,
-                "description": "Retrieval reference number",
-                "example": "002236987456"
+                "$ref": "#/components/schemas/rrn"
               },
               "stan": {
                 "type": "string",
@@ -2753,7 +2706,7 @@
                 "type": "string",
                 "minLength": 40,
                 "maxLength": 40,
-                "description": "Message id received by RAAST.\n\nIn case of 1LINK the field will be blank.",
+                "description": "***Message id received by RAAST***.\n\nIn case of 1LINK the field will be blank.",
                 "example": "TMICFBPK110523000111250233"
               },
               "oneLinkrrn": {
@@ -2875,11 +2828,7 @@
             "type": "object",
             "properties": {
               "rrn": {
-                "type": "string",
-                "minLength": 12,
-                "maxLength": 12,
-                "description": "Retrieval reference number",
-                "example": "002236987456"
+                "$ref": "#/components/schemas/rrn"
               },
               "stan": {
                 "type": "string",
@@ -2954,6 +2903,34 @@
             ]
           }
         }
+      },
+      "rrn": {
+        "type": "string",
+        "minLength": 12,
+        "maxLength": 12,
+        "description": "<span style=\"color: green;\">***Unique Retrieval Reference Number***</span>. Can be used to trace the request ",
+        "example": "002236987456"
+      },
+      "tfcorrelationId": {
+        "type": "string",
+        "minimum": 36,
+        "maxLength": 40,
+        "description": "<span style=\"color: green;\">***Unique Correlation Id***</span>. The value will be same which channel received in response of title fetch",
+        "example": "7ad7fb9f-99dc-4c2c-ab88-abddb87789a0"
+      },
+      "msgId": {
+        "type": "string",
+        "minLength": 40,
+        "maxLength": 40,
+        "description": "<span style=\"color: green;\">***Unique Message Id for RAAST payments***</span>. The key will be communicated end to end and will be used for e2e reconciliation. Bank is responsible to make sure that the id will not be duplicated in any case",
+        "example": "MASH231016140256592221"
+      },
+      "authId": {
+        "type": "string",
+        "minLength": 40,
+        "maxLength": 40,
+        "description": "<span style=\"color: green;\">***Debit authorization unique reference number return by core banking***</span> in response of debit hold request",
+        "example": "654123"
       }
     }
   },

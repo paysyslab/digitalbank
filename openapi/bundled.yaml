@@ -4,7 +4,7 @@ info:
   version: V1.2
   description: |-
     <b>Open Connect</b> is a modern, integrated and a highly scalable payment switch platform with an efficient service-oriented architecture approach. The platform is completely independent and has a multiplayer design. The core technology for messaging is based on Queue manager, which is a highly scalable MQ system, which can be horizontally scaled to run on a cluster of machines. The deployment can be done on Virtual environment as well as containerized environment.
-    
+
       # Updates In Latest Version
 
       1. <b>Enhanced EFT Compliance:</b>  
@@ -452,38 +452,34 @@ info:
       | 02               | For 1LINK IBFT incoming          |
       | 03               | For RAAST return payment         |
       | 04               | For RAAST bulk receiving         |
-
   x-logo:
-    url: 'logo.png'
+    url: logo.png
     altText: paysys logo
   license:
     name: Paysys Labs
     url: https://www.paysyslabs.com/
+servers:
+  - url: https://apigw.paysyslabs.com/api/v1.2
+    description: Production server
+security:
+  - jwtToken: []
 tags:
-  - name: Token API SPECS 
+  - name: Token API SPECS
     description: The client needs to authenticate itself before interacting with any Openconnect APIs
   - name: OpenConnect API Specs
     description: These are the API(s) which will be exposed by OpenConnect
   - name: Client Bank API Specs
-    description: These are the API(s) which will be exposed by Bank 
-x-tagGroups:
-  - name: AUTHENTICATION
-    tags:
-      - Token API SPECS
-  - name: API SPECS
-    tags: 
-      - OpenConnect API Specs
-      - Client Bank API Specs
+    description: These are the API(s) which will be exposed by Bank
 paths:
-   /realms/paysys-raast-realm/protocol/openid-connect/token:
+  /realms/paysys-raast-realm/protocol/openid-connect/token:
     post:
       summary: authentication
       tags:
         - Token API SPECS
       description: |-
         This method is secure and includes enhancements that allow for more robust security mechanisms, which will ensure that the Open Connect integration is secure and reliable.
-        
-        
+
+
         This is also the centralized authentication mechanism for all the APIs exposed by Open Connect. This will be running as a separate application on specific port.
       operationId: authenticate
       security:
@@ -494,19 +490,18 @@ paths:
           content:
             application/json:
               example:
-                access_token: "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6b25lcmEiLCJleHAiOjE2MjIwOTk4OTcsImlhdCI6MTYyMjAxMzQ5N30.67UjDFQv4DsE0QtJY_WIYbAQJ20xfTsO-CiMy0fdYIJR1il4hHbd4s4bi7LUDtmZ6-d-ENhq23hpTWTJPUxATA"
+                access_token: eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6b25lcmEiLCJleHAiOjE2MjIwOTk4OTcsImlhdCI6MTYyMjAxMzQ5N30.67UjDFQv4DsE0QtJY_WIYbAQJ20xfTsO-CiMy0fdYIJR1il4hHbd4s4bi7LUDtmZ6-d-ENhq23hpTWTJPUxATA
                 expires_in: 300
-                token_type: Bearer  
+                token_type: Bearer
                 refresh_expires_in: 0
                 not-before-policy: 0
-                scope: "profile email"        
+                scope: profile email
               schema:
                 type: object
                 properties:
                   access_token:
                     type: string
-                    description: |-
-                        This token will be used in all APIs in header with header name “Authorization”. Token value will be followed by Bearer
+                    description: This token will be used in all APIs in header with header name “Authorization”. Token value will be followed by Bearer
                   expires_in:
                     type: integer
                     description: The value is in seconds
@@ -525,14 +520,14 @@ paths:
             application/json:
               example:
                 error: unauthorized
-                status: 401 
+                status: 401
       requestBody:
         required: true
         content:
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/p_Authentication'                
-   /paysyslabs/payments/unifiedtitlefetch:
+              $ref: '#/components/schemas/p_Authentication'
+  /paysyslabs/payments/unifiedtitlefetch:
     post:
       summary: unifiedtitlefetch
       tags:
@@ -540,22 +535,22 @@ paths:
       description: |-
         <a id="unified-tf"></a>
         The unified title fetch is a generic method to get beneficiary (receiver) account details from the member bank.The method is having a following two additional functionalities compare to standard title fetch method:
-        
-        
+
+
         - <b>Preferred Rail</b>: The initiator has provision to set the preferred rail either the title fetch will be done via RAAST or 1LINK. The request parameter will identify the preferred route
-        
-        
+
+
         - <b>Fall-back option</b>: In case if title fetch failed with the preferred rail the system will auto attempt the title fetch from alternate rail. The option is controllable via request parameters.
       operationId: unifiedtitlefetch
-      parameters: 
+      parameters:
         - name: Content-Type
           in: header
-          description: 'Content-Type of Request Body'
+          description: Content-Type of Request Body
           required: true
           schema:
             type: string
       x-codeSamples:
-        - lang: 'CURL'
+        - lang: CURL
           source: |
             curl -X POST \
             --url 'https://apigw.paysyslabs.com/api/v1/paysyslabs/payments/unifiedtitlefetch' \
@@ -597,40 +592,40 @@ paths:
           content:
             application/json:
               examples:
-                0000:
+                '0':
                   summary: Success Response Example
                   value:
                     response:
-                      response_code: "0000"
+                      response_code: '0000'
                       response_desc: SUCCESS
                     info:
-                      stan: "010123"
-                      rrn: "010123010123"
+                      stan: '010123'
+                      rrn: '010123010123'
                       correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
                     accountInfo:
                       title: Muhammad Khan
-                      toAccount: "00653000129536"
-                      destinationPaymentSystem: "01"
+                      toAccount: '00653000129536'
+                      destinationPaymentSystem: '01'
                       iban: PK30BANK0012000230000000
                     participantInfo:
-                      bankIMD: "100271"
+                      bankIMD: '100271'
                       bankBIC: NBPBPKKA
-                1001:
+                '1001':
                   summary: No account found
                   value:
                     response:
-                      response_code: "1001"
-                      response_desc: "No account found"
+                      response_code: '1001'
+                      response_desc: No account found
                     info:
-                      stan: "010123"
-                      rrn: "010123010123"
-                      correlationId: "7ad7fb9f-99dc-4c2c-ab88-abddb87789a0"
+                      stan: '010123'
+                      rrn: '010123010123'
+                      correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
               schema:
                 type: object
                 properties:
                   response:
                     type: object
-                    properties: 
+                    properties:
                       response_code:
                         type: string
                         minLength: 4
@@ -643,7 +638,7 @@ paths:
                         description: Description for the respective response code
                   info:
                     type: object
-                    properties:         
+                    properties:
                       rrn:
                         type: string
                         minLength: 12
@@ -658,8 +653,7 @@ paths:
                         type: string
                         minLength: 40
                         maxLength: 40
-                        description: |-
-                          Unique correlation id for the title fetch request. The value is in GUID format and will be sent by the initiator in payment call.
+                        description: Unique correlation id for the title fetch request. The value is in GUID format and will be sent by the initiator in payment call.
                   title:
                     type: string
                     minLength: 40
@@ -675,40 +669,36 @@ paths:
                     minLength: 2
                     maxLength: 2
                     description: |-
-                        Identify the route from which title fetch has completed. 
-                        
-                        The values are as:
-                        
-                        
-                        "01" – For RAAST
-                        
-                        
-                        "02" – For 1LINK
+                      Identify the route from which title fetch has completed. 
 
+                      The values are as:
+
+
+                      "01" – For RAAST
+
+
+                      "02" – For 1LINK
                   iban:
                     type: string
                     minLength: 24
                     maxLength: 24
-                    description: |-
-                        Beneficiary IBAN, the value will be returned if received from the scheme in response of title fetch
+                    description: Beneficiary IBAN, the value will be returned if received from the scheme in response of title fetch
                   bankIMD:
                     type: string
                     minLength: 8
                     maxLength: 8
-                    description: |-
-                        Receiving participant IMD (Member bank id), assigned by 1LINK
+                    description: Receiving participant IMD (Member bank id), assigned by 1LINK
                   bankBIC:
                     type: string
                     minLength: 16
                     maxLength: 16
-                    description: |-
-                        Receiving participant BIC (bank institution code), assigned by SBP
+                    description: Receiving participant BIC (bank institution code), assigned by SBP
                 required:
                   - response_code
                   - response_desc
                   - rrn
                   - stan
-                  - correlationId     
+                  - correlationId
         '401':
           description: Unauthorized
           content:
@@ -722,7 +712,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_UnifiedTitleFetch'
-   /paysyslabs/alias/getdefaultaccount:
+  /paysyslabs/alias/getdefaultaccount:
     post:
       summary: getdefaultaccount
       tags:
@@ -739,12 +729,12 @@ paths:
       parameters:
         - name: Content-Type
           in: header
-          description: 'Content-Type of Request Body'
+          description: Content-Type of Request Body
           required: true
           schema:
             type: string
       x-codeSamples:
-        - lang: 'CURL'
+        - lang: CURL
           source: |
             curl -X POST \
             --url 'https://apigw.paysyslabs.com/api/v1/paysyslabs/alias/getdefaultaccount' \
@@ -757,41 +747,40 @@ paths:
               "value": "03132370605",
               "amount": 500.54
             }'
-          
       responses:
         '200':
           description: Success
           content:
             application/json:
               examples:
-                0000:
+                '0':
                   summary: Success Response Example
                   value:
                     response:
-                      response_code: "0000"
+                      response_code: '0000'
                       response_desc: SUCCESS
-                    stan: "010123"
-                    rrn: "010123010123"
-                    fee: 0 
+                    stan: '010123'
+                    rrn: '010123010123'
+                    fee: 0
                     correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
                     default-account-byalias:
-                      surname: "Mr."
-                      name: "Waqas"
-                      currency: "PKR"
-                      type: "DFLT"
+                      surname: Mr.
+                      name: Waqas
+                      currency: PKR
+                      type: DFLT
                       servicer:
-                        memberId: "SONEPKKA"
+                        memberId: SONEPKKA
                       id:
                         iban: PK19SONE0000220006493697
-                2011:
+                '2011':
                   summary: Cannot find account
                   value:
                     response:
-                      response_code: "2011"
-                      response_desc: "Cannot find account"
-                    stan: "010123"
-                    rrn: "010123010123"
-                    correlationId: "7ad7fb9f-99dc-4c2c-ab88-abddb87789a0"
+                      response_code: '2011'
+                      response_desc: Cannot find account
+                    stan: '010123'
+                    rrn: '010123010123'
+                    correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
               schema:
                 type: object
                 properties:
@@ -814,7 +803,7 @@ paths:
                     type: string
                     minLength: 6
                     maxLength: 6
-                    description: Echo back                 
+                    description: Echo back
                   fee:
                     type: number
                     format: double
@@ -822,8 +811,7 @@ paths:
                     type: string
                     minLength: 40
                     maxLength: 40
-                    description: |-
-                        Unique correlation id for the title fetch request. The value is in GUID format and will be sent by the initiator in payment call.
+                    description: Unique correlation id for the title fetch request. The value is in GUID format and will be sent by the initiator in payment call.
                   surname:
                     type: string
                     minLength: 40
@@ -859,7 +847,7 @@ paths:
                   - response_desc
                   - rrn
                   - stan
-                  - correlationId     
+                  - correlationId
         '401':
           description: Unauthorized
           content:
@@ -881,7 +869,7 @@ paths:
               "key1": "value1",
               "key2": "value2"
             }' https://api.example.com/your-endpoint
-   /paysyslabs/banklist:
+  /paysyslabs/banklist:
     get:
       summary: banklist
       tags:
@@ -890,15 +878,15 @@ paths:
         <a id="bank-list"></a>
         Request to get institution list
       operationId: banklist
-      parameters: 
+      parameters:
         - name: Content-Type
           in: header
-          description: 'Content-Type of Request Body'
+          description: Content-Type of Request Body
           required: true
           schema:
             type: string
       x-codeSamples:
-        - lang: 'CURL'
+        - lang: CURL
           source: |
             curl --request GET \
             --url 'https://apigw.paysyslabs.com/api/v1/paysyslabs/banklist' \
@@ -910,44 +898,44 @@ paths:
           content:
             application/json:
               examples:
-                0000:
+                '0':
                   summary: Success Response Example
                   value:
                     response:
-                      response_code: "0000"
+                      response_code: '0000'
                       response_desc: SUCCESS
                     participants:
                       - bankId: 1
-                        bankDisplayName: "National bank of Pakistan"
-                        bankShortBIC: "NBPBPKKA"
-                        bankBIC: "NBPBPKKAXXX"
-                        bankIMD: "601492"
-                        accountNumberHelp: "Please provide 14 digits NBP account # or IBAN"
-                        "accountNumberREGEX": "^[0-9]+$"
-                        isAvailable1LINKIBFT: "Y"
-                        isAvailableRAASTP2P: "Y"
-                        isAvailableRAASTBulk: "Y"
-                        isAvailableRAASTP2M: "N"
-                        isAvailableRAASTP2MRTP: "N"
-                        isAvailableRAASTP2MPISP: "N"
+                        bankDisplayName: National bank of Pakistan
+                        bankShortBIC: NBPBPKKA
+                        bankBIC: NBPBPKKAXXX
+                        bankIMD: '601492'
+                        accountNumberHelp: 'Please provide 14 digits NBP account # or IBAN'
+                        accountNumberREGEX: ^[0-9]+$
+                        isAvailable1LINKIBFT: 'Y'
+                        isAvailableRAASTP2P: 'Y'
+                        isAvailableRAASTBulk: 'Y'
+                        isAvailableRAASTP2M: 'N'
+                        isAvailableRAASTP2MRTP: 'N'
+                        isAvailableRAASTP2MPISP: 'N'
                       - bankId: 2
-                        bankDisplayName: "Telenor Microfinance Bank"
-                        bankShortBIC: "TMFBPKKA"
-                        bankBIC: "TMFBPKKAXXX"
-                        bankIMD: "220872"
-                        accountNumberHelp: "Please provide 11 digits mobile # or IBAN for beneficiary"
-                        "accountNumberREGEX": "^[0-9]+$"
-                        isAvailable1LINKIBFT: "Y"
-                        isAvailableRAASTP2P: "Y"
-                        isAvailableRAASTBulk: "Y"
-                        isAvailableRAASTP2M: "Y"
-                        isAvailableRAASTP2MRTP: "Y"
-                        isAvailableRAASTP2MPISP: "N"
-                3001:
+                        bankDisplayName: Telenor Microfinance Bank
+                        bankShortBIC: TMFBPKKA
+                        bankBIC: TMFBPKKAXXX
+                        bankIMD: '220872'
+                        accountNumberHelp: 'Please provide 11 digits mobile # or IBAN for beneficiary'
+                        accountNumberREGEX: ^[0-9]+$
+                        isAvailable1LINKIBFT: 'Y'
+                        isAvailableRAASTP2P: 'Y'
+                        isAvailableRAASTBulk: 'Y'
+                        isAvailableRAASTP2M: 'Y'
+                        isAvailableRAASTP2MRTP: 'Y'
+                        isAvailableRAASTP2MPISP: 'N'
+                '3001':
                   summary: Failure with No data found
                   value:
                     response:
-                      response_code: "3001"
+                      response_code: '3001'
                       response_desc: No data found
               schema:
                 type: object
@@ -968,7 +956,6 @@ paths:
                   bankDisplayName:
                     type: string
                     minLength: 20
-
                     maxLength: 20
                     description: Bank name
                   bankShortBIC:
@@ -990,53 +977,45 @@ paths:
                     type: string
                     minLength: 200
                     maxLength: 200
-                    description: |-
-                        Help Text which can be used to show format to customer on screen in user readable form.
+                    description: Help Text which can be used to show format to customer on screen in user readable form.
                   accountNumberREGEX:
                     type: string
                     minLength: 200
                     maxLength: 200
-                    description: |-
-                        Account # format, the field will be displayed to user where user input beneficiary account #
+                    description: 'Account # format, the field will be displayed to user where user input beneficiary account #'
                   isAvailable1LINKIBFT:
                     type: string
                     minLength: 1
                     maxLength: 1
-                    description: |-
-                        Indicate bank support IBFT payments followed by “Y” or “N”
+                    description: Indicate bank support IBFT payments followed by “Y” or “N”
                   isAvailableRAASTP2P:
                     type: string
                     minLength: 1
                     maxLength: 1
-                    description: |-
-                        Indicate bank support P2P payments followed by “Y” or “N”
+                    description: Indicate bank support P2P payments followed by “Y” or “N”
                   isAvailableRAASTBulk:
                     type: string
                     minLength: 1
                     maxLength: 1
-                    description: |-
-                        Indicate bank support RAAST bulk receiving payments followed by “Y” or “N”
+                    description: Indicate bank support RAAST bulk receiving payments followed by “Y” or “N”
                   isAvailableRAASTP2M:
                     type: string
                     minLength: 1
                     maxLength: 1
-                    description: |-
-                        Indicate bank support P2M payments followed by “Y” or “N”
+                    description: Indicate bank support P2M payments followed by “Y” or “N”
                   isAvailableRAASTP2MRTP:
                     type: string
                     minLength: 1
                     maxLength: 1
-                    description: |-
-                        Indicate bank support P2M “request to pay” payments followed by “Y” or “N”
+                    description: Indicate bank support P2M “request to pay” payments followed by “Y” or “N”
                   isAvailableRAASTP2MPISP:
                     type: string
                     minLength: 1
                     maxLength: 1
-                    description: |-
-                        Indicate bank support RAAST PISP features followed by “Y” or “N”
+                    description: Indicate bank support RAAST PISP features followed by “Y” or “N”
                 required:
                   - response_code
-                  - response_desc    
+                  - response_desc
         '401':
           description: Unauthorized
           content:
@@ -1044,7 +1023,7 @@ paths:
               example:
                 error: unauthorized
                 status: 401
-   /paysyslabs/payments/ibfttransfer:
+  /paysyslabs/payments/ibfttransfer:
     post:
       summary: ibfttransfer
       tags:
@@ -1052,17 +1031,16 @@ paths:
       description: |-
         <a id="ibft"></a>
         To send funds to member bank account using 1LINK
-
       operationId: ibfttransfer
-      parameters: 
+      parameters:
         - name: Content-Type
           in: header
-          description: 'Content-Type of Request Body'
+          description: Content-Type of Request Body
           required: true
           schema:
             type: string
       x-codeSamples:
-        - lang: 'CURL'
+        - lang: CURL
           source: |
             curl -X POST \
             --url 'https://apigw.paysyslabs.com/api/v1/paysyslabs/payments/ibfttransfer' \
@@ -1110,25 +1088,25 @@ paths:
           content:
             application/json:
               examples:
-                0000:
+                '0':
                   summary: Success Response Example
                   value:
                     response:
-                      response_code: "0000"
+                      response_code: '0000'
                       response_desc: SUCCESS
                     info:
-                      stan: "010123"
-                      rrn: "010123010123"
+                      stan: '010123'
+                      rrn: '010123010123'
                       correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
-                0431:
+                '431':
                   summary: Failure Response Example
                   value:
                     response:
-                      response_code: "0431"
+                      response_code: '0431'
                       response_desc: Title fetch reference not found
                     info:
-                      stan: "010123"
-                      rrn: "010123010123"
+                      stan: '010123'
+                      rrn: '010123010123'
                       correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
               schema:
                 type: object
@@ -1157,14 +1135,13 @@ paths:
                     type: string
                     minLength: 40
                     maxLength: 40
-                    description: |-
-                        Unique correlation id for the title fetch request. The value is in GUID format and will be sent by the initiator in payment call.
+                    description: Unique correlation id for the title fetch request. The value is in GUID format and will be sent by the initiator in payment call.
                 required:
                   - response_code
                   - response_desc
                   - rrn
                   - stan
-                  - correlationId     
+                  - correlationId
         '401':
           description: Unauthorized
           content:
@@ -1178,7 +1155,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_IBFTTransfer'
-   /paysyslabs/payments/directposting:
+  /paysyslabs/payments/directposting:
     post:
       summary: directposting
       tags:
@@ -1189,15 +1166,15 @@ paths:
 
         Open connect return additional fields upon successful response, bank’s middleware needs to sent same values to CBS while debit confirmation or release. These key parameters will be used for RECON purpose. 
       operationId: directposting
-      parameters: 
+      parameters:
         - name: Content-Type
           in: header
-          description: 'Content-Type of Request Body'
+          description: Content-Type of Request Body
           required: true
           schema:
             type: string
       x-codeSamples:
-        - lang: 'CURL'
+        - lang: CURL
           source: |
             curl -X POST \
             --url 'https://apigw.paysyslabs.com/api/v1/paysyslabs/payments/directposting' \
@@ -1244,33 +1221,33 @@ paths:
           content:
             application/json:
               examples:
-                0000:
+                '0':
                   summary: Success Response Example
                   value:
                     response:
-                      response_code: "0000"
+                      response_code: '0000'
                       response_desc: SUCCESS
                     info:
-                      stan: "010123"
-                      rrn: "010123010123"
+                      stan: '010123'
+                      rrn: '010123010123'
                       correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
                     paymentInfo:
-                      instrId: "TMIC230511125023876423"
-                      endToEndId: "1fc66b584e77-46e6-9dcb-fb12c00e7742"
-                      txId: "TMIC230511125023876423"
-                      msgId: "TMICFBPK110523000111250233"
-                0405:
+                      instrId: TMIC230511125023876423
+                      endToEndId: 1fc66b584e77-46e6-9dcb-fb12c00e7742
+                      txId: TMIC230511125023876423
+                      msgId: TMICFBPK110523000111250233
+                '405':
                   summary: failure Response Example
                   value:
                     response:
-                      response_code: "0405"
+                      response_code: '0405'
                       response_desc: Beneficiary account is invalid
                     info:
-                      stan: "010123"
-                      rrn: "010123010123"
+                      stan: '010123'
+                      rrn: '010123010123'
                       correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
                     paymentInfo:
-                      msgId: "TMICFBPK110523000111250233"
+                      msgId: TMICFBPK110523000111250233
               schema:
                 type: object
                 properties:
@@ -1298,8 +1275,7 @@ paths:
                     type: string
                     minLength: 40
                     maxLength: 40
-                    description: |-
-                        Unique correlation id for the title fetch request. The value is in GUID format and will be sent by the initiator in payment call.
+                    description: Unique correlation id for the title fetch request. The value is in GUID format and will be sent by the initiator in payment call.
                   instrId:
                     type: string
                     minLength: 40
@@ -1325,8 +1301,8 @@ paths:
                   - response_desc
                   - rrn
                   - stan
-                  - correlationId  
-                  - msgId                   
+                  - correlationId
+                  - msgId
         '401':
           description: Unauthorized
           content:
@@ -1340,27 +1316,26 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_RAASTTransfer'
-
-   /bank/payments/titlefetch:
+  /bank/payments/titlefetch:
     post:
       summary: titlefetch
       tags:
         - Client Bank API Specs
       description: |-
         The service will be exposed by the bank. The purpose of the method is to allow member banks and schemes such as RAAST or 1LINK to get customer account info which is known as Title fetch request.
-        
-        
+
+
         The title fetch usually comes before payment request where sender wants to verify beneficiary account title and account validation to make sure payment will be sent into the beneficiary account.
       operationId: titlefetch
-      parameters: 
+      parameters:
         - name: Content-Type
           in: header
-          description: 'Content-Type of Request Body'
+          description: Content-Type of Request Body
           required: true
           schema:
             type: string
       x-codeSamples:
-        - lang: 'CURL'
+        - lang: CURL
           source: |
             curl -X POST \
             --url 'https://apigw.paysyslabs.com/api/v1/bank/payments/titlefetch' \
@@ -1388,41 +1363,40 @@ paths:
                 "r5": ""
               }
             }'
-    
       responses:
         '200':
           description: Success
           content:
             application/json:
               examples:
-                00:
+                '0':
                   summary: Success Response Example
                   value:
                     response:
-                      responseCode: "00"
+                      responseCode: '00'
                       responseDesc: Success
-                      stan: "010123"
-                      rrn: "010123010123"
+                      stan: '010123'
+                      rrn: '010123010123'
                     receiverInfo:
-                      account: "03132370605"
+                      account: '03132370605'
                       iban: PK98MASH0000003132370605
-                      title: "Waqas Nizam"
-                      mobile: "03132370605"
+                      title: Waqas Nizam
+                      mobile: '03132370605'
                       identity:
                         - idType: CNIC
-                          idValue: "1234512345671"
+                          idValue: '1234512345671'
                         - idType: Passport
                           idValue: AX59856321
                         - idType: NTN
-                          idValue: "6598532102"
-                01:
+                          idValue: '6598532102'
+                '1':
                   summary: Failure Response Example
                   value:
                     response:
-                      responseCode: "01"
-                      responseDesc: "Invalid account or no account found"
-                      stan: "010123"
-                      rrn: "010123010123"
+                      responseCode: '01'
+                      responseDesc: Invalid account or no account found
+                      stan: '010123'
+                      rrn: '010123010123'
               schema:
                 type: object
                 properties:
@@ -1450,8 +1424,7 @@ paths:
                     type: string
                     minLength: 24
                     maxLength: 24
-                    description: |-
-                        Receiver account (Echo back)
+                    description: Receiver account (Echo back)
                   iban:
                     type: string
                     minLength: 24
@@ -1471,135 +1444,62 @@ paths:
                     type: string
                     minLength: 20
                     maxLength: 20
-                    description: |-
-                        Receiver account id type available in bank’s profile. Bank may return list of id type and values in case of joint account and if bank’s have multiple identity values for a customer. 
-                        
-                        
-                        The id types are as:
-                        
-                        
-                        •	CNIC
-                        
-                        •	NIC
-                        
-                        •	NICOP
-                        
-                        •	POC
-                        
-                        •	NTN
-                        
-                        •	PASSPORT
-                        
-                        •	REGNUM (Registration Number
-
+                    description: "Receiver account id type available in bank’s profile. Bank may return list of id type and values in case of joint account and if bank’s have multiple identity values for a customer. \n\n\nThe id types are as:\n\n\n•\tCNIC\n\n•\tNIC\n\n•\tNICOP\n\n•\tPOC\n\n•\tNTN\n\n•\tPASSPORT\n\n•\tREGNUM (Registration Number"
                   idValue:
                     type: string
                     minLength: 40
                     maxLength: 40
-                    description: |-
-                        Identity value of respective identity type
+                    description: Identity value of respective identity type
                 required:
                   - responseCode
                   - responseDesc
                   - rrn
-                  - stan  
+                  - stan
       requestBody:
         required: true
         content:
           application/json:
             schema:
               $ref: '#/components/schemas/b_TitleFetch'
-   /bank/payments/creditposting:
+  /bank/payments/creditposting:
     post:
       summary: creditposting
       tags:
         - Client Bank API Specs
-      description: |-
-        The method is used to credit bank’s customer account whenever payment comes from RAAST. The Open connect sent credit request to the bank’s system using this method in the request mode. In case of rejection Open connect will instantly return payment to sender bank.
-        
-        
-        Description	Request to credit bank’s customer account, the request can be initiated by 1LINK and RAAST for following transactions:
-        
-        
-        •	IBFT inward payment
-        
-        •	RAAST P2P inward payment
-        
-        •	RAAST P2P outward return payment
-
+      description: "The method is used to credit bank’s customer account whenever payment comes from RAAST. The Open connect sent credit request to the bank’s system using this method in the request mode. In case of rejection Open connect will instantly return payment to sender bank.\n\n\nDescription\tRequest to credit bank’s customer account, the request can be initiated by 1LINK and RAAST for following transactions:\n\n\n•\tIBFT inward payment\n\n•\tRAAST P2P inward payment\n\n•\tRAAST P2P outward return payment"
       operationId: creditposting
-      parameters: 
+      parameters:
         - name: Content-Type
           in: header
-          description: 'Content-Type of Request Body'
+          description: Content-Type of Request Body
           required: true
           schema:
             type: string
       x-codeSamples:
-        - lang: 'CURL'
-          source: |
-            curl -X POST \
-            --url 'https://apigw.paysyslabs.com/api/v1/bank/payments/creditposting' \
-            --header 'Content-Type: application/json' \
-            --header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWxlbm9yfGliIiwiZXhwIjoxNjc3OTMyNDYyLCJpYXQiOjE2Nzc4NDYwNjJ9.ayCCTTt1YGD9Kc_p0XM3X5meYrCYB5-M2LblBG8iQ3TiEEfsNc7imeRkxJwkXoxGZAxBsTeyd50dX3wdhB7big'            
-            --data '{
-              "info": {
-                "rrn": "002236987456",
-                "stan": "987456",
-                "txndate": "20231015",
-                "txntime": "182243"
-              },	
-              "senderinfo": {
-                "senderBankIMD": "",
-                "senderBankBIC": "NBPBPKKA",
-                "fromAccount": "PK56AIIN1234567890000001",
-                "fromAccountTitle": "Muhammad Ali",
-                "fromAccountCnic": "1234512345671"
-              },
-              "receiverinfo": {
-                "toAccount": "PK76NBPA1234567890000999",
-                "toAccountTitle": "Waqas Nizam"
-              },
-              "paymentInfo": {
-                "purposeCode": "0152",
-                "narration": "test transaction",
-                "amount": 5000,
-                "instrId": "TMIC230511125023876423",
-                "endToEndId": "1fc66b584e77-46e6-9dcb-fb12c00e7742",
-                "txId": "TMIC230511125023876423",
-                "msgId": "TMICFBPK110523000111250233"
-              },
-              "reserveFields": {
-                "r1": "",
-                "r2": "",
-                "r3": "",
-                "r4": "",
-                "r5": ""
-              }
-            }'
-    
+        - lang: CURL
+          source: "curl -X POST \\\n--url 'https://apigw.paysyslabs.com/api/v1/bank/payments/creditposting' \\\n--header 'Content-Type: application/json' \\\n--header 'Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWxlbm9yfGliIiwiZXhwIjoxNjc3OTMyNDYyLCJpYXQiOjE2Nzc4NDYwNjJ9.ayCCTTt1YGD9Kc_p0XM3X5meYrCYB5-M2LblBG8iQ3TiEEfsNc7imeRkxJwkXoxGZAxBsTeyd50dX3wdhB7big'            \n--data '{\n  \"info\": {\n    \"rrn\": \"002236987456\",\n    \"stan\": \"987456\",\n    \"txndate\": \"20231015\",\n    \"txntime\": \"182243\"\n  },\t\n  \"senderinfo\": {\n    \"senderBankIMD\": \"\",\n    \"senderBankBIC\": \"NBPBPKKA\",\n    \"fromAccount\": \"PK56AIIN1234567890000001\",\n    \"fromAccountTitle\": \"Muhammad Ali\",\n    \"fromAccountCnic\": \"1234512345671\"\n  },\n  \"receiverinfo\": {\n    \"toAccount\": \"PK76NBPA1234567890000999\",\n    \"toAccountTitle\": \"Waqas Nizam\"\n  },\n  \"paymentInfo\": {\n    \"purposeCode\": \"0152\",\n    \"narration\": \"test transaction\",\n    \"amount\": 5000,\n    \"instrId\": \"TMIC230511125023876423\",\n    \"endToEndId\": \"1fc66b584e77-46e6-9dcb-fb12c00e7742\",\n    \"txId\": \"TMIC230511125023876423\",\n    \"msgId\": \"TMICFBPK110523000111250233\"\n  },\n  \"reserveFields\": {\n    \"r1\": \"\",\n    \"r2\": \"\",\n    \"r3\": \"\",\n    \"r4\": \"\",\n    \"r5\": \"\"\n  }\n}'\n"
       responses:
         '200':
           description: Success
           content:
             application/json:
               examples:
-                00:
+                '0':
                   summary: Success Response Example
                   value:
                     response:
-                      responseCode: "00"
+                      responseCode: '00'
                       responseDesc: SUCCESS
-                      stan: "010123"
-                      rrn: "010123010123"
-                01:
+                      stan: '010123'
+                      rrn: '010123010123'
+                '1':
                   summary: Failure Response Example
                   value:
                     response:
-                      responseCode: "04"
-                      responseDesc: "Credit limit exceed for the account"
-                      stan: "010123"
-                      rrn: "010123010123"
+                      responseCode: '04'
+                      responseDesc: Credit limit exceed for the account
+                      stan: '010123'
+                      rrn: '010123010123'
               schema:
                 type: object
                 properties:
@@ -1641,35 +1541,22 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/b_CreditPosting'
-   /bank/payments/creditadvise:
+  /bank/payments/creditadvise:
     post:
       summary: creditadvise
       tags:
         - Client Bank API Specs
-      description: |-
-        Advise means where bank is responsible to credit amount into the receiver account. As a guaranteed delivery mechanism (SAF), OC will be sent credit request as advise to bank’s system via SAF mechanism.
-        
-        
-        This method will be used in any of below case:
-
-
-        •	1LINK incoming credit advise
-
-        •	RAAST P2P Inward return payments, this happens when previously made outward P2P payment failed at receiving bank end and bank initiate return after sometime.
-
-        •	RAAST P2P Timeout transactions
-
-
+      description: "Advise means where bank is responsible to credit amount into the receiver account. As a guaranteed delivery mechanism (SAF), OC will be sent credit request as advise to bank’s system via SAF mechanism.\n\n\nThis method will be used in any of below case:\n\n\n•\t1LINK incoming credit advise\n\n•\tRAAST P2P Inward return payments, this happens when previously made outward P2P payment failed at receiving bank end and bank initiate return after sometime.\n\n•\tRAAST P2P Timeout transactions"
       operationId: creditadvise
-      parameters: 
+      parameters:
         - name: Content-Type
           in: header
-          description: 'Content-Type of Request Body'
+          description: Content-Type of Request Body
           required: true
           schema:
             type: string
       x-codeSamples:
-        - lang: 'CURL'
+        - lang: CURL
           source: |
             curl -X POST \
             --url 'https://apigw.paysyslabs.com/api/v1/bank/payments/creditadvise' \
@@ -1722,30 +1609,28 @@ paths:
                 "r5": ""
               }
             }'
-          
-    
       responses:
         '200':
           description: Success
           content:
             application/json:
               examples:
-                00:
+                '0':
                   summary: Success Response Example
                   value:
                     response:
-                      responseCode: "00"
+                      responseCode: '00'
                       responseDesc: SUCCESS
-                      stan: "010123"
-                      rrn: "010123010123"
-                01:
+                      stan: '010123'
+                      rrn: '010123010123'
+                '1':
                   summary: Failure Response Example
                   value:
                     response:
-                      responseCode: "09"
-                      responseDesc: "Duplicate transaction"
-                      stan: "010123"
-                      rrn: "010123010123"
+                      responseCode: '09'
+                      responseDesc: Duplicate transaction
+                      stan: '010123'
+                      rrn: '010123010123'
               schema:
                 type: object
                 properties:
@@ -1787,7 +1672,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/b_CreditAdvise'
-   /bank/payments/creditinquiry:
+  /bank/payments/creditinquiry:
     post:
       summary: creditinquiry
       tags:
@@ -1795,20 +1680,20 @@ paths:
       description: |-
         The purpose of this request to inquire the status of the previously posted credit request or advise.
 
-        
+
         In case if original transaction got timeout, the Open Connect initiate transaction inquiry to the check the transaction faith.
       operationId: creditinquiry
-      parameters: 
+      parameters:
         - name: Content-Type
           in: header
-          description: 'Content-Type of Request Body'
+          description: Content-Type of Request Body
           required: true
           schema:
             type: string
       x-codeSamples:
-        - lang: 'CURL'
+        - lang: CURL
           source: |
-          
+
             curl -X POST \
             --url 'https://apigw.paysyslabs.com/api/v1/bank/payments/creditposting' \
             --header 'Content-Type: application/json' \
@@ -1833,34 +1718,34 @@ paths:
           content:
             application/json:
               examples:
-                00:
+                '0':
                   summary: Success Response Example
                   value:
                     response:
-                      responseCode: "00"
+                      responseCode: '00'
                       responseDesc: SUCCESS
-                      stan: "010123"
-                      rrn: "010123010123"
+                      stan: '010123'
+                      rrn: '010123010123'
                     orgResponse:
-                      orgresponseCode: "00"
+                      orgresponseCode: '00'
                       orgresponseDesc: SUCCESS
-                01:
+                '1':
                   summary: Failure Response Example
                   value:
                     response:
-                      responseCode: "00"
-                      responseDesc: "SUCCESS"
-                      stan: "010123"
-                      rrn: "010123010123"
+                      responseCode: '00'
+                      responseDesc: SUCCESS
+                      stan: '010123'
+                      rrn: '010123010123'
                     orgResponse:
-                      orgresponseCode: "01"
-                      orgresponseDesc: No transaction found 
+                      orgresponseCode: '01'
+                      orgresponseDesc: No transaction found
               schema:
                 type: object
                 properties:
                   response:
                     type: object
-                    properties: 
+                    properties:
                       responseCode:
                         type: string
                         minLength: 4
@@ -1881,9 +1766,9 @@ paths:
                         minLength: 6
                         maxLength: 6
                         description: Echo back
-                  orgResponse:   
+                  orgResponse:
                     type: object
-                    properties: 
+                    properties:
                       orgresponseCode:
                         type: string
                         minLength: 4
@@ -1914,29 +1799,19 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/b_CreditInquiry'
-servers:
-  - url: https://apigw.paysyslabs.com/api/v1.2
-    description: Production server
-security:
-  - jwtToken: []
 components:
   securitySchemes:
     jwtToken:
       type: http
       scheme: bearer
-      description: >-
-        JWT Token required in all APIs except /authentication enpoint which needs oaut2.1  
-        For more information regarding JWT, check out [JWT](https://auth0.com/learn/json-web-tokens).
-        
-        
+      description: JWT Token required in all APIs except /authentication enpoint which needs oaut2.1   For more information regarding JWT, check out [JWT](https://auth0.com/learn/json-web-tokens).
     clientCredentials:
       type: oauth2
-      description: >-
-        For more information regarding oauth, check out [OAUTH](https://auth0.com/intro-to-iam/what-is-oauth-2).
+      description: For more information regarding oauth, check out [OAUTH](https://auth0.com/intro-to-iam/what-is-oauth-2).
       flows:
         clientCredentials:
-          tokenUrl: 'https://apigw.paysyslabs.com/api/v1/paysyslabs/token'
-          scopes: {} 
+          tokenUrl: https://apigw.paysyslabs.com/api/v1/paysyslabs/token
+          scopes: {}
   schemas:
     p_Authentication:
       description: Representation of a Authentication
@@ -1944,13 +1819,13 @@ components:
       properties:
         grant_type:
           type: string
-          example: "client_credentials" 
+          example: client_credentials
         client_id:
           description: client_id will be provided by PSL TEAM based on channel
-          type: string  
+          type: string
         client_secret:
           description: client_secret will be provided by PSL TEAM based on channel
-          type: string 
+          type: string
       required:
         - grant_type
         - client_id
@@ -1962,45 +1837,45 @@ components:
         info:
           type: object
           properties:
-            rrn: 
-              $ref: '#/components/schemas/rrn'           
+            rrn:
+              $ref: '#/components/schemas/rrn'
             stan:
               type: string
               minLength: 6
               maxLength: 6
               description: System trace audit number
-              example: "987456"
+              example: '987456'
             txndate:
               type: string
               minLength: 8
               maxLength: 8
               format: yyyymmdd
               description: Transaction Date
-              example: "20231015"
+              example: '20231015'
             txntime:
               type: string
               minLength: 6
               maxLength: 6
               format: hhmmss
               description: Transaction Time
-              example: "182243"
+              example: '182243'
           required:
             - rrn
             - stan
             - txndate
             - txntime
-        senderinfo: 
+        senderinfo:
           type: object
-          properties:        
+          properties:
             fromAccount:
               type: string
               minLength: 24
               maxLength: 24
               description: Sender IBAN
-              example: "05421236547552"
+              example: '05421236547552'
             fromAccountType:
               type: string
-              enum: 
+              enum:
                 - '00'
                 - '10'
                 - '20'
@@ -2008,14 +1883,13 @@ components:
                 - '40'
                 - '50'
                 - '60'
-              description: |-
-                Refer to [Sender Account Type Table](#account-type)                       
+              description: 'Refer to [Sender Account Type Table](#account-type)                       '
             fromAccountCurrency:
               type: string
               minLength: 3
               maxLength: 3
               description: 3 digits ISO8583 universal currency code
-              example: "586"
+              example: '586'
           required:
             - fromAccount
             - fromAccountType
@@ -2034,7 +1908,7 @@ components:
               minLength: 24
               maxLength: 24
               description: Beneficiary account# or IBAN
-              example: "00023137343951"
+              example: '00023137343951'
           required:
             - bankId
             - toAccount
@@ -2047,16 +1921,15 @@ components:
               maxLength: 2
               description: |-
                 The field determine the priority rail to perform title fetch.
-            
+
                 | Value | Description   |
                 |-------|---------------|
                 | 01    | For RAAST     |
                 | 02    | For 1LINK     |
-
-              enum: 
-                - "01"
-                - "02"
-              example: "01"
+              enum:
+                - '01'
+                - '02'
+              example: '01'
             fallbackFlag:
               type: string
               minLength: 2
@@ -2065,25 +1938,22 @@ components:
                 The field determine the fall back feature for the title fetch in case title fetch failed from 
                 the 1st switch system will attempt to perform it from alternate route if fall back parameter 
                 set to “Yes”.
-              
+
                 | Value | Description   |
                 |-------|---------------|
                 | 01    | YES     |
                 | 02    | NO     |
-  
-              enum: 
-                - "01"
-                - "02"
-              example: "01"
+              enum:
+                - '01'
+                - '02'
+              example: '01'
             purposeCode:
               type: string
-              description: |-
-                the acceptable length of this field will depends on the value provided, please refer to [Purpose Code Table](#purp-code) 
-              example: "0320"
+              description: 'the acceptable length of this field will depends on the value provided, please refer to [Purpose Code Table](#purp-code) '
+              example: '0320'
             amount:
               type: number
-              description: |-
-                Amount of the transaction, it is required as per EFT compliant that receiver must validate credit limit on title fetch to minimize rejection ratio while payment
+              description: Amount of the transaction, it is required as per EFT compliant that receiver must validate credit limit on title fetch to minimize rejection ratio while payment
               example: 5000
           required:
             - priorityFlag
@@ -2097,31 +1967,31 @@ components:
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r2:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r3:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r4:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r5:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
     p_GetDefaultAccount:
       description: Representation of a Get Default Account
       type: object
@@ -2133,23 +2003,22 @@ components:
           minLength: 6
           maxLength: 6
           description: System trace audit number
-          example: "987456"
+          example: '987456'
         type:
           type: string
-          description: |-
-            Type of alias
-          enum: 
+          description: Type of alias
+          enum:
             - CNIC
             - MOBILE
             - EMAIL
-            - TXT 
-          example: "MOBILE"
+            - TXT
+          example: MOBILE
         value:
           type: string
           minLength: 40
           maxLength: 40
           description: Alias Value
-          example: "03132370605"
+          example: '03132370605'
         amount:
           type: number
           format: double
@@ -2175,21 +2044,21 @@ components:
               minLength: 6
               maxLength: 6
               description: System trace audit number
-              example: "987456"
+              example: '987456'
             txndate:
               type: string
               minLength: 8
               maxLength: 8
               format: yyyymmdd
               description: Transaction Date
-              example: "20231015"
+              example: '20231015'
             txntime:
               type: string
               minLength: 6
               maxLength: 6
               format: hhmmss
               description: Transaction Time
-              example: "182243"
+              example: '182243'
             tfcorrelationId:
               $ref: '#/components/schemas/tfcorrelationId'
           required:
@@ -2197,18 +2066,18 @@ components:
             - stan
             - txndate
             - txntime
-        senderinfo: 
+        senderinfo:
           type: object
-          properties:        
+          properties:
             fromAccount:
               type: string
               minLength: 24
               maxLength: 24
               description: Sender IBAN
-              example: "PK56AIIN1234567890000001"
+              example: PK56AIIN1234567890000001
             fromAccountType:
               type: string
-              enum: 
+              enum:
                 - '00'
                 - '10'
                 - '20'
@@ -2216,25 +2085,24 @@ components:
                 - '40'
                 - '50'
                 - '60'
-              description: |-
-                Refer to [Sender Account Type Table](#account-type)
-              example: "00"
+              description: Refer to [Sender Account Type Table](#account-type)
+              example: '00'
             fromAccountTitle:
               type: string
               maxLength: 40
-              example: "Muhammad Ali"
+              example: Muhammad Ali
             fromAccountCurrency:
               type: string
               minLength: 3
               maxLength: 3
               description: 3 digits ISO8583 universal currency code
-              example: "586"
+              example: '586'
             fromAccountCnic:
               type: string
               minLength: 13
               maxLength: 13
               description: Sender CNIC
-              example: "1234512345671"
+              example: '1234512345671'
           required:
             - fromAccount
             - fromAccountType
@@ -2247,21 +2115,20 @@ components:
               type: string
               minLength: 6
               maxLength: 6
-              description: |-
-                Bank IMD, received in response of title fetch
-              example: "100271"
+              description: Bank IMD, received in response of title fetch
+              example: '100271'
             toAccount:
               type: string
               minLength: 24
               maxLength: 24
               description: Beneficiary account# or IBAN
-              example: "00023137343951"
+              example: '00023137343951'
             toAccountTitle:
               type: string
               minLength: 40
               maxLength: 40
               description: Beneficiary account title, received in response of title fetch
-              example: "Waqas Nizam"
+              example: Waqas Nizam
           required:
             - bankIMD
             - toAccount
@@ -2273,20 +2140,17 @@ components:
               type: string
               minLength: 4
               maxLength: 4
-              description: |-
-                4 digits numeric 1LINK assigned payment purpose code. please refer to [Purpose Code Table](#purp-code) 
-              example: "0152"
+              description: '4 digits numeric 1LINK assigned payment purpose code. please refer to [Purpose Code Table](#purp-code) '
+              example: '0152'
             narration:
               type: string
               minLength: 140
               maxLength: 140
-              description: |-
-                Any alpha numeric text upto 140 characters
-              example: "test transaction"
+              description: Any alpha numeric text upto 140 characters
+              example: test transaction
             amount:
               type: number
-              description: |-
-                Amount of the transaction, bank make sure that the amount will be same which bank sent during title fetch
+              description: Amount of the transaction, bank make sure that the amount will be same which bank sent during title fetch
               example: 5000
             authId:
               $ref: '#/components/schemas/authId'
@@ -2303,31 +2167,31 @@ components:
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r2:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r3:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r4:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r5:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
     p_RAASTTransfer:
       description: Representation of a RAAST Transfer
       type: object
@@ -2342,47 +2206,47 @@ components:
               minLength: 6
               maxLength: 6
               description: System trace audit number
-              example: "987456"
+              example: '987456'
             txndate:
               type: string
               minLength: 8
               maxLength: 8
               format: yyyymmdd
               description: Transaction Date
-              example: "20231015"
+              example: '20231015'
             txntime:
               type: string
               minLength: 6
               maxLength: 6
               format: hhmmss
               description: Transaction Time
-              example: "182243" 
+              example: '182243'
             tfcorrelationId:
-              $ref: '#/components/schemas/tfcorrelationId' 
+              $ref: '#/components/schemas/tfcorrelationId'
           required:
             - rrn
             - stan
             - txndate
             - txntime
             - correlationId
-        senderinfo: 
+        senderinfo:
           type: object
-          properties:        
+          properties:
             fromAccount:
               type: string
               minLength: 24
               maxLength: 24
               description: Sender IBAN
-              example: "PK56AIIN1234567890000001"
+              example: PK56AIIN1234567890000001
             fromAccountTitle:
               type: string
               minLength: 40
               maxLength: 40
               description: Sender account title
-              example: "Muhammad Ali"
+              example: Muhammad Ali
             fromAccountType:
               type: string
-              enum: 
+              enum:
                 - '00'
                 - '10'
                 - '20'
@@ -2390,21 +2254,20 @@ components:
                 - '40'
                 - '50'
                 - '60'
-              description: |-
-                Refer to [Sender Account Type Table](#account-type)
-              example: "00"
+              description: Refer to [Sender Account Type Table](#account-type)
+              example: '00'
             fromAccountCurrency:
               type: string
               minLength: 3
               maxLength: 3
               description: 3 digits ISO8583 universal currency code
-              example: "586"
+              example: '586'
             fromAccountCnic:
               type: string
               minLength: 13
               maxLength: 13
               description: Sender CNIC
-              example: "1234512345671"
+              example: '1234512345671'
           required:
             - fromAccount
             - fromAccountTitle
@@ -2418,21 +2281,20 @@ components:
               type: string
               minLength: 6
               maxLength: 6
-              description: |-
-                Bank BIC, received in response of title fetch
-              example: "NBPBPKKA"
+              description: Bank BIC, received in response of title fetch
+              example: NBPBPKKA
             toAccount:
               type: string
               minLength: 24
               maxLength: 24
               description: Beneficiary account# or IBAN
-              example: "PK76NBPA1234567890000999"
+              example: PK76NBPA1234567890000999
             toAccountTitle:
               type: string
               minLength: 40
               maxLength: 40
               description: Beneficiary account title, received in response of title fetch
-              example: "Waqas Nizam"
+              example: Waqas Nizam
           required:
             - bankBIC
             - toAccount
@@ -2440,25 +2302,22 @@ components:
         paymentInfo:
           type: object
           properties:
-            purposeCode: 
+            purposeCode:
               type: string
               minLength: 4
               maxLength: 4
-              description: |-
-                4 digits numeric 1LINK assigned payment purpose code. please refer to [Purpose Code Table](#purp-code) 
-              example: "0152"
+              description: '4 digits numeric 1LINK assigned payment purpose code. please refer to [Purpose Code Table](#purp-code) '
+              example: '0152'
             narration:
               type: string
               minLength: 140
               maxLength: 140
-              description: |-
-                Any alpha numeric text upto 140 characters
-              example: "test transaction"
+              description: Any alpha numeric text upto 140 characters
+              example: test transaction
             amount:
               type: number
               format: double
-              description: |-
-                Amount of the transaction, bank make sure that the amount will be same which bank sent during title fetch
+              description: Amount of the transaction, bank make sure that the amount will be same which bank sent during title fetch
               example: 5000
             authId:
               $ref: '#/components/schemas/authId'
@@ -2478,31 +2337,31 @@ components:
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r2:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r3:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r4:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r5:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
     b_TitleFetch:
       description: Representation of a Bank's Controller Title Fetch
       type: object
@@ -2517,29 +2376,28 @@ components:
               minLength: 6
               maxLength: 6
               description: System trace audit number
-              example: "987456"
+              example: '987456'
             txndate:
               type: string
               minLength: 8
               maxLength: 8
               format: yyyymmdd
               description: Transaction Date
-              example: "20231015"
+              example: '20231015'
             txntime:
               type: string
               minLength: 6
               maxLength: 6
               format: hhmmss
               description: Transaction Time
-              example: "182243"
+              example: '182243'
             initiator:
               type: string
-              description: |-
-                Fixed value from any of them
-              enum: 
+              description: Fixed value from any of them
+              enum:
                 - 1LINK
                 - RAAST
-              example: "RAAST"
+              example: RAAST
           required:
             - rrn
             - stan
@@ -2554,7 +2412,7 @@ components:
               minLength: 24
               maxLength: 24
               description: Beneficiary account# or IBAN
-              example: "PK76NBPA1234567890000999"
+              example: PK76NBPA1234567890000999
           required:
             - toAccount
         paymentInfo:
@@ -2562,8 +2420,7 @@ components:
           properties:
             amount:
               type: number
-              description: |-
-                Amount of the transaction, it can be zero.
+              description: Amount of the transaction, it can be zero.
               example: 5000
           required:
             - amount
@@ -2575,31 +2432,31 @@ components:
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r2:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r3:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r4:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r5:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
     b_CreditPosting:
       description: Representation of a Bank's Controller Credit Posting
       type: object
@@ -2614,60 +2471,60 @@ components:
               minLength: 6
               maxLength: 6
               description: System trace audit number
-              example: "987456"
+              example: '987456'
             txndate:
               type: string
               minLength: 8
               maxLength: 8
               format: yyyymmdd
               description: Transaction Date
-              example: "20231015"
+              example: '20231015'
             txntime:
               type: string
               minLength: 6
               maxLength: 6
               format: hhmmss
               description: Transaction Time
-              example: "182243"
+              example: '182243'
           required:
             - rrn
             - stan
             - txndate
             - txntime
-        senderinfo: 
+        senderinfo:
           type: object
-          properties:  
+          properties:
             senderBankIMD:
               type: string
               minLength: 24
               maxLength: 24
               description: The value comes if transaction received from 1LINK. In other case it will be blank
-              example: ""
+              example: ''
             senderBankBIC:
               type: string
               minLength: 24
               maxLength: 24
               description: The value comes if transaction received from RAAST. In other case it will be blank
-              example: "NBPBPKKA"              
+              example: NBPBPKKA
             fromAccount:
               type: string
               minLength: 24
               maxLength: 24
-              description: Sender IBAN / account #
-              example: "PK56AIIN1234567890000001"
+              description: Sender IBAN / account
+              example: PK56AIIN1234567890000001
             fromAccountTitle:
               type: string
               minLength: 40
               maxLength: 40
               description: Sender account title
-              example: "Muhammad Ali"
+              example: Muhammad Ali
             fromAccountCnic:
               type: string
               minLength: 13
               maxLength: 13
               description: Sender CNIC if value received in the payment request
-              example: "1234512345671"
-          required:         
+              example: '1234512345671'
+          required:
             - fromAccount
             - fromAccountTitle
         receiverinfo:
@@ -2678,13 +2535,13 @@ components:
               minLength: 24
               maxLength: 24
               description: Beneficiary account# or IBAN
-              example: "PK76NBPA1234567890000999"
+              example: PK76NBPA1234567890000999
             toAccountTitle:
               type: string
               minLength: 40
               maxLength: 40
               description: Beneficiary account title
-              example: "Waqas Nizam"
+              example: Waqas Nizam
           required:
             - toAccount
             - toAccountTitle
@@ -2698,18 +2555,16 @@ components:
               description: |-
                 3 digits numeric RAAST assigned payment purpose code. If payment received from 1LINK the value will be of 4 digits.
                 please refer to [Purpose Code Table](#purp-code)
-              example: "0152"
+              example: '0152'
             narration:
               type: string
               minLength: 140
               maxLength: 140
-              description: |-
-                Any alpha numeric text upto 140 characters
-              example: "test transaction"
+              description: Any alpha numeric text upto 140 characters
+              example: test transaction
             amount:
               type: number
-              description: |-
-                Amount of the transaction
+              description: Amount of the transaction
               example: 5000
             instrId:
               type: string
@@ -2720,7 +2575,7 @@ components:
 
 
                 In case of 1LINK the field will be blank
-              example: "TMIC230511125023876423"
+              example: TMIC230511125023876423
             endToEndId:
               type: string
               minLength: 40
@@ -2730,7 +2585,7 @@ components:
 
 
                 In case of 1LINK the field will be blank.
-              example: "1fc66b584e77-46e6-9dcb-fb12c00e7742"
+              example: 1fc66b584e77-46e6-9dcb-fb12c00e7742
             txId:
               type: string
               minLength: 40
@@ -2740,7 +2595,7 @@ components:
 
 
                 In case of 1LINK the field will be blank.
-              example: "TMIC230511125023876423"              
+              example: TMIC230511125023876423
             msgId:
               type: string
               minLength: 40
@@ -2749,7 +2604,7 @@ components:
                 Message id received by RAAST.
 
                 In case of 1LINK the field will be blank.
-              example: "TMICFBPK110523000111250233"
+              example: TMICFBPK110523000111250233
           required:
             - purposeCode
             - amount
@@ -2761,31 +2616,31 @@ components:
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r2:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r3:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r4:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r5:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
     b_CreditAdvise:
       description: Representation of a Bank's Controller Credit Advise
       type: object
@@ -2800,82 +2655,80 @@ components:
               minLength: 6
               maxLength: 6
               description: System trace audit number
-              example: "987456"
+              example: '987456'
             txndate:
               type: string
               minLength: 8
               maxLength: 8
               format: yyyymmdd
               description: Transaction Date
-              example: "20231015"
+              example: '20231015'
             txntime:
               type: string
               minLength: 6
               maxLength: 6
               format: hhmmss
               description: Transaction Time
-              example: "182243"
+              example: '182243'
             initiator:
               type: string
-              description: |-
-                Transaction received by, any of followings
-              enum: 
+              description: Transaction received by, any of followings
+              enum:
                 - 1LINK
                 - RAAST
-              example: "RAAST"
+              example: RAAST
             txnType:
               type: string
               minLength: 2
               maxLength: 2
-              description: |-
-                please refer to [Transaction Type Table](#tran-type)
-              enum: 
+              description: please refer to [Transaction Type Table](#tran-type)
+              enum:
                 - '01'
                 - '02'
                 - '03'
                 - '04'
-              example: "01"
+              example: '01'
           required:
             - rrn
             - stan
             - txndate
             - txntime
-            - initiator            
+            - initiator
             - txnType
-        senderinfo: 
+        senderinfo:
           type: object
-          properties:  
+          properties:
             senderBankIMD:
               type: string
               minLength: 24
               maxLength: 24
               description: The value comes if transaction received from 1LINK. In other case it will be blank
-              example: ""
+              example: ''
             senderBankBIC:
               type: string
               minLength: 24
               maxLength: 24
               description: The value comes if transaction received from RAAST. In other case it will be blank
-              example: "NBPBPKKA"              
+              example: NBPBPKKA
             fromAccount:
               type: string
               minLength: 24
               maxLength: 24
-              description: Sender IBAN / account #
-              example: "PK56AIIN1234567890000001"
+              description: Sender IBAN / account
+              example: PK56AIIN1234567890000001
             fromAccountTitle:
               type: string
               minLength: 40
               maxLength: 40
               description: Sender account title
-              example: "Muhammad Ali"
+              example: Muhammad Ali
             fromAccountCnic:
               type: string
               minLength: 13
               maxLength: 13
               description: Sender CNIC if value received in the payment request
-              example: "1234512345671"
-          required:         
+              example: '1234512345671'
+          required:
             - fromAccount
             - fromAccountTitle
         receiverinfo:
@@ -2886,13 +2739,13 @@ components:
               minLength: 24
               maxLength: 24
               description: Beneficiary account# or IBAN
-              example: "PK76NBPA1234567890000999"
+              example: PK76NBPA1234567890000999
             toAccountTitle:
               type: string
               minLength: 40
               maxLength: 40
               description: Beneficiary account title
-              example: "Waqas Nizam"
+              example: Waqas Nizam
           required:
             - toAccount
             - toAccountTitle
@@ -2906,18 +2759,16 @@ components:
               description: |-
                 3 digits numeric RAAST assigned payment purpose code. If payment received from 1LINK the value will be of 4 digits.
                 please refer to [Purpose Code Table](#purp-code)
-              example: "0125"
+              example: '0125'
             narration:
               type: string
               minLength: 140
               maxLength: 140
-              description: |-
-                Any alpha numeric text upto 140 characters
-              example: "test transaction"
+              description: Any alpha numeric text upto 140 characters
+              example: test transaction
             amount:
               type: number
-              description: |-
-                Amount of the transaction
+              description: Amount of the transaction
               example: 5000
             instrId:
               type: string
@@ -2928,7 +2779,7 @@ components:
 
 
                 In case of 1LINK the field will be blank
-              example: "TMIC230511125023876423"
+              example: TMIC230511125023876423
             endToEndId:
               type: string
               minLength: 40
@@ -2938,7 +2789,7 @@ components:
 
 
                 In case of 1LINK the field will be blank.
-              example: "1fc66b584e77-46e6-9dcb-fb12c00e7742"
+              example: 1fc66b584e77-46e6-9dcb-fb12c00e7742
             txId:
               type: string
               minLength: 40
@@ -2948,7 +2799,7 @@ components:
 
 
                 In case of 1LINK the field will be blank.
-              example: "TMIC230511125023876423"              
+              example: TMIC230511125023876423
             msgId:
               type: string
               minLength: 40
@@ -2957,7 +2808,7 @@ components:
                 ***Message id received by RAAST***.
 
                 In case of 1LINK the field will be blank.
-              example: "TMICFBPK110523000111250233"
+              example: TMICFBPK110523000111250233
             oneLinkrrn:
               type: string
               minLength: 12
@@ -2968,8 +2819,7 @@ components:
                 In case of 1LINK, OC will send same value which comes from 1LINK in DE-37. 
 
                 In case of RAAST the field will be blank
-
-              example: "002236987456"
+              example: '002236987456'
             oneLinkstan:
               type: string
               minLength: 6
@@ -2980,8 +2830,7 @@ components:
                 In case of 1LINK, OC will send same value which comes from 1LINK in DE-11.
 
                 In case of RAAST the field will be blank.
-
-              example: "987456"              
+              example: '987456'
           required:
             - purposeCode
             - amount
@@ -2994,38 +2843,38 @@ components:
               maxLength: 8
               description: Original transaction date
               format: yyyymmdd
-              example: "20231015"
+              example: '20231015'
             orgtxntime:
               type: string
               minLength: 6
               maxLength: 6
               description: Original transaction time
               format: hhmmss
-              example: "182243"
+              example: '182243'
             orginstrId:
               type: string
               minLength: 40
               maxLength: 40
               description: Original transaction instruction id
-              example: "TMIC230511125023876423"
+              example: TMIC230511125023876423
             orgendToEndId:
               type: string
               minLength: 40
               maxLength: 40
               description: Original transaction end to end id
-              example: "1fc66b584e77-46e6-9dcb-fb12c00e7742"
+              example: 1fc66b584e77-46e6-9dcb-fb12c00e7742
             orgtxId:
               type: string
               minLength: 40
               maxLength: 40
               description: Original transaction id
-              example: "TMIC230511125023876423"
+              example: TMIC230511125023876423
             orgmsgId:
               type: string
               minLength: 40
               maxLength: 40
               description: Original transaction message id
-              example: "TMICFBPK110523000111250233"
+              example: TMICFBPK110523000111250233
         reserveFields:
           type: object
           properties:
@@ -3034,31 +2883,31 @@ components:
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r2:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r3:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r4:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
             r5:
               type: string
               minLength: 100
               maxLength: 100
               description: Reserved for future use
-              example: ""
+              example: ''
     b_CreditInquiry:
       description: Representation of a Bank's Controller Credit Inquiry
       type: object
@@ -3073,22 +2922,22 @@ components:
               minLength: 6
               maxLength: 6
               description: System trace audit number
-              example: "987456"
+              example: '987456'
             txndate:
               type: string
               minLength: 8
               maxLength: 8
               format: yyyymmdd
               description: Transaction Date
-              example: "20231015"
+              example: '20231015'
             txntime:
               type: string
               minLength: 6
               maxLength: 6
               format: hhmmss
               description: Transaction Time
-              example: "182243"
-          required: 
+              example: '182243'
+          required:
             - rrn
             - stan
             - txndate
@@ -3101,27 +2950,27 @@ components:
               minLength: 12
               maxLength: 12
               description: Retrieval reference number
-              example: "002236987456"
+              example: '002236987456'
             orgtxnstan:
               type: string
               minLength: 6
               maxLength: 6
               description: System trace audit number
-              example: "987456"
+              example: '987456'
             orgtxndate:
               type: string
               minLength: 8
               maxLength: 8
               format: yyyymmdd
               description: Transaction Date
-              example: "20231015"
+              example: '20231015'
             orgtxntime:
               type: string
               minLength: 6
               maxLength: 6
               format: hhmmss
               description: Transaction Time
-              example: "182243"
+              example: '182243'
           required:
             - orgtxnrrn
             - orgtxnstan
@@ -3132,27 +2981,30 @@ components:
       minLength: 12
       maxLength: 12
       description: '<span style="color: green;">***Unique Retrieval Reference Number***</span>. Can be used to trace the request '
-      example: "002236987456" 
+      example: '002236987456'
     tfcorrelationId:
       type: string
       minimum: 36
       maxLength: 40
       description: '<span style="color: green;">***Unique Correlation Id***</span>. The value will be same which channel received in response of title fetch'
-      example: '7ad7fb9f-99dc-4c2c-ab88-abddb87789a0'
+      example: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
     msgId:
       type: string
       minLength: 40
       maxLength: 40
-      description: |-
-        <span style="color: green;">***Unique Message Id for RAAST payments***</span>. The key will be communicated end to end and will be used for e2e reconciliation. Bank is responsible to make sure that the id will not be duplicated in any case
-      example: "MASH231016140256592221"
+      description: '<span style="color: green;">***Unique Message Id for RAAST payments***</span>. The key will be communicated end to end and will be used for e2e reconciliation. Bank is responsible to make sure that the id will not be duplicated in any case'
+      example: MASH231016140256592221
     authId:
       type: string
       minLength: 40
       maxLength: 40
-      description: |-
-        <span style="color: green;">***Debit authorization unique reference number return by core banking***</span> in response of debit hold request
-      example: "654123"
-
-
-        
+      description: '<span style="color: green;">***Debit authorization unique reference number return by core banking***</span> in response of debit hold request'
+      example: '654123'
+x-tagGroups:
+  - name: AUTHENTICATION
+    tags:
+      - Token API SPECS
+  - name: API SPECS
+    tags:
+      - OpenConnect API Specs
+      - Client Bank API Specs
