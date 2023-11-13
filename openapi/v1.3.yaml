@@ -4545,17 +4545,17 @@ components:
           type: string
           maxLength: 20
           example: "CNIC"
+          enum: 
+            -	CNIC
+            -	NICOP
+            -	POC
+            -	REG_NO
+            - ­NTN
         value:  
           type: string
           maxLength: 20
           description: Customer’s document number
           example: "4230146389021"
-          enum: 
-            -	CNIC
-            -	NICOP
-            -	POC 
-            -	REG_NO
-            - ­NTN  
       required: 
         - type
         - value
@@ -4594,18 +4594,24 @@ components:
             - FEMA
             - TRNS
         birthDate:
+          minLength: 10
+          maxLength: 10
           type: string
           example: "1987-01-28"
           description: Customer’s birth date
-          pattern: yyyy-MM-dd
+          format: 'yyyy-mm-dd'
         startDate:
           type: string
+          minLength: 10
+          maxLength: 10
           example: "2021-05-15"
-          pattern: yyyy-mm-dd
+          format: 'yyyy-mm-dd'
         expirationDate:
           type: string
+          minLength: 10
+          maxLength: 10
           example: "2025-05-15"
-          pattern: yyyy-mm-dd
+          format: 'yyyy-mm-dd'
       required:
         - documentType
         - documentNumber
