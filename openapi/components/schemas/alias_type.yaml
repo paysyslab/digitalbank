@@ -1,0 +1,7 @@
+type: string
+example: MOBILE
+enum:
+  - MOBILE
+  - CNIC
+  - EMAIL
+  - TXT

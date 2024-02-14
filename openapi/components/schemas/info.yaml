@@ -1,0 +1,15 @@
+type: object
+properties:
+  rrn:
+    $ref: .\rrn.yaml
+  stan:
+    $ref: .\stan.yaml
+  txndate:
+    $ref: .\txndate.yaml
+  txntime:
+    $ref: .\txntime.yaml
+required:
+  - rrn
+  - stan
+  - txndate
+  - txntime

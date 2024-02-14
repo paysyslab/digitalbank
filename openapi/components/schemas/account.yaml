@@ -1,0 +1,16 @@
+type: object
+description: Customer Account
+properties:
+  id:
+    $ref: .\id.yaml
+  currency:
+    type: string
+    example: PKR
+    maxLength: 3
+  isDefault:
+    type: boolean
+    example: true
+required:
+  - id
+  - currency
+  - isDefault

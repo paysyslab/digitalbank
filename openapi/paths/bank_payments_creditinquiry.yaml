@@ -1,0 +1,105 @@
+post:
+  summary: creditinquiry
+  tags:
+    - Client Bank API Specs
+  description: >-
+    The purpose of this request to inquire the status of the previously posted
+    credit request or advise.
+
+
+
+    In case if original transaction got timeout, the Open Connect initiate
+    transaction inquiry to the check the transaction faith.
+  operationId: creditinquiry
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: ../code_samples/CURL/bank_payments_creditinquiry/post.sh
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          examples:
+            '0':
+              summary: Success Response Example
+              value:
+                response:
+                  responseCode: '00'
+                  responseDesc: SUCCESS
+                  stan: '010123'
+                  rrn: '010123010123'
+                orgResponse:
+                  orgresponseCode: '00'
+                  orgresponseDesc: SUCCESS
+            '1':
+              summary: Failure Response Example
+              value:
+                response:
+                  responseCode: '00'
+                  responseDesc: SUCCESS
+                  stan: '010123'
+                  rrn: '010123010123'
+                orgResponse:
+                  orgresponseCode: '01'
+                  orgresponseDesc: No transaction found
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  responseCode:
+                    type: string
+                    minLength: 4
+                    maxLength: 4
+                    description: Response code for the request
+                  responseDesc:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Description for the respective response code
+                  rrn:
+                    $ref: ..\components\schemas\rsp_rrn.yaml
+                  stan:
+                    $ref: ..\components\schemas\rsp_stan.yaml
+              orgResponse:
+                type: object
+                properties:
+                  orgresponseCode:
+                    type: string
+                    minLength: 4
+                    maxLength: 4
+                    description: Response code for the original request
+                  orgresponseDesc:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: Description for the respective original response code
+            required:
+              - responseCode
+              - responseDesc
+              - rrn
+              - stan
+              - orgresponseCode
+              - orgresponseDesc
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            error: unauthorized
+            status: 401
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ..\components\schemas\b_CreditInquiry.yaml

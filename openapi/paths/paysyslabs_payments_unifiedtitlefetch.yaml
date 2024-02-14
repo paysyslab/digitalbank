@@ -1,0 +1,155 @@
+post:
+  summary: unifiedtitlefetch
+  tags:
+    - Non Financial API Specs
+  description: >-
+    <a id="unified-tf"></a>
+
+    The unified title fetch is a generic method to get beneficiary (receiver)
+    account details from the member bank.The method is having a following two
+    additional functionalities compare to standard title fetch method:
+
+
+
+    - <b>Preferred Rail</b>: The initiator has provision to set the preferred
+    rail either the title fetch will be done via RAAST or 1LINK. The request
+    parameter will identify the preferred route
+
+
+
+    - <b>Fall-back option</b>: In case if title fetch failed with the preferred
+    rail the system will auto attempt the title fetch from alternate rail. The
+    option is controllable via request parameters.
+  operationId: unifiedtitlefetch
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: ../code_samples/CURL/paysyslabs_payments_unifiedtitlefetch/post.sh
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          examples:
+            '0':
+              summary: Success Response Example
+              value:
+                response:
+                  response_code: '0000'
+                  response_desc: SUCCESS
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+                accountInfo:
+                  title: Muhammad Khan
+                  toAccount: '00653000129536'
+                  destinationPaymentSystem: '01'
+                  iban: PK30BANK0012000230000000
+                participantInfo:
+                  bankIMD: '100271'
+                  bankBIC: NBPBPKKA
+            '1001':
+              summary: No account found
+              value:
+                response:
+                  response_code: '1001'
+                  response_desc: No account found
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    $ref: ..\components\schemas\response_code.yaml
+                  response_desc:
+                    $ref: ..\components\schemas\response_desc.yaml
+              info:
+                type: object
+                properties:
+                  rrn:
+                    $ref: ..\components\schemas\rsp_rrn.yaml
+                  stan:
+                    $ref: ..\components\schemas\rsp_stan.yaml
+                  correlationId:
+                    type: string
+                    minLength: 40
+                    maxLength: 40
+                    description: >-
+                      Unique correlation id for the title fetch request. The
+                      value is in GUID format and will be sent by the initiator
+                      in payment call.
+              title:
+                type: string
+                minLength: 40
+                maxLength: 40
+                description: Beneficiary account title
+              toAccount:
+                type: string
+                minLength: 24
+                maxLength: 24
+                description: Echo back
+              destinationPaymentSystem:
+                type: string
+                minLength: 2
+                maxLength: 2
+                description: |-
+                  Identify the route from which title fetch has completed. 
+
+                  The values are as:
+
+
+                  "01" – For RAAST
+
+
+                  "02" – For 1LINK
+              iban:
+                type: string
+                minLength: 24
+                maxLength: 24
+                description: >-
+                  Beneficiary IBAN, the value will be returned if received from
+                  the scheme in response of title fetch
+              bankIMD:
+                type: string
+                minLength: 8
+                maxLength: 8
+                description: Receiving participant IMD (Member bank id), assigned by 1LINK
+              bankBIC:
+                type: string
+                minLength: 16
+                maxLength: 16
+                description: >-
+                  Receiving participant BIC (bank institution code), assigned by
+                  SBP
+            required:
+              - response_code
+              - response_desc
+              - rrn
+              - stan
+              - correlationId
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            error: unauthorized
+            status: 401
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ..\components\schemas\p_UnifiedTitleFetch.yaml

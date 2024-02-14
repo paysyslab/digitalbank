@@ -1,0 +1,7 @@
+type: object
+description: Representation of remove RAAST ID Relationship with CAS
+properties:
+  info:
+    $ref: .\info.yaml
+  uid:
+    $ref: .\uid.yaml

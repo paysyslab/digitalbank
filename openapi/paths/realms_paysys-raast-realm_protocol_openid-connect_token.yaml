@@ -1,0 +1,63 @@
+post:
+  summary: authentication
+  tags:
+    - Token API SPECS
+  description: >-
+    This method is secure and includes enhancements that allow for more robust
+    security mechanisms, which will ensure that the Open Connect integration is
+    secure and reliable.
+
+
+
+    This is also the centralized authentication mechanism for all the APIs
+    exposed by Open Connect. This will be running as a separate application on
+    specific port.
+  operationId: authenticate
+  security:
+    - clientCredentials: []
+  responses:
+    '200':
+      description: JWT token generated successfully
+      content:
+        application/json:
+          example:
+            access_token: >-
+              eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6b25lcmEiLCJleHAiOjE2MjIwOTk4OTcsImlhdCI6MTYyMjAxMzQ5N30.67UjDFQv4DsE0QtJY_WIYbAQJ20xfTsO-CiMy0fdYIJR1il4hHbd4s4bi7LUDtmZ6-d-ENhq23hpTWTJPUxATA
+            expires_in: 300
+            token_type: Bearer
+            refresh_expires_in: 0
+            not-before-policy: 0
+            scope: profile email
+          schema:
+            type: object
+            properties:
+              access_token:
+                type: string
+                description: >-
+                  This token will be used in all APIs in header with header name
+                  “Authorization”. Token value will be followed by Bearer
+              expires_in:
+                type: integer
+                description: The value is in seconds
+              token_type:
+                type: string
+                description: Bearer
+              refresh_expires_in:
+                type: number
+              not-before-policy:
+                type: number
+              scope:
+                type: string
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            error: unauthorized
+            status: 401
+  requestBody:
+    required: true
+    content:
+      application/x-www-form-urlencoded:
+        schema:
+          $ref: ..\components\schemas\p_Authentication.yaml

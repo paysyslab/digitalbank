@@ -1,0 +1,7 @@
+type: string
+minLength: 12
+maxLength: 12
+description: >-
+  <span style="color: green;">***Unique Retrieval Reference Number***</span>.
+  Can be used to trace the request 
+example: '002236987456'

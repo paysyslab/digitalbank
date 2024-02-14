@@ -1,0 +1,7 @@
+type: string
+minimum: 36
+maxLength: 40
+description: >-
+  <span style="color: green;">***Unique Correlation Id***</span>. The value will
+  be same which channel received in response of title fetch
+example: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0

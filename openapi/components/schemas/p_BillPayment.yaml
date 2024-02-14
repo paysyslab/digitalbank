@@ -1,0 +1,124 @@
+type: object
+description: Representation of Bill Inquiry
+properties:
+  info:
+    type: object
+    properties:
+      rrn:
+        $ref: .\rrn.yaml
+      stan:
+        $ref: .\stan.yaml
+      txndate:
+        $ref: .\txndate.yaml
+      txntime:
+        $ref: .\txntime.yaml
+      inqcorrelationId:
+        type: string
+        minimum: 36
+        maxLength: 40
+        example: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+        description: >-
+          Unique correlation id for the bill inquiry request. The value will be
+          same which channel received in response of bill inquiry
+  billinfo:
+    type: object
+    properties:
+      billerId:
+        type: integer
+        example: 5
+        description: >-
+          The biller id selected by the customer on channel. The value will be
+          same which OC return in [Get Billers List](#biller-list)
+      consumerNo:
+        type: string
+        maxLength: 30
+        example: '03132370605'
+        description: Any value which customer input in bill# or consumer# field.
+      amount:
+        type: number
+        example: 500
+        description: >-
+          Amount of the transaction, bank must follow the scenarios define in
+          the FSD for bill payment and bill amount
+    required:
+      - billerId
+      - consumerNo
+      - amount
+  payerInfo:
+    type: object
+    properties:
+      payerIBAN:
+        type: string
+        minLength: 24
+        maxLength: 24
+        description: Payer IBAN
+        example: PK76MASH1234567890126985
+      payerName:
+        type: string
+        maxLength: 40
+        minLength: 1
+        description: Payer account title
+        example: Payer account title
+      payerCNIC:
+        type: string
+        maxLength: 13
+        minLength: 13
+        description: Payer CNIC
+        example: '1234512345671'
+    required:
+      - payerIBAN
+      - payerName
+      - payerCNIC
+  otherInfo:
+    type: object
+    properties:
+      channel:
+        type: string
+        maxLength: 8
+        description: >-
+          Channel used for payment, the possible [channel type can be seen
+          here](#channel-type)
+        example: '00000002'
+      authId:
+        type: string
+        maxLength: 40
+        description: >-
+          Debit authorization unique reference number return by core banking in
+          response of debit hold request
+        example: '658965'
+    required:
+      - channel
+      - authId
+  reserveFields:
+    type: object
+    properties:
+      r1:
+        type: string
+        minLength: 100
+        maxLength: 100
+        description: Reserved for future use
+        example: ''
+      r2:
+        type: string
+        minLength: 100
+        maxLength: 100
+        description: Reserved for future use
+        example: ''
+      r3:
+        type: string
+        minLength: 100
+        maxLength: 100
+        description: Reserved for future use
+        example: ''
+      r4:
+        type: string
+        minLength: 100
+        maxLength: 100
+        description: Reserved for future use
+        example: ''
+      r5:
+        type: string
+        minLength: 100
+        maxLength: 100
+        description: Reserved for future use
+        example: ''

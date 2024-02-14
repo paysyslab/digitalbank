@@ -1,0 +1,6 @@
+type: string
+minLength: 8
+maxLength: 8
+format: yyyymmdd
+description: Transaction Date
+example: '20231015'

@@ -1,0 +1,4 @@
+type: string
+minLength: 40
+maxLength: 40
+description: Description for the respective response code

@@ -1,0 +1,13 @@
+type: object
+description: Representation of register CAA
+properties:
+  info:
+    $ref: .\info.yaml
+  uid:
+    $ref: .\uid.yaml
+  customerInfo:
+    $ref: .\customerInfo.yaml
+  aliases:
+    type: array
+    items:
+      $ref: .\alias.yaml

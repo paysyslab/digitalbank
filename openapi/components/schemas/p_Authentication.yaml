@@ -1,0 +1,16 @@
+description: Representation of a Authentication
+type: object
+properties:
+  grant_type:
+    type: string
+    example: client_credentials
+  client_id:
+    description: client_id will be provided by PSL TEAM based on channel
+    type: string
+  client_secret:
+    description: client_secret will be provided by PSL TEAM based on channel
+    type: string
+required:
+  - grant_type
+  - client_id
+  - client_secret

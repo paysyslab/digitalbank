@@ -1,0 +1,176 @@
+description: Representation of a Unified Title Fetch
+type: object
+properties:
+  info:
+    type: object
+    properties:
+      rrn:
+        $ref: .\rrn.yaml
+      stan:
+        type: string
+        minLength: 6
+        maxLength: 6
+        description: System trace audit number
+        example: '987456'
+      txndate:
+        type: string
+        minLength: 8
+        maxLength: 8
+        format: yyyymmdd
+        description: Transaction Date
+        example: '20231015'
+      txntime:
+        type: string
+        minLength: 6
+        maxLength: 6
+        format: hhmmss
+        description: Transaction Time
+        example: '182243'
+    required:
+      - rrn
+      - stan
+      - txndate
+      - txntime
+  senderinfo:
+    type: object
+    properties:
+      fromAccount:
+        type: string
+        minLength: 24
+        maxLength: 24
+        description: Sender IBAN
+        example: '05421236547552'
+      fromAccountType:
+        type: string
+        enum:
+          - '00'
+          - '10'
+          - '20'
+          - '30'
+          - '40'
+          - '50'
+          - '60'
+        description: >-
+          Refer to [Sender Account Type
+          Table](#account-type)                       
+      fromAccountCurrency:
+        type: string
+        minLength: 3
+        maxLength: 3
+        description: 3 digits ISO8583 universal currency code
+        example: '586'
+    required:
+      - fromAccount
+      - fromAccountType
+      - fromAccountCurrency
+  receiverinfo:
+    type: object
+    properties:
+      bankId:
+        type: integer
+        description: |-
+          Bank Id returned by the OC in get bank list service response.
+          For more information, see [Endpoint banklist](#bank-list).
+        example: 1
+      toAccount:
+        type: string
+        minLength: 24
+        maxLength: 24
+        description: Beneficiary account# or IBAN
+        example: '00023137343951'
+    required:
+      - bankId
+      - toAccount
+  otherinfo:
+    type: object
+    properties:
+      priorityFlag:
+        type: string
+        minLength: 2
+        maxLength: 2
+        description: |-
+          The field determine the priority rail to perform title fetch.
+
+          | Value | Description   |
+          |-------|---------------|
+          | 01    | For RAAST     |
+          | 02    | For 1LINK     |
+        enum:
+          - '01'
+          - '02'
+        example: '01'
+      fallbackFlag:
+        type: string
+        minLength: 2
+        maxLength: 2
+        description: >-
+          The field determine the fall back feature for the title fetch in case
+          title fetch failed from 
+
+          the 1st switch system will attempt to perform it from alternate route
+          if fall back parameter 
+
+          set to “Yes”.
+
+
+          | Value | Description   |
+
+          |-------|---------------|
+
+          | 01    | YES     |
+
+          | 02    | NO     |
+        enum:
+          - '01'
+          - '02'
+        example: '01'
+      purposeCode:
+        type: string
+        description: >-
+          the acceptable length of this field will depends on the value
+          provided, please refer to [Purpose Code Table](#purp-code) 
+        example: '0320'
+      amount:
+        type: number
+        description: >-
+          Amount of the transaction, it is required as per EFT compliant that
+          receiver must validate credit limit on title fetch to minimize
+          rejection ratio while payment
+        example: 5000
+    required:
+      - priorityFlag
+      - fallbackFlag
+      - amount
+  reserveFields:
+    type: object
+    properties:
+      r1:
+        type: string
+        minLength: 100
+        maxLength: 100
+        description: Reserved for future use
+        example: ''
+      r2:
+        type: string
+        minLength: 100
+        maxLength: 100
+        description: Reserved for future use
+        example: ''
+      r3:
+        type: string
+        minLength: 100
+        maxLength: 100
+        description: Reserved for future use
+        example: ''
+      r4:
+        type: string
+        minLength: 100
+        maxLength: 100
+        description: Reserved for future use
+        example: ''
+      r5:
+        type: string
+        minLength: 100
+        maxLength: 100
+        description: Reserved for future use
+        example: ''

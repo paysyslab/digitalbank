@@ -1,0 +1,26 @@
+type: object
+description: Representation of set Default Account
+properties:
+  info:
+    $ref: .\info.yaml
+  uid:
+    $ref: .\uid.yaml
+  accountInfo:
+    type: object
+    properties:
+      type:
+        $ref: .\alias_type.yaml
+      value:
+        type: string
+        example: '03222507444'
+      iban:
+        type: string
+        example: PK79NBPA0002004137343952
+        maxLength: 35
+      isDefault:
+        type: boolean
+        example: true
+    required:
+      - type
+      - value
+      - iban

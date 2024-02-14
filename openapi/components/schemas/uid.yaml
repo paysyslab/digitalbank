@@ -1,0 +1,20 @@
+type: object
+properties:
+  type:
+    type: string
+    maxLength: 20
+    example: CNIC
+    enum:
+      - CNIC
+      - NICOP
+      - POC
+      - REG_NO
+      - ­NTN
+  value:
+    type: string
+    maxLength: 20
+    description: Customer’s document number
+    example: '4230146389021'
+required:
+  - type
+  - value

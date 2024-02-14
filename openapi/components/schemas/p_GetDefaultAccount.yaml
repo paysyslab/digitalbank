@@ -1,0 +1,37 @@
+description: Representation of a Get Default Account
+type: object
+properties:
+  rrn:
+    $ref: .\rrn.yaml
+  stan:
+    type: string
+    minLength: 6
+    maxLength: 6
+    description: System trace audit number
+    example: '987456'
+  type:
+    type: string
+    description: Type of alias
+    enum:
+      - CNIC
+      - MOBILE
+      - EMAIL
+      - TXT
+    example: MOBILE
+  value:
+    type: string
+    minLength: 40
+    maxLength: 40
+    description: Alias Value
+    example: '03132370605'
+  amount:
+    type: number
+    format: double
+    description: Transaction amount
+    example: 500.54
+required:
+  - rrn
+  - stan
+  - type
+  - value
+  - amount

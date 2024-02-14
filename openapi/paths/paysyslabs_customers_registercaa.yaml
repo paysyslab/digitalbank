@@ -1,0 +1,90 @@
+post:
+  summary: Register Customer Alias Accounts
+  tags:
+    - CAS API Specs
+  description: >-
+    <a id="register-caa"></a>
+
+    As per SBP RAAST ID Linking / delinking guidelines, OC have exposed a custom
+    method in which OC will do following calls sequentially to link customer
+    account with RAAST ID for the first time:  
+
+    - Register Customer Information
+
+    - Activate Customer
+
+    - Account Registration
+
+    - Get Customer Aliases
+
+    - Link Alias to Account          
+  operationId: registercaa
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: ../code_samples/CURL/paysyslabs_customers_registercaa/post.sh
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          examples:
+            '0':
+              summary: Success Response Example
+              value:
+                response:
+                  response_code: '0000'
+                  response_desc: Success
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+            '306':
+              summary: Customer already exists
+              value:
+                response:
+                  response_code: '0306'
+                  response_desc: Customer already exists
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+          schema:
+            type: object
+            properties:
+              response_code:
+                $ref: ..\components\schemas\response_code.yaml
+              response_desc:
+                $ref: ..\components\schemas\response_desc.yaml
+              rrn:
+                $ref: ..\components\schemas\rsp_rrn.yaml
+              stan:
+                $ref: ..\components\schemas\rsp_stan.yaml
+              correlationId:
+                $ref: ..\components\schemas\correlationId.yaml
+            required:
+              - response_code
+              - response_desc
+              - rrn
+              - stan
+              - correlationId
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            error: unauthorized
+            status: 401
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ..\components\schemas\p_RegisterCAA.yaml
