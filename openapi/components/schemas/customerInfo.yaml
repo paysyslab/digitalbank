@@ -1,0 +1,61 @@
+type: object
+properties:
+  documentType:
+    type: string
+    example: CNIC
+    enum:
+      - CNIC
+      - NICOP
+      - POC
+      - REG_NO
+      - ­NTN
+  documentNumber:
+    type: string
+    example: '4230146389021'
+    description: Customer’s document number
+    maxLength: 20
+  name:
+    type: string
+    example: Account Title here
+    description: Customer’s name
+    maxLength: 140
+  surname:
+    type: string
+    example: ''
+    description: Customer’s surname
+    maxLength: 80
+  gender:
+    type: string
+    example: MALE
+    enum:
+      - MALE
+      - FEMA
+      - TRNS
+  birthDate:
+    minLength: 10
+    maxLength: 10
+    type: string
+    example: '1987-01-28'
+    description: Customer’s birth date
+    format: yyyy-mm-dd
+  startDate:
+    type: string
+    minLength: 10
+    maxLength: 10
+    example: '2021-05-15'
+    format: yyyy-mm-dd
+  expirationDate:
+    type: string
+    minLength: 10
+    maxLength: 10
+    example: '2025-05-15'
+    format: yyyy-mm-dd
+required:
+  - documentType
+  - documentNumber
+  - name
+  - surname
+  - gender
+  - birthDate
+  - startDate
+  - expirationDate

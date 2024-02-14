@@ -1,0 +1,74 @@
+post:
+  summary: creditposting
+  tags:
+    - Client Bank API Specs
+  description: "The method is used to credit bank’s customer account whenever payment comes from RAAST. The Open connect sent credit request to the bank’s system using this method in the request mode. In case of rejection Open connect will instantly return payment to sender bank.\n\n\nDescription\tRequest to credit bank’s customer account, the request can be initiated by 1LINK and RAAST for following transactions:\n\n\n•\tIBFT inward payment\n\n•\tRAAST P2P inward payment\n\n•\tRAAST P2P outward return payment"
+  operationId: creditposting
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: ../code_samples/CURL/bank_payments_creditposting/post.sh
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          examples:
+            '0':
+              summary: Success Response Example
+              value:
+                response:
+                  responseCode: '00'
+                  responseDesc: SUCCESS
+                  stan: '010123'
+                  rrn: '010123010123'
+            '1':
+              summary: Failure Response Example
+              value:
+                response:
+                  responseCode: '04'
+                  responseDesc: Credit limit exceed for the account
+                  stan: '010123'
+                  rrn: '010123010123'
+          schema:
+            type: object
+            properties:
+              responseCode:
+                type: string
+                minLength: 4
+                maxLength: 4
+                description: Response code for the request
+              responseDesc:
+                type: string
+                minLength: 40
+                maxLength: 40
+                description: Description for the respective response code
+              rrn:
+                $ref: ..\components\schemas\rsp_rrn.yaml
+              stan:
+                $ref: ..\components\schemas\rsp_stan.yaml
+            required:
+              - responseCode
+              - responseDesc
+              - rrn
+              - stan
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            error: unauthorized
+            status: 401
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ..\components\schemas\b_CreditPosting.yaml

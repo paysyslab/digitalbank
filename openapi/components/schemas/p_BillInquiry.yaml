@@ -1,0 +1,22 @@
+type: object
+description: Representation of Bill Inquiry
+properties:
+  info:
+    $ref: .\info.yaml
+  billinfo:
+    type: object
+    properties:
+      billerId:
+        type: integer
+        description: >-
+          The biller id selected by the customer on channel. The value will be
+          same which OC return in [Get Billers List](#biller-list)
+        example: 5
+      consumerNo:
+        type: string
+        maxLength: 30
+        description: Any value which customer input in bill# or consumer# field.
+        example: '03132370605'
+    required:
+      - billerId
+      - consumerNo

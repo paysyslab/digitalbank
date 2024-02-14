@@ -1,0 +1,16 @@
+description: Representation of a Biller List
+type: object
+properties:
+  info:
+    $ref: .\info.yaml
+  otherinfo:
+    type: object
+    properties:
+      billerCat:
+        type: integer
+        description: >-
+          The biller category code assigned by OC, return in the response of Get
+          Billers Category
+        example: 10002
+    required:
+      - billerCat

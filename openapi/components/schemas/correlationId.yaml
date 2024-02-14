@@ -1,0 +1,6 @@
+type: string
+minLength: 40
+maxLength: 40
+description: >-
+  Unique correlation id for the title fetch request. The value is in GUID format
+  and will be sent by the initiator in payment call.     

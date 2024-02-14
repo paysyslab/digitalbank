@@ -1,0 +1,24 @@
+type: object
+properties:
+  type:
+    $ref: .\alias_type.yaml
+  value:
+    type: string
+    example: '03222507423'
+  status:
+    type: string
+    example: active
+    enum:
+      - active
+      - suspended
+      - inactive
+      - deleted
+  accounts:
+    type: array
+    items:
+      $ref: .\account.yaml
+required:
+  - type
+  - value
+  - status
+  - accounts

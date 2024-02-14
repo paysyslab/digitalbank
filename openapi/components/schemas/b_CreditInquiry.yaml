@@ -1,0 +1,39 @@
+description: Representation of a Bank's Controller Credit Inquiry
+type: object
+properties:
+  info:
+    $ref: .\info.yaml
+  orgTxnInfo:
+    type: object
+    properties:
+      orgtxnrrn:
+        type: string
+        minLength: 12
+        maxLength: 12
+        description: Retrieval reference number
+        example: '002236987456'
+      orgtxnstan:
+        type: string
+        minLength: 6
+        maxLength: 6
+        description: System trace audit number
+        example: '987456'
+      orgtxndate:
+        type: string
+        minLength: 8
+        maxLength: 8
+        format: yyyymmdd
+        description: Transaction Date
+        example: '20231015'
+      orgtxntime:
+        type: string
+        minLength: 6
+        maxLength: 6
+        format: hhmmss
+        description: Transaction Time
+        example: '182243'
+    required:
+      - orgtxnrrn
+      - orgtxnstan
+      - orgtxndate
+      - orgtxntime

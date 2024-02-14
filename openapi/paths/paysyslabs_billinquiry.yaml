@@ -1,0 +1,161 @@
+post:
+  summary: Bill Inquiry
+  tags:
+    - Billing API Specs
+  description: >-
+    <a id="bill-inquiry"></a>
+
+    The primary objective of this API is to retrieve comprehensive bill
+    information before initiating the payment process. This empowers customers
+    to thoroughly review the details and legitimacy of the bill they are about
+    to pay. 
+  operationId: billinquiry
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: ../code_samples/CURL/paysyslabs_billinquiry/post.sh
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          examples:
+            '0':
+              summary: Success Response Example
+              value:
+                response:
+                  response_code: '0000'
+                  response_desc: SUCCESS
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+                billInfo:
+                  billerId: 5
+                  consumerNo: '03132370605'
+                  customerName: Waqas Nizam
+                  billStatus: T
+                  billingMonth: '2310'
+                  dueDate: '231029'
+                  amountWithinDueDate: '5100'
+                  amountAfterDueDate: '5300'
+                  source: '01'
+            '288':
+              summary: Customer Not Found
+              value:
+                response:
+                  response_code: '0288'
+                  response_desc: 'Customer Not Found '
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+          schema:
+            type: object
+            properties:
+              response_code:
+                $ref: ..\components\schemas\response_code.yaml
+              response_desc:
+                $ref: ..\components\schemas\response_desc.yaml
+              rrn:
+                $ref: ..\components\schemas\rsp_rrn.yaml
+              stan:
+                $ref: ..\components\schemas\rsp_stan.yaml
+              correlationId:
+                type: string
+                minLength: 36
+                maxLength: 40
+                description: >-
+                  Unique correlation id for the bill inquiry request. The value
+                  is in GUID format and will be sent by the initiator in payment
+                  call.
+              billerId:
+                type: integer
+                description: Echo back from request
+              consumerNo:
+                type: string
+                minLength: 1
+                maxLength: 24
+                description: Echo back from request
+              customerName:
+                type: string
+                minLength: 1
+                maxLength: 40
+                description: >-
+                  Customer name or bill title, the value will be sent by the
+                  biller. In case of mobile top-up, it can be blank.
+              billStatus:
+                type: string
+                description: |-
+                  Possible values are:
+
+                  | Status            | Description          |
+                  |-------------------|----------------------|
+                  | U                 | Unpaid               |
+                  | P                 | Paid                 |
+                  | T                 | Partial payment      |
+                  | B                 | Blocked              |
+                minLength: 1
+                maxLength: 1
+                enum:
+                  - U
+                  - P
+                  - T
+                  - B
+              billingMonth:
+                type: string
+                minLength: 4
+                maxLength: 4
+                pattern: yyMM
+              dueDate:
+                type: string
+                minLength: 6
+                maxLength: 6
+                pattern: yyMMdd
+              amountWithinDueDate:
+                type: number
+                description: Amount to be paid by customer if bill is not due
+              amountAfterDueDate:
+                type: number
+                description: Amount to be paid by customer if bill has been due
+              source:
+                type: string
+                maxLength: 2
+                minLength: 2
+                description: |-
+                  Aggregator from which bill inquiry has been performed
+                  | Code  | Organization   |
+                  |-------|----------------|
+                  | 02    | 1LINK          |
+                  | 03    | NADRA          |
+                enum:
+                  - '02'
+                  - '03'
+            required:
+              - response_code
+              - response_desc
+              - rrn
+              - stan
+              - correlationId
+              - billerId
+              - consumerNo
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            error: unauthorized
+            status: 401
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ..\components\schemas\p_BillInquiry.yaml

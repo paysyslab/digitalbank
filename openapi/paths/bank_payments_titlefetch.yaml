@@ -1,0 +1,118 @@
+post:
+  summary: titlefetch
+  tags:
+    - Client Bank API Specs
+  description: >-
+    The service will be exposed by the bank. The purpose of the method is to
+    allow member banks and schemes such as RAAST or 1LINK to get customer
+    account info which is known as Title fetch request.
+
+
+
+    The title fetch usually comes before payment request where sender wants to
+    verify beneficiary account title and account validation to make sure payment
+    will be sent into the beneficiary account.
+  operationId: titlefetch
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: ../code_samples/CURL/bank_payments_titlefetch/post.sh
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          examples:
+            '0':
+              summary: Success Response Example
+              value:
+                response:
+                  responseCode: '00'
+                  responseDesc: Success
+                  stan: '010123'
+                  rrn: '010123010123'
+                receiverInfo:
+                  account: '03132370605'
+                  iban: PK98MASH0000003132370605
+                  title: Waqas Nizam
+                  mobile: '03132370605'
+                  identity:
+                    - idType: CNIC
+                      idValue: '1234512345671'
+                    - idType: Passport
+                      idValue: AX59856321
+                    - idType: NTN
+                      idValue: '6598532102'
+            '1':
+              summary: Failure Response Example
+              value:
+                response:
+                  responseCode: '01'
+                  responseDesc: Invalid account or no account found
+                  stan: '010123'
+                  rrn: '010123010123'
+          schema:
+            type: object
+            properties:
+              responseCode:
+                type: string
+                minLength: 4
+                maxLength: 4
+                description: Response code for the request
+              responseDesc:
+                type: string
+                minLength: 40
+                maxLength: 40
+                description: Description for the respective response code
+              rrn:
+                $ref: ..\components\schemas\rsp_rrn.yaml
+              stan:
+                $ref: ..\components\schemas\rsp_stan.yaml
+              account:
+                type: string
+                minLength: 24
+                maxLength: 24
+                description: Receiver account (Echo back)
+              iban:
+                type: string
+                minLength: 24
+                maxLength: 24
+                description: Receiver IBAN
+              title:
+                type: string
+                minLength: 40
+                maxLength: 40
+                description: Receiver account title
+              mobile:
+                type: string
+                minLength: 11
+                maxLength: 11
+                description: Receiver mobile number
+              idType:
+                type: string
+                minLength: 20
+                maxLength: 20
+                description: "Receiver account id type available in bank’s profile. Bank may return list of id type and values in case of joint account and if bank’s have multiple identity values for a customer. \n\n\nThe id types are as:\n\n\n•\tCNIC\n\n•\tNIC\n\n•\tNICOP\n\n•\tPOC\n\n•\tNTN\n\n•\tPASSPORT\n\n•\tREGNUM (Registration Number"
+              idValue:
+                type: string
+                minLength: 40
+                maxLength: 40
+                description: Identity value of respective identity type
+            required:
+              - responseCode
+              - responseDesc
+              - rrn
+              - stan
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ..\components\schemas\b_TitleFetch.yaml

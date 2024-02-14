@@ -1,0 +1,68 @@
+get:
+  summary: Biller Category
+  tags:
+    - Billing API Specs
+  description: |-
+    <a id="bill-cat"></a>
+    get the list of billers categories to organize billers list at channel 
+  operationId: billercat
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: ../code_samples/CURL/paysyslabs_billercat/get.sh
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          examples:
+            '0':
+              summary: Success Response Example
+              value:
+                response:
+                  response_code: '0000'
+                  response_desc: Success
+                catList:
+                  - catId: 10001
+                    catName: Electricity
+                  - catId: 10002
+                    catName: Telcos
+                  - catId: 10003
+                    catName: Government Payments
+            '401':
+              summary: Failure with No data found
+              value:
+                response:
+                  response_code: '0401'
+                  response_desc: No data found
+          schema:
+            type: object
+            properties:
+              response_code:
+                $ref: ..\components\schemas\response_code.yaml
+              response_desc:
+                $ref: ..\components\schemas\response_desc.yaml
+              catId:
+                type: integer
+                description: Category Id, assigned by Open Connect
+              catName:
+                type: string
+                description: Category Name
+                maxLength: 20
+            required:
+              - response_code
+              - response_desc
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            error: unauthorized
+            status: 401

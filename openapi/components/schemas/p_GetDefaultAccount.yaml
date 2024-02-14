@@ -1,0 +1,29 @@
+description: Representation of a Get Default Account
+type: object
+properties:
+  info:
+    $ref: .\info.yaml
+  receiverinfo:
+    type: object
+    properties:
+      type:
+        type: string
+        description: Type of alias
+        enum:
+          - CNIC
+          - MOBILE
+          - EMAIL
+          - TXT
+        example: MOBILE
+      value:
+        type: string
+        minLength: 40
+        maxLength: 40
+        description: Alias Value
+        example: '03132370605'
+    required:
+      - type
+      - value
+required:
+  - info
+  - receiverinfo

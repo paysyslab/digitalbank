@@ -1,0 +1,154 @@
+get:
+  summary: banklist
+  tags:
+    - Non Financial API Specs
+  description: |-
+    <a id="bank-list"></a>
+    Request to get institution list
+  operationId: banklist
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: ../code_samples/CURL/paysyslabs_banklist/get.sh
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          examples:
+            '0':
+              summary: Success Response Example
+              value:
+                response:
+                  response_code: '0000'
+                  response_desc: SUCCESS
+                participants:
+                  - bankId: 1
+                    bankDisplayName: National bank of Pakistan
+                    bankShortBIC: NBPBPKKA
+                    bankBIC: NBPBPKKAXXX
+                    bankIMD: '601492'
+                    accountNumberHelp: 'Please provide 14 digits NBP account # or IBAN'
+                    accountNumberREGEX: ^[0-9]+$
+                    isAvailable1LINKIBFT: 'Y'
+                    isAvailableRAASTP2P: 'Y'
+                    isAvailableRAASTBulk: 'Y'
+                    isAvailableRAASTP2M: 'N'
+                    isAvailableRAASTP2MRTP: 'N'
+                    isAvailableRAASTP2MPISP: 'N'
+                  - bankId: 2
+                    bankDisplayName: Telenor Microfinance Bank
+                    bankShortBIC: TMFBPKKA
+                    bankBIC: TMFBPKKAXXX
+                    bankIMD: '220872'
+                    accountNumberHelp: 'Please provide 11 digits mobile # or IBAN for beneficiary'
+                    accountNumberREGEX: ^[0-9]+$
+                    isAvailable1LINKIBFT: 'Y'
+                    isAvailableRAASTP2P: 'Y'
+                    isAvailableRAASTBulk: 'Y'
+                    isAvailableRAASTP2M: 'Y'
+                    isAvailableRAASTP2MRTP: 'Y'
+                    isAvailableRAASTP2MPISP: 'N'
+            '3001':
+              summary: Failure with No data found
+              value:
+                response:
+                  response_code: '3001'
+                  response_desc: No data found
+          schema:
+            type: object
+            properties:
+              response_code:
+                $ref: ..\components\schemas\response_code.yaml
+              response_desc:
+                $ref: ..\components\schemas\response_desc.yaml
+              bankId:
+                type: integer
+                description: Bank id assigned by open connect
+              bankDisplayName:
+                type: string
+                minLength: 20
+                maxLength: 20
+                description: Bank name
+              bankShortBIC:
+                type: string
+                minLength: 16
+                maxLength: 16
+                description: Bank BIC assigned by SBP
+              bankBIC:
+                type: string
+                minLength: 16
+                maxLength: 16
+                description: Bank BIC assigned by SBP
+              bankIMD:
+                type: string
+                minLength: 6
+                maxLength: 6
+                description: Bank IMD assigned by 1LINK
+              accountNumberHelp:
+                type: string
+                minLength: 200
+                maxLength: 200
+                description: >-
+                  Help Text which can be used to show format to customer on
+                  screen in user readable form.
+              accountNumberREGEX:
+                type: string
+                minLength: 200
+                maxLength: 200
+                description: >-
+                  Account # format, the field will be displayed to user where
+                  user input beneficiary account #
+              isAvailable1LINKIBFT:
+                type: string
+                minLength: 1
+                maxLength: 1
+                description: Indicate bank support IBFT payments followed by “Y” or “N”
+              isAvailableRAASTP2P:
+                type: string
+                minLength: 1
+                maxLength: 1
+                description: Indicate bank support P2P payments followed by “Y” or “N”
+              isAvailableRAASTBulk:
+                type: string
+                minLength: 1
+                maxLength: 1
+                description: >-
+                  Indicate bank support RAAST bulk receiving payments followed
+                  by “Y” or “N”
+              isAvailableRAASTP2M:
+                type: string
+                minLength: 1
+                maxLength: 1
+                description: Indicate bank support P2M payments followed by “Y” or “N”
+              isAvailableRAASTP2MRTP:
+                type: string
+                minLength: 1
+                maxLength: 1
+                description: >-
+                  Indicate bank support P2M “request to pay” payments followed
+                  by “Y” or “N”
+              isAvailableRAASTP2MPISP:
+                type: string
+                minLength: 1
+                maxLength: 1
+                description: >-
+                  Indicate bank support RAAST PISP features followed by “Y” or
+                  “N”
+            required:
+              - response_code
+              - response_desc
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            error: unauthorized
+            status: 401

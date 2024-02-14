@@ -1,0 +1,13 @@
+type: object
+description: Representation of One STep Registration
+properties:
+  info:
+    $ref: .\info.yaml
+  uid:
+    $ref: .\uid.yaml
+  customerInfo:
+    $ref: .\customerInfo.yaml
+  aliases:
+    type: array
+    items:
+      $ref: .\alias.yaml

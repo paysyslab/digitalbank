@@ -1,0 +1,8 @@
+type: object
+properties:
+  iban:
+    type: string
+    example: PK79NBPA0002004137343952
+    maxLength: 35
+required:
+  - iban

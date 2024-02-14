@@ -1,0 +1,74 @@
+post:
+  summary: creditadvise
+  tags:
+    - Client Bank API Specs
+  description: "Advise means where bank is responsible to credit amount into the receiver account. As a guaranteed delivery mechanism (SAF), OC will be sent credit request as advise to bank’s system via SAF mechanism.\n\n\nThis method will be used in any of below case:\n\n\n•\t1LINK incoming credit advise\n\n•\tRAAST P2P Inward return payments, this happens when previously made outward P2P payment failed at receiving bank end and bank initiate return after sometime.\n\n•\tRAAST P2P Timeout transactions"
+  operationId: creditadvise
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: ../code_samples/CURL/bank_payments_creditadvise/post.sh
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          examples:
+            '0':
+              summary: Success Response Example
+              value:
+                response:
+                  responseCode: '00'
+                  responseDesc: SUCCESS
+                  stan: '010123'
+                  rrn: '010123010123'
+            '1':
+              summary: Failure Response Example
+              value:
+                response:
+                  responseCode: '09'
+                  responseDesc: Duplicate transaction
+                  stan: '010123'
+                  rrn: '010123010123'
+          schema:
+            type: object
+            properties:
+              responseCode:
+                type: string
+                minLength: 4
+                maxLength: 4
+                description: Response code for the request
+              responseDesc:
+                type: string
+                minLength: 40
+                maxLength: 40
+                description: Description for the respective response code
+              rrn:
+                $ref: ..\components\schemas\rsp_rrn.yaml
+              stan:
+                $ref: ..\components\schemas\rsp_stan.yaml
+            required:
+              - responseCode
+              - responseDesc
+              - rrn
+              - stan
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            error: unauthorized
+            status: 401
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ..\components\schemas\b_CreditAdvise.yaml

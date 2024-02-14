@@ -1,0 +1,80 @@
+description: Representation of a Bank's Controller Title Fetch
+type: object
+properties:
+  info:
+    type: object
+    properties:
+      rrn:
+        $ref: .\rrn.yaml
+      stan:
+        $ref: .\stan.yaml
+      txndate:
+        $ref: .\txndate.yaml
+      txntime:
+        $ref: .\txntime.yaml
+      initiator:
+        type: string
+        description: Fixed value from any of them
+        enum:
+          - 1LINK
+          - RAAST
+        example: RAAST
+    required:
+      - rrn
+      - stan
+      - txndate
+      - txntime
+      - initiator
+  receiverinfo:
+    type: object
+    properties:
+      toAccount:
+        type: string
+        minLength: 24
+        maxLength: 24
+        description: Beneficiary account# or IBAN
+        example: PK76NBPA1234567890000999
+    required:
+      - toAccount
+  paymentInfo:
+    type: object
+    properties:
+      amount:
+        type: number
+        description: Amount of the transaction, it can be zero.
+        example: 5000
+    required:
+      - amount
+  reserveFields:
+    type: object
+    properties:
+      r1:
+        type: string
+        minLength: 100
+        maxLength: 100
+        description: Reserved for future use
+        example: ''
+      r2:
+        type: string
+        minLength: 100
+        maxLength: 100
+        description: Reserved for future use
+        example: ''
+      r3:
+        type: string
+        minLength: 100
+        maxLength: 100
+        description: Reserved for future use
+        example: ''
+      r4:
+        type: string
+        minLength: 100
+        maxLength: 100
+        description: Reserved for future use
+        example: ''
+      r5:
+        type: string
+        minLength: 100
+        maxLength: 100
+        description: Reserved for future use
+        example: ''

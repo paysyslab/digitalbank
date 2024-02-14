@@ -1,0 +1,4 @@
+type: string
+minLength: 12
+maxLength: 12
+description: Echo back

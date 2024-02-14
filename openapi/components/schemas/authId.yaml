@@ -1,0 +1,7 @@
+type: string
+minLength: 40
+maxLength: 40
+description: >-
+  <span style="color: green;">***Debit authorization unique reference number
+  return by core banking***</span> in response of debit hold request
+example: '654123'
