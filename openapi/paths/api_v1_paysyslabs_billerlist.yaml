@@ -1,0 +1,131 @@
+post:
+  summary: Biller List
+  tags:
+    - Billing API Specs
+  description: >-
+    <a id="biller-list"></a>
+
+    The purpose of the Biller List API is to facilitate seamless integration
+    between middleware and digital channels. This integration process is
+    especially important when aggregators bring new billers on board and issue
+    notifications to financial institutions, requesting the activation of these
+    billers on their digital platforms. The Open Connect (OC) system plays a
+    crucial role in managing a local repository that contains information about
+    these billers and their transaction configurations.</br></br>When the
+    aggregator issues a memo to enable new billers, the OC system promptly
+    updates its local repository with this information. Additionally, the Biller
+    List API allows the OC system to provide detailed attributes of each biller,
+    including whether the minimum and maximum limits for each biller's
+    transactions. This ensures that financial institutions have access to
+    up-to-date information and can provide a seamless experience to their
+    customers when making payments to these billers.
+  operationId: billerlist
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: ../code_samples/CURL/api_v1_paysyslabs_billerlist/post.sh
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          examples:
+            '0':
+              summary: Success Response Example
+              value:
+                response:
+                  response_code: '0000'
+                  response_desc: SUCCESS
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+                billers:
+                  - billerId: '1'
+                    billerName: Zong Prepaid
+                    minimumAmount: 100
+                    maximumAmount: 10000
+                  - billerId: '2'
+                    billerName: Zong Postpaid
+                    minimumAmount: 100
+                    maximumAmount: 10000
+                  - billerId: '3'
+                    billerName: Ufone Prepaid
+                    minimumAmount: 50
+                    maximumAmount: 5000
+            '1':
+              summary: Invalid category code
+              value:
+                response:
+                  response_code: '0001'
+                  response_desc: Invalid category code
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+          schema:
+            type: object
+            properties:
+              response_code:
+                $ref: ..\components\schemas\response_code.yaml
+              response_desc:
+                $ref: ..\components\schemas\response_desc.yaml
+              rrn:
+                $ref: ..\components\schemas\rsp_rrn.yaml
+              stan:
+                $ref: ..\components\schemas\rsp_stan.yaml
+              correlationId:
+                type: string
+                minLength: 40
+                maxLength: 40
+                description: Unique correlation id for the request
+              billerId:
+                type: string
+                minLength: 1
+                maxLength: 40
+                description: Biller unique id assigned by OC
+              billerName:
+                type: string
+                minLength: 1
+                maxLength: 24
+                description: Biller name, same will be show to user
+              minimumAmount:
+                type: number
+                description: >-
+                  Minimum amount for the transaction, if this field do not
+                  appear with biller details it means there is no limit cap
+                  applied for the transaction. However, channel limit will be
+                  managed by the channel middleware.
+              maximumAmount:
+                type: number
+                description: >-
+                  Maximum amount for the transaction, if this field do not
+                  appear with biller details it means there is no limit cap
+                  applied for the transaction. However, channel limit will be
+                  managed by the channel middleware.
+            required:
+              - response_code
+              - response_desc
+              - rrn
+              - stan
+              - correlationId
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            error: unauthorized
+            status: 401
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ..\components\schemas\p_Billerlist.yaml

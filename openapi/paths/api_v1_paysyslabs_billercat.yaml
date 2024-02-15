@@ -1,0 +1,132 @@
+get:
+  summary: Biller Category
+  tags:
+    - Billing API Specs
+  description: |-
+    <a id="bill-cat"></a>
+    get the list of billers categories to organize billers list at channel 
+  operationId: billercat
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: ../code_samples/CURL/api_v1_paysyslabs_billercat/get.sh
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          examples:
+            '0':
+              summary: Success Response Example
+              value:
+                response:
+                  response_code: '0000'
+                  response_desc: Success
+                catList:
+                  - catId: 1
+                    catName: Electricity
+                  - catId: 2
+                    catName: Water
+                  - catId: 3
+                    catName: Gas
+                  - catId: 4
+                    catName: Landline
+                  - catId: 5
+                    catName: Broadband ISP
+                  - catId: 6
+                    catName: Mobile Topup
+                  - catId: 7
+                    catName: Ufone Super Card
+                  - catId: 8
+                    catName: Mobile Packages
+                  - catId: 9
+                    catName: Person to Government
+                  - catId: 10
+                    catName: Tax Payments
+                  - catId: 11
+                    catName: Education
+                  - catId: 12
+                    catName: 1 Bill
+                  - catId: 13
+                    catName: Insurance Services
+                  - catId: 14
+                    catName: Investments
+                  - catId: 15
+                    catName: E-Payment
+                  - catId: 16
+                    catName: Sports
+                  - catId: 17
+                    catName: Others
+                  - catId: 18
+                    catName: Financial Services
+                  - catId: 19
+                    catName: Airline
+                  - catId: 20
+                    catName: Asset Management
+                  - catId: 21
+                    catName: Charity/NGO
+                  - catId: 22
+                    catName: Clubs
+                  - catId: 23
+                    catName: Courier
+                  - catId: 24
+                    catName: Credit Card
+                  - catId: 25
+                    catName: E-Commerce
+                  - catId: 26
+                    catName: Fintech
+                  - catId: 27
+                    catName: FMCG & Energy
+                  - catId: 28
+                    catName: Health and Fitness
+                  - catId: 29
+                    catName: Hospitals
+                  - catId: 30
+                    catName: Information Technology  Services (ITS)
+                  - catId: 31
+                    catName: Real Estate /Constructions
+                  - catId: 32
+                    catName: Tracker Services
+                  - catId: 33
+                    catName: Transporation Services
+                  - catId: 34
+                    catName: Travel and Tours
+                  - catId: 35
+                    catName: Utility
+            '401':
+              summary: Failure with No data found
+              value:
+                response:
+                  response_code: '0401'
+                  response_desc: No data found
+          schema:
+            type: object
+            properties:
+              response_code:
+                $ref: ..\components\schemas\response_code.yaml
+              response_desc:
+                $ref: ..\components\schemas\response_desc.yaml
+              catId:
+                type: integer
+                description: Category Id, assigned by Open Connect
+              catName:
+                type: string
+                description: Category Name
+                maxLength: 20
+            required:
+              - response_code
+              - response_desc
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            error: unauthorized
+            status: 401

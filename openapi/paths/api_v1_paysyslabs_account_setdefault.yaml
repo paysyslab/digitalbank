@@ -1,0 +1,84 @@
+post:
+  summary: Set Default Account for Alias
+  tags:
+    - CAS API Specs
+  description: >-
+    <a id="set-default-account"></a>
+
+    The purpose of this API is to facilitate users who have multiple accounts
+    within their organization. These users have already registered multiple
+    accounts and now wish to change the default account associated with a
+    specific RAAST ID. To achieve this, users are not required to go through the
+    linking or delinking process. Instead, they will be presented with a list of
+    linked accounts and can effortlessly designate any of these linked accounts
+    as their new default account.    
+  operationId: setdefault
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: ../code_samples/CURL/api_v1_paysyslabs_account_setdefault/post.sh
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          examples:
+            '0':
+              summary: Success Response Example
+              value:
+                response:
+                  response_code: '0000'
+                  response_desc: Success
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+            '305':
+              summary: Cannot find customer
+              value:
+                response:
+                  response_code: '0305'
+                  response_desc: Cannot find customer
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+          schema:
+            type: object
+            properties:
+              response_code:
+                $ref: ..\components\schemas\response_code.yaml
+              response_desc:
+                $ref: ..\components\schemas\response_desc.yaml
+              rrn:
+                $ref: ..\components\schemas\rsp_rrn.yaml
+              stan:
+                $ref: ..\components\schemas\rsp_stan.yaml
+              correlationId:
+                $ref: ..\components\schemas\correlationId.yaml
+            required:
+              - response_code
+              - response_desc
+              - rrn
+              - stan
+              - correlationId
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            error: unauthorized
+            status: 401
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ..\components\schemas\p_SetDefaultAccount.yaml

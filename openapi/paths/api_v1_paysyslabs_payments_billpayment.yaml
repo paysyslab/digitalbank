@@ -1,0 +1,81 @@
+post:
+  summary: Bill payment
+  tags:
+    - Payment API Specs
+  description: >-
+    <a id="bill-pay"></a>
+
+    The primary objective of this API is to transmit payment requests to billing
+    aggregators.This meticulous approach guarantees that the bill payment
+    process is executed securely, in full compliance with all the necessary
+    criteria and standards.
+  operationId: billpayment
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: ../code_samples/CURL/api_v1_paysyslabs_payments_billpayment/post.sh
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          examples:
+            '0':
+              summary: Success Response Example
+              value:
+                response:
+                  response_code: '0000'
+                  response_desc: Success
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+            '468':
+              summary: Mandatory parameters not provided
+              value:
+                response:
+                  response_code: '0468'
+                  response_desc: Mandatory parameters not provided
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+          schema:
+            type: object
+            properties:
+              response_code:
+                $ref: ..\components\schemas\response_code.yaml
+              response_desc:
+                $ref: ..\components\schemas\response_desc.yaml
+              rrn:
+                $ref: ..\components\schemas\rsp_rrn.yaml
+              stan:
+                $ref: ..\components\schemas\rsp_stan.yaml
+              correlationId:
+                $ref: ..\components\schemas\correlationId.yaml
+            required:
+              - response_code
+              - response_desc
+              - rrn
+              - stan
+              - correlationId
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            error: unauthorized
+            status: 401
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ..\components\schemas\p_BillPayment.yaml

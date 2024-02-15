@@ -10,7 +10,7 @@ info:
     name: Paysys Labs
     url: https://www.paysyslabs.com/
 servers:
-  - url: https://apigw.paysyslabs.com/api/v1
+  - url: https://apigw.paysyslabs.com
     description: Production server
 security:
   - jwtToken: []
@@ -34,36 +34,36 @@ tags:
 paths:
   /realms/paysys-raast-realm/protocol/openid-connect/token:
     $ref: paths/realms_paysys-raast-realm_protocol_openid-connect_token.yaml
-  /paysyslabs/payments/unifiedtitlefetch:
-    $ref: paths/paysyslabs_payments_unifiedtitlefetch.yaml
-  /paysyslabs/alias/getdefaultaccount:
-    $ref: paths/paysyslabs_alias_getdefaultaccount.yaml
-  /paysyslabs/banklist:
-    $ref: paths/paysyslabs_banklist.yaml
-  /paysyslabs/payments/ibfttransfer:
-    $ref: paths/paysyslabs_payments_ibfttransfer.yaml
-  /paysyslabs/payments/directposting:
-    $ref: paths/paysyslabs_payments_directposting.yaml
-  /paysyslabs/payments/billpayment:
-    $ref: paths/paysyslabs_payments_billpayment.yaml
-  /paysyslabs/billercat:
-    $ref: paths/paysyslabs_billercat.yaml
-  /paysyslabs/billerlist:
-    $ref: paths/paysyslabs_billerlist.yaml
-  /paysyslabs/billinquiry:
-    $ref: paths/paysyslabs_billinquiry.yaml
-  /paysyslabs/customers/one-step:
-    $ref: paths/paysyslabs_customers_one-step.yaml
-  /paysyslabs/customers/registercaa:
-    $ref: paths/paysyslabs_customers_registercaa.yaml
-  /paysyslabs/account/delinkaccountalias:
-    $ref: paths/paysyslabs_account_delinkaccountalias.yaml
-  /paysyslabs/account/linkaccountalias:
-    $ref: paths/paysyslabs_account_linkaccountalias.yaml
-  /paysyslabs/account/setdefault:
-    $ref: paths/paysyslabs_account_setdefault.yaml
-  /paysyslabs/customers/delete:
-    $ref: paths/paysyslabs_customers_delete.yaml
+  /api/v1/paysyslabs/payments/unifiedtitlefetch:
+    $ref: paths/api_v1_paysyslabs_payments_unifiedtitlefetch.yaml
+  /api/v1/paysyslabs/alias/getdefaultaccount:
+    $ref: paths/api_v1_paysyslabs_alias_getdefaultaccount.yaml
+  /api/v1/paysyslabs/banklist:
+    $ref: paths/api_v1_paysyslabs_banklist.yaml
+  /api/v1/paysyslabs/payments/ibfttransfer:
+    $ref: paths/api_v1_paysyslabs_payments_ibfttransfer.yaml
+  /api/v1/paysyslabs/payments/directposting:
+    $ref: paths/api_v1_paysyslabs_payments_directposting.yaml
+  /api/v1/paysyslabs/payments/billpayment:
+    $ref: paths/api_v1_paysyslabs_payments_billpayment.yaml
+  /api/v1/paysyslabs/billercat:
+    $ref: paths/api_v1_paysyslabs_billercat.yaml
+  /api/v1/paysyslabs/billerlist:
+    $ref: paths/api_v1_paysyslabs_billerlist.yaml
+  /api/v1/paysyslabs/billinquiry:
+    $ref: paths/api_v1_paysyslabs_billinquiry.yaml
+  /api/v1/paysyslabs/customers/one-step:
+    $ref: paths/api_v1_paysyslabs_customers_one-step.yaml
+  /api/v1/paysyslabs/customers/registercaa:
+    $ref: paths/api_v1_paysyslabs_customers_registercaa.yaml
+  /api/v1/paysyslabs/account/delinkaccountalias:
+    $ref: paths/api_v1_paysyslabs_account_delinkaccountalias.yaml
+  /api/v1/paysyslabs/account/linkaccountalias:
+    $ref: paths/api_v1_paysyslabs_account_linkaccountalias.yaml
+  /api/v1/paysyslabs/account/setdefault:
+    $ref: paths/api_v1_paysyslabs_account_setdefault.yaml
+  /api/v1/paysyslabs/customers/delete:
+    $ref: paths/api_v1_paysyslabs_customers_delete.yaml
   /bank/payments/titlefetch:
     $ref: paths/bank_payments_titlefetch.yaml
   /bank/payments/creditposting:

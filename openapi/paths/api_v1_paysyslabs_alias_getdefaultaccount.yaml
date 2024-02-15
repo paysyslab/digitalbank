@@ -1,0 +1,178 @@
+post:
+  summary: Get Default Account
+  tags:
+    - Non Financial API Specs
+  description: >-
+    <a id="get-default-account"></a>
+
+    The request will be used to fetch beneficiary account details via RAAST ID. 
+
+
+
+    A "RAAST ID" is a unique identifier assigned to an individual for the
+    purpose of collecting funds. This ID is registered through the individual's
+    bank, which is then integrated into the State Bank of Pakistan's Central
+    Addressing Scheme (CAS). This integration allows individuals to receive
+    funds without the need to divulge their complete bank account details,
+    including account number, bank and branch information.
+
+
+
+    When a payee has to receive funds, they only need to provide their RAAST ID.
+    The CAS system manages the beneficiary's account details and associated
+    information. This information is shared when a payer initiates a fund
+    transfer via a bank's digital channel, using the payee's RAAST ID. This
+    streamlined process enhances the efficiency and security of interbank fund
+    transfers by simplifying the recipient's identification and fund collection.
+  operationId: getdefaultaccount
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source: >
+        curl -X POST \
+
+        --url
+        'https://apigw.paysyslabs.com/api/v1.3/paysyslabs/alias/getdefaultaccount'
+        \
+
+        --header 'Content-Type: application/json' \
+
+        --header 'Authorization: Bearer
+        eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0ZWxlbm9yfGliIiwiZXhwIjoxNjc3OTMyNDYyLCJpYXQiOjE2Nzc4NDYwNjJ9.ayCCTTt1YGD9Kc_p0XM3X5meYrCYB5-M2LblBG8iQ3TiEEfsNc7imeRkxJwkXoxGZAxBsTeyd50dX3wdhB7big'            
+
+        --data '{
+          "info": {
+            "rrn": "002236987456",
+            "stan": "987456",
+            "txndate": "20231015",
+            "txntime": "182243"
+          },
+          "receiverinfo": {
+            "type": "MOBILE",
+            "value": "03132370605"
+          }
+        }'
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          examples:
+            '0':
+              summary: Success Response Example
+              value:
+                response:
+                  response_code: '0000'
+                  response_desc: SUCCESS
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+                accountInfo:
+                  surname: Mr.
+                  name: Waqas
+                  destinationPaymentSystem: '01'
+                  iban: PK19SONE0000220006493697
+                  currency: PKR
+                  type: DFLT
+                participantInfo:
+                  bankBIC: SONEPKKA
+            '1':
+              summary: Cannot find account
+              value:
+                response:
+                  response_code: '0001'
+                  response_desc: Account Not Found
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+          schema:
+            type: object
+            properties:
+              response_code:
+                $ref: ..\components\schemas\response_code.yaml
+              response_desc:
+                $ref: ..\components\schemas\response_desc.yaml
+              rrn:
+                $ref: ..\components\schemas\rsp_rrn.yaml
+              stan:
+                $ref: ..\components\schemas\rsp_stan.yaml
+              correlationId:
+                type: string
+                minLength: 40
+                maxLength: 40
+                description: >-
+                  Unique correlation id for the title fetch request. The value
+                  is in GUID format and will be sent by the initiator in payment
+                  call.
+              surname:
+                type: string
+                minLength: 40
+                maxLength: 40
+                description: Beneficiary surname
+              name:
+                type: string
+                minLength: 40
+                maxLength: 40
+                description: Beneficiary nick name registered in central addressing scheme
+              destinationPaymentSystem:
+                type: string
+                description: |-
+                  Identify the route from which title fetch has completed.
+                  The values are as:
+                    “01” – For RAAST
+                    “02” – For 1LINK
+                    
+              currency:
+                type: string
+                minLength: 3
+                maxLength: 3
+                description: Receiver account currency
+              type:
+                type: string
+                minLength: 4
+                maxLength: 4
+                description: Receiver account type. The value will be like “DFLT”
+              bankBIC:
+                type: string
+                minLength: 16
+                maxLength: 16
+                description: >-
+                  Receiving participant BIC (bank institution code), assigned by
+                  SBP
+              iban:
+                type: string
+                minLength: 24
+                maxLength: 24
+                description: Receiver IBAN
+            required:
+              - response_code
+              - response_desc
+              - rrn
+              - stan
+              - correlationId
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            error: unauthorized
+            status: 401
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ..\components\schemas\p_GetDefaultAccount.yaml
+  x-code-samples:
+    - lang: shell
+      source:
+        $ref: >-
+          ../code_samples/shell/api_v1_paysyslabs_alias_getdefaultaccount/post.sh

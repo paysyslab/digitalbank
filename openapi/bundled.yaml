@@ -10,7 +10,7 @@ info:
     name: Paysys Labs
     url: https://www.paysyslabs.com/
 servers:
-  - url: https://apigw.paysyslabs.com/api/v1
+  - url: https://apigw.paysyslabs.com
     description: Production server
 security:
   - jwtToken: []
@@ -86,7 +86,7 @@ paths:
           application/x-www-form-urlencoded:
             schema:
               $ref: '#/components/schemas/p_Authentication'
-  /paysyslabs/payments/unifiedtitlefetch:
+  /api/v1/paysyslabs/payments/unifiedtitlefetch:
     post:
       summary: unifiedtitlefetch
       tags:
@@ -259,7 +259,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_UnifiedTitleFetch'
-  /paysyslabs/alias/getdefaultaccount:
+  /api/v1/paysyslabs/alias/getdefaultaccount:
     post:
       summary: Get Default Account
       tags:
@@ -416,7 +416,7 @@ paths:
               "key1": "value1",
               "key2": "value2"
             }' https://api.example.com/your-endpoint
-  /paysyslabs/banklist:
+  /api/v1/paysyslabs/banklist:
     get:
       summary: banklist
       tags:
@@ -566,7 +566,7 @@ paths:
               example:
                 error: unauthorized
                 status: 401
-  /paysyslabs/payments/ibfttransfer:
+  /api/v1/paysyslabs/payments/ibfttransfer:
     post:
       summary: ibfttransfer
       tags:
@@ -686,7 +686,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_IBFTTransfer'
-  /paysyslabs/payments/directposting:
+  /api/v1/paysyslabs/payments/directposting:
     post:
       summary: directposting
       tags:
@@ -835,7 +835,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_RAASTTransfer'
-  /paysyslabs/payments/billpayment:
+  /api/v1/paysyslabs/payments/billpayment:
     post:
       summary: Bill payment
       tags:
@@ -946,7 +946,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_BillPayment'
-  /paysyslabs/billercat:
+  /api/v1/paysyslabs/billercat:
     get:
       summary: Biller Category
       tags:
@@ -985,9 +985,73 @@ paths:
                       - catId: 1
                         catName: Electricity
                       - catId: 2
-                        catName: Telcos
+                        catName: Water
                       - catId: 3
-                        catName: Government Payments
+                        catName: Gas
+                      - catId: 4
+                        catName: Landline
+                      - catId: 5
+                        catName: Broadband ISP
+                      - catId: 6
+                        catName: Mobile Topup
+                      - catId: 7
+                        catName: Ufone Super Card
+                      - catId: 8
+                        catName: Mobile Packages
+                      - catId: 9
+                        catName: Person to Government
+                      - catId: 10
+                        catName: Tax Payments
+                      - catId: 11
+                        catName: Education
+                      - catId: 12
+                        catName: 1 Bill
+                      - catId: 13
+                        catName: Insurance Services
+                      - catId: 14
+                        catName: Investments
+                      - catId: 15
+                        catName: E-Payment
+                      - catId: 16
+                        catName: Sports
+                      - catId: 17
+                        catName: Others
+                      - catId: 18
+                        catName: Financial Services
+                      - catId: 19
+                        catName: Airline
+                      - catId: 20
+                        catName: Asset Management
+                      - catId: 21
+                        catName: Charity/NGO
+                      - catId: 22
+                        catName: Clubs
+                      - catId: 23
+                        catName: Courier
+                      - catId: 24
+                        catName: Credit Card
+                      - catId: 25
+                        catName: E-Commerce
+                      - catId: 26
+                        catName: Fintech
+                      - catId: 27
+                        catName: FMCG & Energy
+                      - catId: 28
+                        catName: Health and Fitness
+                      - catId: 29
+                        catName: Hospitals
+                      - catId: 30
+                        catName: Information Technology  Services (ITS)
+                      - catId: 31
+                        catName: Real Estate /Constructions
+                      - catId: 32
+                        catName: Tracker Services
+                      - catId: 33
+                        catName: Transporation Services
+                      - catId: 34
+                        catName: Travel and Tours
+                      - catId: 35
+                        catName: Utility
                 '401':
                   summary: Failure with No data found
                   value:
@@ -1018,7 +1082,7 @@ paths:
               example:
                 error: unauthorized
                 status: 401
-  /paysyslabs/billerlist:
+  /api/v1/paysyslabs/billerlist:
     post:
       summary: Biller List
       tags:
@@ -1143,7 +1207,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_Billerlist'
-  /paysyslabs/billinquiry:
+  /api/v1/paysyslabs/billinquiry:
     post:
       summary: Bill Inquiry
       tags:
@@ -1312,7 +1376,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_BillInquiry'
-  /paysyslabs/customers/one-step:
+  /api/v1/paysyslabs/customers/one-step:
     post:
       summary: One-Step Customer Registration
       tags:
@@ -1431,7 +1495,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_cas_OneStep'
-  /paysyslabs/customers/registercaa:
+  /api/v1/paysyslabs/customers/registercaa:
     post:
       summary: Register Customer Alias Accounts
       tags:
@@ -1556,7 +1620,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_RegisterCAA'
-  /paysyslabs/account/delinkaccountalias:
+  /api/v1/paysyslabs/account/delinkaccountalias:
     post:
       summary: Delink Account from ALias
       tags:
@@ -1655,7 +1719,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_DelinkAccountAlias'
-  /paysyslabs/account/linkaccountalias:
+  /api/v1/paysyslabs/account/linkaccountalias:
     post:
       summary: link Account to ALias
       tags:
@@ -1758,7 +1822,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_LinkAccountAlias'
-  /paysyslabs/account/setdefault:
+  /api/v1/paysyslabs/account/setdefault:
     post:
       summary: Set Default Account for Alias
       tags:
@@ -1858,7 +1922,7 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/p_SetDefaultAccount'
-  /paysyslabs/customers/delete:
+  /api/v1/paysyslabs/customers/delete:
     post:
       summary: Remove RasstId Relationship with CAS
       tags:

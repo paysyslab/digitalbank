@@ -1,0 +1,76 @@
+post:
+  summary: Delink Account from ALias
+  tags:
+    - CAS API Specs
+  description: "<a id=\"unlink-account-alias\"></a>\nIn this scenario customer want to unlink his/her selected account and assumption is customer is already linked the account with RAAST ID. \n\nThe reason for performing this operation may be any of following:  \n-\tCustomer want to link his/her another account with the current institution\n-\tCustomer want to link his/her another account with the other RAAST participants\n      "
+  operationId: delinkaccountalias
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: >-
+          ../code_samples/CURL/api_v1_paysyslabs_account_delinkaccountalias/post.sh
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          examples:
+            '0':
+              summary: Success Response Example
+              value:
+                response:
+                  response_code: '0000'
+                  response_desc: Success
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+            '305':
+              summary: Customer already exists
+              value:
+                response:
+                  response_code: '0305'
+                  response_desc: Cannot find customer
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+          schema:
+            type: object
+            properties:
+              response_code:
+                $ref: ..\components\schemas\response_code.yaml
+              response_desc:
+                $ref: ..\components\schemas\response_desc.yaml
+              rrn:
+                $ref: ..\components\schemas\rsp_rrn.yaml
+              stan:
+                $ref: ..\components\schemas\rsp_stan.yaml
+              correlationId:
+                $ref: ..\components\schemas\correlationId.yaml
+            required:
+              - response_code
+              - response_desc
+              - rrn
+              - stan
+              - correlationId
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            error: unauthorized
+            status: 401
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ..\components\schemas\p_DelinkAccountAlias.yaml
