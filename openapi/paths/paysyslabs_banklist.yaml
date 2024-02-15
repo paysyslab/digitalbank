@@ -39,6 +39,7 @@ get:
                     accountNumberREGEX: ^[0-9]+$
                     isAvailable1LINKIBFT: 'Y'
                     isAvailableRAASTP2P: 'Y'
+                    isAvailableRAASTTF2: 'Y'
                     isAvailableRAASTBulk: 'Y'
                     isAvailableRAASTP2M: 'N'
                     isAvailableRAASTP2MRTP: 'N'
@@ -52,6 +53,7 @@ get:
                     accountNumberREGEX: ^[0-9]+$
                     isAvailable1LINKIBFT: 'Y'
                     isAvailableRAASTP2P: 'Y'
+                    isAvailableRAASTTF2: 'Y'
                     isAvailableRAASTBulk: 'Y'
                     isAvailableRAASTP2M: 'Y'
                     isAvailableRAASTP2MRTP: 'Y'

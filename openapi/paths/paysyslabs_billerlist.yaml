@@ -6,7 +6,19 @@ post:
     <a id="biller-list"></a>
 
     The purpose of the Biller List API is to facilitate seamless integration
-    between middleware and digital channels
+    between middleware and digital channels. This integration process is
+    especially important when aggregators bring new billers on board and issue
+    notifications to financial institutions, requesting the activation of these
+    billers on their digital platforms. The Open Connect (OC) system plays a
+    crucial role in managing a local repository that contains information about
+    these billers and their transaction configurations.</br></br>When the
+    aggregator issues a memo to enable new billers, the OC system promptly
+    updates its local repository with this information. Additionally, the Biller
+    List API allows the OC system to provide detailed attributes of each biller,
+    including whether the minimum and maximum limits for each biller's
+    transactions. This ensures that financial institutions have access to
+    up-to-date information and can provide a seamless experience to their
+    customers when making payments to these billers.
   operationId: billerlist
   parameters:
     - name: Content-Type

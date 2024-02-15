@@ -30,11 +30,11 @@ get:
                   response_code: '0000'
                   response_desc: Success
                 catList:
-                  - catId: 10001
+                  - catId: 1
                     catName: Electricity
-                  - catId: 10002
+                  - catId: 2
                     catName: Telcos
-                  - catId: 10003
+                  - catId: 3
                     catName: Government Payments
             '401':
               summary: Failure with No data found

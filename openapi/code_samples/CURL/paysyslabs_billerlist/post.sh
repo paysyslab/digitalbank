@@ -10,7 +10,7 @@ curl -X POST \
     "txntime": "182243"
   },
   "otherinfo": {
-    "billerCat": 10002
+    "billerCat": 2
   }
 }'
        
