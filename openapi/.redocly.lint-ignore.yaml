@@ -1,0 +1,241 @@
+# This file instructs Redocly's linter to ignore the rules contained for specific parts of your API.
+# See https://redoc.ly/docs/cli/ for more information.
+bundled.yaml:
+  no-invalid-media-type-examples:
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1unifiedtitlefetch/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1unifiedtitlefetch/post/responses/200/content/application~1json/examples/0/value/response/response_desc
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1unifiedtitlefetch/post/responses/200/content/application~1json/examples/0/value/accountInfo
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1unifiedtitlefetch/post/responses/200/content/application~1json/examples/0/value/participantInfo
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1unifiedtitlefetch/post/responses/200/content/application~1json/examples/1001/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1unifiedtitlefetch/post/responses/200/content/application~1json/examples/1001/value/response/response_desc
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1alias~1getdefaultaccount/post/responses/200/content/application~1json/schema
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1transactioninquiry/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1transactioninquiry/post/responses/200/content/application~1json/examples/0/value/response/response_desc
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1transactioninquiry/post/responses/200/content/application~1json/examples/101/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1transactioninquiry/post/responses/200/content/application~1json/examples/101/value/response/response_desc
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1transactioninquiry/post/responses/200/content/application~1json/examples/411/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1transactioninquiry/post/responses/200/content/application~1json/examples/411/value/response/response_desc
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1banklist/get/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1banklist/get/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1banklist/get/responses/200/content/application~1json/examples/0/value/participants
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1banklist/get/responses/200/content/application~1json/examples/3001/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1banklist/get/responses/200/content/application~1json/examples/3001/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1ibfttransfer/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1ibfttransfer/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1ibfttransfer/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1ibfttransfer/post/responses/200/content/application~1json/examples/431/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1ibfttransfer/post/responses/200/content/application~1json/examples/431/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1ibfttransfer/post/responses/200/content/application~1json/examples/431/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1directposting/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1directposting/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1directposting/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1directposting/post/responses/200/content/application~1json/examples/0/value/paymentInfo
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1directposting/post/responses/200/content/application~1json/examples/405/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1directposting/post/responses/200/content/application~1json/examples/405/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1directposting/post/responses/200/content/application~1json/examples/405/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1directposting/post/responses/200/content/application~1json/examples/405/value/paymentInfo
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1billpayment/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1billpayment/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1billpayment/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1billpayment/post/responses/200/content/application~1json/examples/468/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1billpayment/post/responses/200/content/application~1json/examples/468/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1billpayment/post/responses/200/content/application~1json/examples/468/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billercat/get/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billercat/get/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billercat/get/responses/200/content/application~1json/examples/0/value/catList
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billercat/get/responses/200/content/application~1json/examples/401/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billercat/get/responses/200/content/application~1json/examples/401/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billerlist/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billerlist/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billerlist/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billerlist/post/responses/200/content/application~1json/examples/0/value/billers
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billerlist/post/responses/200/content/application~1json/examples/1/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billerlist/post/responses/200/content/application~1json/examples/1/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billerlist/post/responses/200/content/application~1json/examples/1/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billinquiry/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billinquiry/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billinquiry/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billinquiry/post/responses/200/content/application~1json/examples/0/value/billInfo
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billinquiry/post/responses/200/content/application~1json/examples/288/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billinquiry/post/responses/200/content/application~1json/examples/288/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1billinquiry/post/responses/200/content/application~1json/examples/288/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1one-step/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1one-step/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1one-step/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1one-step/post/responses/200/content/application~1json/examples/306/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1one-step/post/responses/200/content/application~1json/examples/306/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1one-step/post/responses/200/content/application~1json/examples/306/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1registercaa/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1registercaa/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1registercaa/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1registercaa/post/responses/200/content/application~1json/examples/306/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1registercaa/post/responses/200/content/application~1json/examples/306/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1registercaa/post/responses/200/content/application~1json/examples/306/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1delinkaccountalias/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1delinkaccountalias/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1delinkaccountalias/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1delinkaccountalias/post/responses/200/content/application~1json/examples/305/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1delinkaccountalias/post/responses/200/content/application~1json/examples/305/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1delinkaccountalias/post/responses/200/content/application~1json/examples/305/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1linkaccountalias/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1linkaccountalias/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1linkaccountalias/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1linkaccountalias/post/responses/200/content/application~1json/examples/305/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1linkaccountalias/post/responses/200/content/application~1json/examples/305/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1linkaccountalias/post/responses/200/content/application~1json/examples/305/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1setdefault/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1setdefault/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1setdefault/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1setdefault/post/responses/200/content/application~1json/examples/305/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1setdefault/post/responses/200/content/application~1json/examples/305/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1account~1setdefault/post/responses/200/content/application~1json/examples/305/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1delete/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1delete/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1delete/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1delete/post/responses/200/content/application~1json/examples/305/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1delete/post/responses/200/content/application~1json/examples/305/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1customers~1delete/post/responses/200/content/application~1json/examples/305/value/info
+    - >-
+      #/paths/~1bank~1payments~1titlefetch/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1bank~1payments~1titlefetch/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1bank~1payments~1titlefetch/post/responses/200/content/application~1json/examples/0/value/receiverInfo
+    - >-
+      #/paths/~1bank~1payments~1titlefetch/post/responses/200/content/application~1json/examples/1/value
+    - >-
+      #/paths/~1bank~1payments~1titlefetch/post/responses/200/content/application~1json/examples/1/value/response
+    - >-
+      #/paths/~1bank~1payments~1creditposting/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1bank~1payments~1creditposting/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1bank~1payments~1creditposting/post/responses/200/content/application~1json/examples/1/value
+    - >-
+      #/paths/~1bank~1payments~1creditposting/post/responses/200/content/application~1json/examples/1/value/response
+    - >-
+      #/paths/~1bank~1payments~1creditadvise/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1bank~1payments~1creditadvise/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1bank~1payments~1creditadvise/post/responses/200/content/application~1json/examples/1/value
+    - >-
+      #/paths/~1bank~1payments~1creditadvise/post/responses/200/content/application~1json/examples/1/value/response
+    - >-
+      #/paths/~1bank~1payments~1creditinquiry/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1bank~1payments~1creditinquiry/post/responses/200/content/application~1json/examples/0/value/response/responseCode
+    - >-
+      #/paths/~1bank~1payments~1creditinquiry/post/responses/200/content/application~1json/examples/0/value/response/responseDesc
+    - >-
+      #/paths/~1bank~1payments~1creditinquiry/post/responses/200/content/application~1json/examples/0/value/orgResponse/orgresponseCode
+    - >-
+      #/paths/~1bank~1payments~1creditinquiry/post/responses/200/content/application~1json/examples/0/value/orgResponse/orgresponseDesc
+    - >-
+      #/paths/~1bank~1payments~1creditinquiry/post/responses/200/content/application~1json/examples/1/value
+    - >-
+      #/paths/~1bank~1payments~1creditinquiry/post/responses/200/content/application~1json/examples/1/value/response/responseCode
+    - >-
+      #/paths/~1bank~1payments~1creditinquiry/post/responses/200/content/application~1json/examples/1/value/response/responseDesc
+    - >-
+      #/paths/~1bank~1payments~1creditinquiry/post/responses/200/content/application~1json/examples/1/value/orgResponse/orgresponseCode
+    - >-
+      #/paths/~1bank~1payments~1creditinquiry/post/responses/200/content/application~1json/examples/1/value/orgResponse/orgresponseDesc
+  spec:
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1alias~1getdefaultaccount/post/responses/200/content/application~1json/schema/properties/bankBIC/minLength
+  operation-4xx-response:
+    - '#/paths/~1bank~1payments~1titlefetch/post/responses'

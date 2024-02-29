@@ -57,7 +57,7 @@ post:
             "type": "MOBILE",
             "value": "03132370605"
           }
-        }'
+        }' 
   responses:
     '200':
       description: Success
@@ -106,7 +106,7 @@ post:
                 $ref: ..\components\schemas\rsp_stan.yaml
               correlationId:
                 type: string
-                minLength: 40
+                minLength: 10
                 maxLength: 40
                 description: >-
                   Unique correlation id for the title fetch request. The value
@@ -114,12 +114,12 @@ post:
                   call.
               surname:
                 type: string
-                minLength: 40
+                minLength: 10
                 maxLength: 40
                 description: Beneficiary surname
               name:
                 type: string
-                minLength: 40
+                minLength: 10
                 maxLength: 40
                 description: Beneficiary nick name registered in central addressing scheme
               destinationPaymentSystem:
@@ -142,7 +142,7 @@ post:
                 description: Receiver account type. The value will be like “DFLT”
               bankBIC:
                 type: string
-                minLength: 16
+                minLength: null
                 maxLength: 16
                 description: >-
                   Receiving participant BIC (bank institution code), assigned by

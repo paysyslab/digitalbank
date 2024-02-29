@@ -1,0 +1,56 @@
+description: Representation of a Transaction Inquiry
+type: object
+properties:
+  info:
+    $ref: .\info.yaml
+  originalTxnInfo:
+    type: object
+    properties:
+      destinationSystem:
+        type: string
+        minLength: 2
+        maxLength: 2
+        description: |-
+          The field determine the priority rail to perform inquiry. 
+
+          The values are as:
+
+
+          "01" – For RAAST
+
+
+          "02" – For 1LINK
+
+
+          "03" – For NADRA
+
+
+          "04" – For 1LINKBPS
+      ostan:
+        type: string
+        minLength: 6
+        maxLength: 6
+        description: Value of original transaction STAN
+        example: '010223'
+      orrn:
+        type: string
+        minLength: 12
+        maxLength: 12
+        description: Value of original transaction RRN
+        example: '0101222233332323'
+      otxndate:
+        $ref: .\txndate.yaml
+      otxntime:
+        $ref: .\txntime.yaml
+      omsgId:
+        $ref: .\msgId.yaml
+    required:
+      - destinationSystem
+      - ostan
+      - orrn
+      - omsgId
+      - otxndate
+      - otxntime
+required:
+  - info
+  - originalTxnInfo

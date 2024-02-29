@@ -1,0 +1,113 @@
+post:
+  summary: transactioninquiry
+  tags:
+    - Non Financial API Specs
+  description: >-
+    <a id="unified-tf"></a>
+
+    The primary objective of this API is to retrieve previously posted payments
+    and transfers. The API will return the transaction status for followings
+    transactions:
+
+
+
+    - <b>IBFT Outward funds transfers</b>
+
+
+
+    - <b>Bill Payments</b>
+
+    - <b>RAAST P2P outward transfers</b>
+  operationId: transactioninquiry
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: >-
+          ../code_samples/CURL/api_v1_paysyslabs_payments_transactioninquiry/post.sh
+  responses:
+    '200':
+      description: Success
+      content:
+        application/json:
+          examples:
+            '0':
+              summary: Success Response Example
+              value:
+                response:
+                  response_code: '0000'
+                  response_desc: SUCCESS
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+            '101':
+              summary: Account Limit Exceed
+              value:
+                response:
+                  response_code: '0101'
+                  response_desc: Account Limit Exceed
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+            '411':
+              summary: No Transaction Found
+              value:
+                response:
+                  response_code: '0411'
+                  response_desc: No Transaction Found
+                info:
+                  stan: '010123'
+                  rrn: '010123010123'
+                  correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    $ref: ..\components\schemas\response_code.yaml
+                  response_desc:
+                    $ref: ..\components\schemas\response_desc.yaml
+              info:
+                type: object
+                properties:
+                  rrn:
+                    $ref: ..\components\schemas\rsp_rrn.yaml
+                  stan:
+                    $ref: ..\components\schemas\rsp_stan.yaml
+                  correlationId:
+                    type: string
+                    minLength: 10
+                    maxLength: 40
+                    description: >-
+                      Unique correlation id for the transaction inquiry request.
+                      The value is in GUID format and will be sent by the
+                      initiator in payment call.
+            required:
+              - response_code
+              - response_desc
+              - rrn
+              - stan
+              - correlationId
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          example:
+            error: unauthorized
+            status: 401
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ..\components\schemas\p_TransactionInquiry.yaml
