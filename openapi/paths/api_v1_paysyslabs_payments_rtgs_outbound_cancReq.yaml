@@ -1,0 +1,197 @@
+post:
+  summary: Request for Cancellation [MTn92]
+  tags:
+    - RTGS API Specs
+  description: >
+    <a id="canc-Req"></a>
+
+    This message serves the purpose of rejecting a payment previously sent to
+    PRISM 
+  operationId: cancReq
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: >-
+          ../code_samples/CURL/api_v1_paysyslabs_payments_rtgs_outbound_cancReq/post.sh
+  responses:
+    '200':
+      description: Success response
+      content:
+        application/json:
+          examples:
+            ACK:
+              summary: ACK Response Example
+              value:
+                response:
+                  response_code: ACK
+                  response_desc: Success
+                Info:
+                  stan: '010123'
+                  rrn: '002236987456'
+                  sessionid: '1234'
+                  sequencenumber: abc124
+                  txndate: '231129'
+                  txntime: '182243'
+            NAK:
+              summary: NAK Response Example
+              value:
+                response:
+                  response_code: NAK
+                  response_desc: Error
+                Info:
+                  stan: '010123'
+                  rrn: '002236987456'
+                  sessionid: '1234'
+                  sequencenumber: abc124
+                  txndate: '231129'
+                  txntime: '182243'
+                  ErrorCode: E123
+                  ErrorDescription: Invalid Input
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    description: Response code indicating success.
+                  response_desc:
+                    type: string
+                    description: Description of the response.
+              Info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    description: System trace audit number.
+                  rrn:
+                    type: string
+                    description: Retrieval reference number.
+                  sessionid:
+                    type: string
+                    description: Session ID.
+                  sequencenumber:
+                    type: string
+                    description: Sequence number.
+                  txndate:
+                    type: string
+                    description: Transaction date.
+                  txntime:
+                    type: string
+                    description: Transaction time.
+    '400':
+      description: Error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    example: '0600'
+                  response_desc:
+                    type: string
+                    example: Invalid input
+              info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    example: '010123'
+                  rrn:
+                    type: string
+                    example: '010123010123'
+                  correlationId:
+                    type: string
+                    example: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            Info:
+              type: object
+              properties:
+                txndate:
+                  type: string
+                  maxLength: 6
+                  description: Transaction date (Format YYMMDD)
+                txntime:
+                  type: string
+                  maxLength: 6
+                  description: Transaction time (Format HHMMSS)
+                rrn:
+                  type: string
+                  maxLength: 12
+                  description: Retrieval reference number
+                stan:
+                  type: string
+                  maxLength: 6
+                  description: System trace audit number
+                tranRef:
+                  type: string
+                  maxLength: 16
+                  description: Transaction reference number
+                msgType:
+                  type: string
+                  maxLength: 5
+                  description: Message type
+                prty:
+                  type: string
+                  maxLength: 4
+                  description: Transaction priority
+              required:
+                - txndate
+                - txntime
+                - rrn
+                - stan
+                - tranRef
+                - msgType
+                - prty
+            tranInfo:
+              type: object
+              properties:
+                canRef:
+                  type: string
+                  maxLength: 20
+                  description: Transaction reference of payment previously sent
+                msgType:
+                  type: string
+                  maxLength: 5
+                  description: Message type
+                txndateRef:
+                  type: string
+                  maxLength: 6
+                  description: Transaction date of reference (Format YYMMDD)
+                sessionid:
+                  type: string
+                  maxLength: 4
+                  description: PRISM session id
+                sequencenumber:
+                  type: string
+                  maxLength: 6
+                  description: PRISM sequence number
+                senderBIC:
+                  type: string
+                  maxLength: 16
+                  description: Bank’s BIC
+              required:
+                - canRef
+                - msgType
+                - txndateRef
+                - sessionid
+                - sequencenumber
+                - senderBIC

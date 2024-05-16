@@ -1,0 +1,300 @@
+post:
+  summary: Single Customer Credit Transfer [MT 103]
+  tags:
+    - RTGS API Specs
+  description: |-
+    <a id="sc-Tran"></a>
+    Facilitate single customer credit transfer.
+  operationId: scTran
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: >-
+          ../code_samples/CURL/api_v1_paysyslabs_payments_rtgs_outbound_scTran/post.sh
+  responses:
+    '200':
+      description: Success response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    example: '0000'
+                  response_desc:
+                    type: string
+                    example: Success
+              info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    example: '010123'
+                  rrn:
+                    type: string
+                    example: '010123010123'
+                  correlationId:
+                    type: string
+                    example: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+              txnResult:
+                type: object
+                properties:
+                  sessionid:
+                    type: string
+                    example: '1234'
+                  sequencenumber:
+                    type: string
+                    example: abc124
+    '400':
+      description: Error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    example: '0600'
+                  response_desc:
+                    type: string
+                    example: Invalid input
+              info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    example: '010123'
+                  rrn:
+                    type: string
+                    example: '010123010123'
+                  correlationId:
+                    type: string
+                    example: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            info:
+              type: object
+              properties:
+                rrn:
+                  type: string
+                  description: Retrieval reference number Key Field
+                  example: 223322332233
+                  minLength: 12
+                  maxLength: 12
+                stan:
+                  type: string
+                  description: System trace audit number
+                  example: 223322
+                  minLength: 6
+                  maxLength: 6
+                txndate:
+                  type: string
+                  description: Transaction date (Format yymmdd)
+                  example: 240416
+                  minLength: 6
+                  maxLength: 6
+                txntime:
+                  type: string
+                  description: Transaction time (Format hhmmss)
+                  example: 40100
+                  minLength: 6
+                  maxLength: 6
+              required:
+                - rrn
+                - stan
+                - txndate
+                - txntime
+            txnInfo:
+              type: object
+              properties:
+                tranRef:
+                  type: string
+                  minLength: 5
+                  maxLength: 16
+                  description: Transaction reference number
+                msgType:
+                  type: string
+                  minLength: 5
+                  maxLength: 5
+                  description: Message type
+                prty:
+                  type: string
+                  minLength: 4
+                  maxLength: 4
+                  description: Transaction priority
+                type:
+                  type: string
+                  minLength: 3
+                  maxLength: 3
+                  description: >-
+                    Indicates beneficiary institution is direct participant or
+                    cover to PRISM
+              required:
+                - tranRef
+                - msgType
+                - prty
+                - type
+            senderInfo:
+              type: object
+              properties:
+                senderBIC:
+                  type: string
+                  minLength: 8
+                  maxLength: 16
+                  description: Bank’s BIC
+                senderInstAccount:
+                  type: string
+                  minLength: 5
+                  maxLength: 24
+                  description: Institution settlement account in PRISM
+                fromAccount:
+                  type: string
+                  minLength: 5
+                  maxLength: 24
+                  description: Customer’s account
+                fromAccountTitle:
+                  type: string
+                  minLength: 3
+                  maxLength: 40
+                  description: Customer’s account title
+                fromAccountCurrency:
+                  type: string
+                  minLength: 1
+                  maxLength: 3
+                  description: Currency code
+                address:
+                  type: string
+                  minLength: 3
+                  maxLength: 40
+                  description: Customer’s address
+              required:
+                - senderBIC
+                - senderInstAccount
+                - fromAccount
+                - fromAccountTitle
+                - fromAccountCurrency
+                - address
+            intermediateInfo:
+              type: object
+              properties:
+                intermediateBIC:
+                  type: string
+                  minLength: 8
+                  maxLength: 16
+                  description: Bank’s BIC (optional)
+                intermediateInstAccount:
+                  type: string
+                  minLength: 3
+                  maxLength: 16
+                  description: >-
+                    Intermediate Institution settlement account in PRISM
+                    (optional)
+              required:
+                - intermediateBIC
+                - intermediateInstAccount
+            beneficiaryInfo:
+              type: object
+              properties:
+                beneficiaryBIC:
+                  type: string
+                  maxLength: 16
+                  description: Bank’s BIC (mandatory)
+                beneficiaryInstAccount:
+                  type: string
+                  maxLength: 16
+                  description: Institution settlement account in PRISM (optional)
+                toAccount:
+                  type: string
+                  maxLength: 24
+                  description: Customer’s account (mandatory)
+                toAccountTitle:
+                  type: string
+                  maxLength: 40
+                  description: Customer’s account title (mandatory)
+                address:
+                  type: string
+                  maxLength: 40
+                  description: Customer’s address (mandatory)
+              required:
+                - beneficiaryBIC
+                - toAccount
+                - toAccountTitle
+                - address
+            paymentInfo:
+              type: object
+              properties:
+                operationCode:
+                  type: string
+                  maxLength: 4
+                  description: Bank operation code (optional)
+                instructionCode:
+                  type: string
+                  maxLength: 4
+                  description: Instruction code (mandatory)
+                tranCode:
+                  type: string
+                  maxLength: 3
+                  description: Transaction type code (mandatory)
+                currency:
+                  type: string
+                  maxLength: 3
+                  description: Transaction currency (mandatory)
+                amount:
+                  type: number
+                  description: Amount of transaction (mandatory)
+                details:
+                  type: string
+                  maxLength: 40
+                  description: Purpose of payment (optional)
+                chargesDetail:
+                  type: string
+                  maxLength: 3
+                  description: >-
+                    Specifies which party will bear the charges for the
+                    transaction (mandatory)
+                tranInfo:
+                  type: string
+                  maxLength: 40
+                  description: >-
+                    Contains sender to beneficiary information, including
+                    purpose of payment, to notify PRISM about the way of
+                    processing this payment (mandatory)
+              required:
+                - instructionCode
+                - tranCode
+                - currency
+                - amount
+                - chargesDetail
+                - tranInfo
+            reserveFields:
+              type: object
+              properties:
+                r1:
+                  type: string
+                r2:
+                  type: string
+                r3:
+                  type: string
+                r4:
+                  type: string
+                r5:
+                  type: string

@@ -1,0 +1,300 @@
+post:
+  summary: Multiple Customer Credit Transfer [MT 102]
+  tags:
+    - RTGS API Specs
+  description: >
+    <a id="mc-Tran"></a>
+
+    Facilitate multiple customer credit transfer. This message contains a list
+    of payment instructions from one financial institution to another one.
+    Payment instructions within MT102 are processed on “all-or-none” basis. It
+    is not possible to issue MT102 for Participants that have no accounts within
+    PRISM
+  operationId: mcTran
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: >-
+          ../code_samples/CURL/api_v1_paysyslabs_payments_rtgs_outbound_mcTran/post.sh
+  responses:
+    '200':
+      description: Success response
+      content:
+        application/json:
+          examples:
+            ACK:
+              summary: ACK Response Example
+              value:
+                response:
+                  response_code: ACK
+                  response_desc: Success
+                Info:
+                  stan: '010123'
+                  rrn: '002236987456'
+                  sessionid: '1234'
+                  sequencenumber: abc124
+                  txndate: '231129'
+                  txntime: '182243'
+            NAK:
+              summary: NAK Response Example
+              value:
+                response:
+                  response_code: NAK
+                  response_desc: Error
+                Info:
+                  stan: '010123'
+                  rrn: '002236987456'
+                  sessionid: '1234'
+                  sequencenumber: abc124
+                  txndate: '231129'
+                  txntime: '182243'
+                  ErrorCode: E123
+                  ErrorDescription: Invalid Input
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    description: Response code indicating error.
+                  response_desc:
+                    type: string
+                    description: Description of the response.
+              Info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    description: System trace audit number.
+                  rrn:
+                    type: string
+                    description: Retrieval reference number.
+                  sessionid:
+                    type: string
+                    description: Session ID.
+                  sequencenumber:
+                    type: string
+                    description: Sequence number.
+                  txndate:
+                    type: string
+                    description: Transaction date.
+                  txntime:
+                    type: string
+                    description: Transaction time.
+                  ErrorCode:
+                    type: string
+                    description: Error code.
+                  ErrorDescription:
+                    type: string
+                    description: Description of the error.
+    '400':
+      description: Error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    example: '0600'
+                  response_desc:
+                    type: string
+                    example: Invalid input
+              info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    example: '010123'
+                  rrn:
+                    type: string
+                    example: '010123010123'
+                  correlationId:
+                    type: string
+                    example: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            Info:
+              type: object
+              properties:
+                txndate:
+                  type: string
+                  length: 6
+                  description: Transaction date (Format YYMMDD)
+                txntime:
+                  type: string
+                  length: 6
+                  description: Transaction time (Format HHMMSS)
+                rrn:
+                  type: string
+                  length: 12
+                  description: Retrieval reference number
+                stan:
+                  type: string
+                  length: 6
+                  description: System trace audit number
+                fileRef:
+                  type: string
+                  maxLength: 16
+                  description: MT102 file reference number
+                msgType:
+                  type: string
+                  maxLength: 5
+                  description: Message type
+                prty:
+                  type: string
+                  maxLength: 4
+                  description: Transaction priority
+                count:
+                  type: string
+                  maxLength: 5
+                  description: Sum of sender and beneficiary objects
+              required:
+                - txndate
+                - txntime
+                - rrn
+                - stan
+                - fileRef
+                - msgType
+                - prty
+                - count
+            senderInfo:
+              type: object
+              properties:
+                tranRef:
+                  type: string
+                  maxLength: 6
+                  description: Transaction reference number
+                senderBIC:
+                  type: string
+                  maxLength: 16
+                  description: Bank’s BIC
+                senderInstAccount:
+                  type: string
+                  maxLength: 20
+                  description: Institution settlement account in PRISM
+                fromAccount:
+                  type: string
+                  maxLength: 20
+                  description: Customer’s account
+                fromAccountTitle:
+                  type: string
+                  maxLength: 40
+                  description: Customer’s account title
+                fromAccountCurrency:
+                  type: string
+                  maxLength: 3
+                  description: Currency code
+                address:
+                  type: string
+                  maxLength: 40
+                  description: Customer’s address
+                amount:
+                  type: number
+                  description: Amount of transaction
+                tranDetails:
+                  type: string
+                  maxLength: 40
+                  description: Purpose of payment
+              required:
+                - tranRef
+                - senderBIC
+                - senderInstAccount
+                - fromAccount
+                - fromAccountTitle
+                - fromAccountCurrency
+                - address
+                - amount
+            intermediateInfo:
+              type: object
+              properties:
+                tranRef:
+                  type: string
+                  maxLength: 6
+                  description: Transaction reference number
+                intermediateBIC:
+                  type: string
+                  maxLength: 16
+                  description: Bank’s BIC
+                intermediateInstAccount:
+                  type: string
+                  maxLength: 16
+                  description: Intermediate Institution settlement account in PRISM
+              required:
+                - tranRef
+            beneficiaryInfo:
+              type: object
+              properties:
+                tranRef:
+                  type: string
+                  maxLength: 6
+                  description: Transaction reference number
+                intermediateBIC:
+                  type: string
+                  maxLength: 16
+                  description: Bank’s BIC
+                intermediateInstAccount:
+                  type: string
+                  maxLength: 16
+                  description: Intermediate Institution settlement account in PRISM
+              required:
+                - tranRef
+            paymentInfo:
+              type: object
+              properties:
+                operationCode:
+                  type: string
+                  maxLength: 4
+                  description: Bank operation code
+                instructionCode:
+                  type: string
+                  maxLength: 4
+                  description: Instruction code
+                tranCode:
+                  type: string
+                  maxLength: 3
+                  description: Transaction type code
+                currency:
+                  type: string
+                  maxLength: 3
+                  description: Transaction currency
+                amountTotal:
+                  type: number
+                  description: Total amount of the batch transfer
+                chargesDetail:
+                  type: string
+                  maxLength: 3
+                  description: >-
+                    Specifies which party will bear the charges for the
+                    transaction
+                tranInfo:
+                  type: string
+                  maxLength: 40
+                  description: >-
+                    Contains sender to beneficiary information, including
+                    purpose of payment, to notify PRISM about the way of
+                    processing this payment
+              required:
+                - instructionCode
+                - tranCode
+                - currency
+                - amountTotal
+                - chargesDetail
+                - tranInfo

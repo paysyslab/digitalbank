@@ -1,0 +1,233 @@
+post:
+  summary: Financial Institution Transfer [MT 202 Direct]
+  tags:
+    - RTGS API Specs
+  description: |
+    <a id="fi-Tran"></a>
+    Facilitate financial institution transfer. 
+  operationId: fiTran
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: >-
+          ../code_samples/CURL/api_v1_paysyslabs_payments_rtgs_outbound_fiTran/post.sh
+  responses:
+    '200':
+      description: Success response
+      content:
+        application/json:
+          examples:
+            ACK:
+              summary: ACK Response Example
+              value:
+                response:
+                  response_code: ACK
+                  response_desc: Success
+                Info:
+                  stan: '010123'
+                  rrn: '002236987456'
+                  sessionid: '1234'
+                  sequencenumber: abc124
+                  txndate: '231129'
+                  txntime: '182243'
+            NAK:
+              summary: NAK Response Example
+              value:
+                response:
+                  response_code: NAK
+                  response_desc: Error
+                Info:
+                  stan: '010123'
+                  rrn: '002236987456'
+                  sessionid: '1234'
+                  sequencenumber: abc124
+                  txndate: '231129'
+                  txntime: '182243'
+                  ErrorCode: E123
+                  ErrorDescription: Invalid Input
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    description: Response code indicating success.
+                  response_desc:
+                    type: string
+                    description: Description of the response.
+              Info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    description: System trace audit number.
+                  rrn:
+                    type: string
+                    description: Retrieval reference number.
+                  sessionid:
+                    type: string
+                    description: Session ID.
+                  sequencenumber:
+                    type: string
+                    description: Sequence number.
+                  txndate:
+                    type: string
+                    description: Transaction date.
+                  txntime:
+                    type: string
+                    description: Transaction time.
+    '400':
+      description: Error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    example: '0600'
+                  response_desc:
+                    type: string
+                    example: Invalid input
+              info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    example: '010123'
+                  rrn:
+                    type: string
+                    example: '010123010123'
+                  correlationId:
+                    type: string
+                    example: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            Info:
+              type: object
+              properties:
+                txndate:
+                  type: string
+                  length: 6
+                  description: Transaction date (Format YYMMDD)
+                txntime:
+                  type: string
+                  length: 6
+                  description: Transaction time (Format HHMMSS)
+                rrn:
+                  type: string
+                  length: 12
+                  description: Retrieval reference number
+                stan:
+                  type: string
+                  length: 6
+                  description: System trace audit number
+                tranRef:
+                  type: string
+                  maxLength: 16
+                  description: Transaction reference number
+                msgType:
+                  type: string
+                  maxLength: 5
+                  description: Message type
+                prty:
+                  type: string
+                  maxLength: 4
+                  description: Transaction priority
+                type:
+                  type: string
+                  maxLength: 1
+                  description: Indicates beneficiary is direct to PRISM
+              required:
+                - txndate
+                - txntime
+                - rrn
+                - stan
+                - tranRef
+                - msgType
+                - prty
+                - type
+            senderInfo:
+              type: object
+              properties:
+                senderBIC:
+                  type: string
+                  maxLength: 16
+                  description: Bank’s BIC
+                senderInstAccount:
+                  type: string
+                  maxLength: 20
+                  description: Institution settlement account in PRISM
+                fromAccountCurrency:
+                  type: string
+                  maxLength: 3
+                  description: Currency code
+              required:
+                - senderBIC
+                - senderInstAccount
+                - fromAccountCurrency
+            intermediateInfo:
+              type: object
+              properties:
+                intermediateBIC:
+                  type: string
+                  maxLength: 16
+                  description: Bank’s BIC
+                intermediateInstAccount:
+                  type: string
+                  maxLength: 16
+                  description: Intermediate Institution settlement account in PRISM
+            beneficiaryInfo:
+              type: object
+              properties:
+                beneficiaryBIC:
+                  type: string
+                  maxLength: 16
+                  description: Bank’s BIC
+                beneficiaryInstAccount:
+                  type: string
+                  maxLength: 16
+                  description: Institution settlement account in PRISM
+            paymentInfo:
+              type: object
+              properties:
+                relatedRef:
+                  type: string
+                  maxLength: 20
+                  description: Contains a reference to related transaction
+                currency:
+                  type: string
+                  maxLength: 3
+                  description: Transaction currency
+                amount:
+                  type: number
+                  description: Amount of transaction
+                tranInfo:
+                  type: string
+                  maxLength: 40
+                  description: >-
+                    Contains sender to beneficiary Information comprising
+                    purpose of payment to notify PRISM about way of processing
+                    of this payment
+              required:
+                - relatedRef
+                - currency
+                - amount
+                - tranInfo

@@ -1,0 +1,172 @@
+post:
+  summary: Status Request Message [MTn95/STAT]
+  tags:
+    - RTGS API Specs
+  description: >
+    <a id="stat-Req"></a>
+
+    This message serves the purpose of rejecting a payment previously sent to
+    PRISM 
+  operationId: statReq
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: >-
+          ../code_samples/CURL/api_v1_paysyslabs_payments_rtgs_outbound_statReq/post.sh
+  responses:
+    '200':
+      description: Success response
+      content:
+        application/json:
+          examples:
+            ACK:
+              summary: ACK Response Example
+              value:
+                response:
+                  response_code: ACK
+                  response_desc: Success
+                Info:
+                  stan: '010123'
+                  rrn: '002236987456'
+                  sessionid: '1234'
+                  sequencenumber: abc124
+                  txndate: '231129'
+                  txntime: '182243'
+            NAK:
+              summary: NAK Response Example
+              value:
+                response:
+                  response_code: NAK
+                  response_desc: Error
+                Info:
+                  stan: '010123'
+                  rrn: '002236987456'
+                  sessionid: '1234'
+                  sequencenumber: abc124
+                  txndate: '231129'
+                  txntime: '182243'
+                  ErrorCode: E123
+                  ErrorDescription: Invalid Input
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    description: Response code indicating success.
+                  response_desc:
+                    type: string
+                    description: Description of the response.
+              Info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    description: System trace audit number.
+                  rrn:
+                    type: string
+                    description: Retrieval reference number.
+                  sessionid:
+                    type: string
+                    description: Session ID.
+                  sequencenumber:
+                    type: string
+                    description: Sequence number.
+                  txndate:
+                    type: string
+                    description: Transaction date.
+                  txntime:
+                    type: string
+                    description: Transaction time.
+    '400':
+      description: Error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    example: '0600'
+                  response_desc:
+                    type: string
+                    example: Invalid input
+              info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    example: '010123'
+                  rrn:
+                    type: string
+                    example: '010123010123'
+                  correlationId:
+                    type: string
+                    example: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            Info:
+              type: object
+              properties:
+                txndate:
+                  type: string
+                  description: Transaction date.
+                txntime:
+                  type: string
+                  description: Transaction time.
+                rrn:
+                  type: string
+                  description: Retrieval reference number.
+                stan:
+                  type: string
+                  description: System trace audit number.
+                tranRef:
+                  type: string
+                  description: Transaction reference.
+                msgType:
+                  type: string
+                  description: Message type.
+                prty:
+                  type: string
+                  description: Priority.
+            tranInfo:
+              type: object
+              properties:
+                queryRef:
+                  type: string
+                  description: Query reference.
+                queryType:
+                  type: string
+                  description: Query type.
+                tranMsgType:
+                  type: string
+                  description: Transaction message type.
+                txndateRef:
+                  type: string
+                  description: Transaction date reference.
+                sessionid:
+                  type: string
+                  description: Session ID.
+                sequencenumber:
+                  type: string
+                  description: Sequence number.
+                senderBIC:
+                  type: string
+                  description: Sender Bank Identifier Code.
