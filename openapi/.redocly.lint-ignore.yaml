@@ -1,6 +1,11 @@
 # This file instructs Redocly's linter to ignore the rules contained for specific parts of your API.
 # See https://redoc.ly/docs/cli/ for more information.
 bundled.yaml:
+  spec:
+    - >-
+      #/paths/~1realms~1paysys-raast-realm~1protocol~1openid-connect~1token/post/components
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1alias~1getdefaultaccount/post/responses/200/content/application~1json/schema/properties/bankBIC/minLength
   no-invalid-media-type-examples:
     - >-
       #/paths/~1api~1v1~1paysyslabs~1payments~1unifiedtitlefetch/post/responses/200/content/application~1json/examples/0/value
@@ -348,8 +353,10 @@ bundled.yaml:
       #/paths/~1bank~1channel~1rtpRequest/post/responses/200/content/application~1json/examples/405/value/response
     - >-
       #/paths/~1bank~1channel~1rtpRequest/post/responses/200/content/application~1json/examples/405/value/info
-  spec:
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1alias~1getdefaultaccount/post/responses/200/content/application~1json/schema/properties/bankBIC/minLength
   operation-4xx-response:
     - '#/paths/~1bank~1payments~1titlefetch/post/responses'
+  no-unused-components:
+    - '#/components/schemas/p_Authentication'
+  security-defined:
+    - >-
+      #/paths/~1realms~1paysys-raast-realm~1protocol~1openid-connect~1token/post/security/0/bearerAuth

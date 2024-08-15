@@ -13,51 +13,79 @@ post:
     exposed by Open Connect. This will be running as a separate application on
     specific port.
   operationId: authenticate
-  security:
-    - clientCredentials: []
+  requestBody:
+    required: true
+    content:
+      application/x-www-form-urlencoded:
+        schema:
+          type: object
+          required:
+            - grant_type
+          properties:
+            grant_type:
+              type: string
+              example: client_credentials
+              description: client_credentials
   responses:
     '200':
-      description: JWT token generated successfully
+      description: Success response
       content:
         application/json:
-          example:
-            access_token: >-
-              eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6b25lcmEiLCJleHAiOjE2MjIwOTk4OTcsImlhdCI6MTYyMjAxMzQ5N30.67UjDFQv4DsE0QtJY_WIYbAQJ20xfTsO-CiMy0fdYIJR1il4hHbd4s4bi7LUDtmZ6-d-ENhq23hpTWTJPUxATA
-            expires_in: 300
-            token_type: Bearer
-            refresh_expires_in: 0
-            not-before-policy: 0
-            scope: profile email
           schema:
             type: object
             properties:
               access_token:
                 type: string
                 description: >-
-                  This token will be used in all APIs in header with header name
-                  “Authorization”. Token value will be followed by Bearer
+                  The access token to be used in all APIs in the header with the
+                  header name "Authorization". Token value will be followed by
+                  Bearer.
+                example: >-
+                  eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ6b25lcmEiLCJleHAiOjE2MjIwOTk4OTcsImlhdCI6MTYyMjAxMzQ5N30.67UjDFQv4DsE0QtJY_WIYbAQJ20xfTsO-CiMy0fdYIJR1il4hHbd4s4bi7LUDtmZ6-d-ENhq23hpTWTJPUxATA
               expires_in:
-                type: integer
-                description: The value is in seconds
+                type: string
+                description: The value is in seconds.
+                example: '300'
+              refresh_expires_in:
+                type: string
+                description: Refresh token expiry time.
+                example: '0'
               token_type:
                 type: string
-                description: Bearer
-              refresh_expires_in:
-                type: number
+                description: The type of the token.
+                example: Bearer
               not-before-policy:
-                type: number
+                type: integer
+                description: Not before policy.
+                example: 0
               scope:
                 type: string
+                description: Token scope.
+                example: profile email
+    '400':
+      description: Error response
     '401':
-      description: Unauthorized
-      content:
-        application/json:
-          example:
-            error: unauthorized
-            status: 401
-  requestBody:
-    required: true
-    content:
-      application/x-www-form-urlencoded:
-        schema:
-          $ref: ..\components\schemas\p_Authentication.yaml
+      description: Unauthorized – wrong credentials
+    '504':
+      description: Request timeout
+  parameters:
+    - name: Content-Type
+      in: header
+      required: true
+      schema:
+        type: string
+        example: application/x-www-form-urlencoded
+    - name: Authorization
+      in: header
+      required: true
+      schema:
+        type: string
+        example: Basic [TOKEN WILL BE PROVIDED BY PSL TEAM BASED ON CHANNEL]
+  components:
+    securitySchemes:
+      bearerAuth:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+  security:
+    - bearerAuth: []
