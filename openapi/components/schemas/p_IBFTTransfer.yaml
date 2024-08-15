@@ -42,7 +42,8 @@ properties:
         example: '00'
       fromAccountTitle:
         type: string
-        maxLength: 40
+        minLength: 3
+        maxLength: 30
         example: Muhammad Ali
       fromAccountCurrency:
         type: string
@@ -78,8 +79,8 @@ properties:
         example: '00023137343951'
       toAccountTitle:
         type: string
-        minLength: 40
-        maxLength: 40
+        minLength: 3
+        maxLength: 30
         description: Beneficiary account title, received in response of title fetch
         example: Waqas Nizam
     required:
