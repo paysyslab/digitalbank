@@ -1,60 +1,7 @@
 # This file instructs Redocly's linter to ignore the rules contained for specific parts of your API.
 # See https://redoc.ly/docs/cli/ for more information.
 bundled.yaml:
-  spec:
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1mcTran/post/requestBody/content/application~1json/schema/properties/Info/properties/txndate/length
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1mcTran/post/requestBody/content/application~1json/schema/properties/Info/properties/txntime/length
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1mcTran/post/requestBody/content/application~1json/schema/properties/Info/properties/rrn/length
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1mcTran/post/requestBody/content/application~1json/schema/properties/Info/properties/stan/length
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1fiTran/post/requestBody/content/application~1json/schema/properties/Info/properties/txndate/length
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1fiTran/post/requestBody/content/application~1json/schema/properties/Info/properties/txntime/length
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1fiTran/post/requestBody/content/application~1json/schema/properties/Info/properties/rrn/length
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1fiTran/post/requestBody/content/application~1json/schema/properties/Info/properties/stan/length
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1tranReport/post/requestBody/content/application~1json/schema/properties/tranInfo/properties/floorLimit/examples
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1alias~1getdefaultaccount/post/responses/200/content/application~1json/schema/properties/bankBIC/minLength
   no-invalid-media-type-examples:
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1mcTran/post/responses/200/content/application~1json/examples/ACK/value/info
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1mcTran/post/responses/200/content/application~1json/examples/NAK/value/info
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1fiTran/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorCode
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1fiTran/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorDescription
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1cancReq/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorCode
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1cancReq/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorDescription
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1statReq/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorCode
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1statReq/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorDescription
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1copyReq/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorCode
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1copyReq/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorDescription
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1prtyReq/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorCode
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1prtyReq/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorDescription
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1accDetail/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorCode
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1accDetail/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorDescription
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1tranReport/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorCode
-    - >-
-      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1tranReport/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorDescription
     - >-
       #/paths/~1api~1v1~1paysyslabs~1payments~1unifiedtitlefetch/post/responses/200/content/application~1json/examples/0/value
     - >-
@@ -401,5 +348,8 @@ bundled.yaml:
       #/paths/~1bank~1channel~1rtpRequest/post/responses/200/content/application~1json/examples/405/value/response
     - >-
       #/paths/~1bank~1channel~1rtpRequest/post/responses/200/content/application~1json/examples/405/value/info
+  spec:
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1alias~1getdefaultaccount/post/responses/200/content/application~1json/schema/properties/bankBIC/minLength
   operation-4xx-response:
     - '#/paths/~1bank~1payments~1titlefetch/post/responses'

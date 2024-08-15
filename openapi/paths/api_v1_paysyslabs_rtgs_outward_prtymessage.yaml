@@ -1,0 +1,232 @@
+post:
+  summary: Change Priority Message [MTn95/PRTY]
+  tags:
+    - RTGS API Specs
+  description: >
+    <a id="prty-Req"></a>
+
+    This message requests a copy of fields comprising a related transfer sent to
+    PRISM earlier. 
+  operationId: prtyReq
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: >-
+          ../code_samples/CURL/api_v1_paysyslabs_rtgs_outward_prtymessage/post.sh
+  responses:
+    '200':
+      description: Success response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    example: '0000'
+                  response_desc:
+                    type: string
+                    example: Success
+              info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    example: '010123'
+                  rrn:
+                    type: string
+                    example: '010123010123'
+                  correlationId:
+                    type: string
+                    example: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+              txnResult:
+                type: object
+                properties:
+                  sessionid:
+                    type: string
+                    example: '1234'
+                  sequencenumber:
+                    type: string
+                    example: abc124
+                  txndate:
+                    type: string
+                    example: '231129'
+                  txntime:
+                    type: string
+                    example: '182424'
+    '400':
+      description: Error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    example: '0600'
+                  response_desc:
+                    type: string
+                    example: Invalid input
+              info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    example: '010123'
+                  rrn:
+                    type: string
+                    example: '010123010123'
+                  correlationId:
+                    type: string
+                    example: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            Info:
+              type: object
+              properties:
+                txndate:
+                  type: string
+                  description: Transaction date (Format yyyymmdd).
+                  minLength: 8
+                  maxLength: 8
+                  example: '20240101'
+                txntime:
+                  type: string
+                  description: Transaction time (Format hhmmss).
+                  minLength: 6
+                  maxLength: 6
+                  example: '235959'
+                rrn:
+                  type: string
+                  description: Retrieval reference number.
+                  minLength: 12
+                  maxLength: 12
+                  example: '123456789012'
+                stan:
+                  type: string
+                  description: System trace audit number.
+                  minLength: 6
+                  maxLength: 6
+                  example: '654321'
+            txnInfo:
+              type: object
+              properties:
+                tranRef:
+                  type: string
+                  description: >-
+                    This field, in conjunction with Participant’s BIC and Value
+                    Date of transfer, composes a unique key of transfer.
+                  minLength: 0
+                  maxLength: 16
+                  example: TRX123456789012
+                msgType:
+                  type: string
+                  description: Message type.
+                  minLength: 0
+                  maxLength: 5
+                  example: MSG01
+                prty:
+                  type: string
+                  description: Transaction priority.
+                  minLength: 0
+                  maxLength: 4
+                  example: HIGH
+                queryRef:
+                  type: string
+                  description: Reference of related transfer sent to PRISM earlier.
+                  minLength: 0
+                  maxLength: 20
+                  example: QUERY1234567890123456
+                queryType:
+                  type: string
+                  description: Query code.
+                  minLength: 0
+                  maxLength: 4
+                  example: QRY1
+                tranMsgType:
+                  type: string
+                  description: Message type.
+                  minLength: 0
+                  maxLength: 5
+                  example: MSG02
+                txndateRef:
+                  type: string
+                  description: Transaction date of reference (Format yymmdd).
+                  minLength: 6
+                  maxLength: 6
+                  example: '230101'
+                sessionid:
+                  type: string
+                  description: PRISM session ID.
+                  minLength: 0
+                  maxLength: 4
+                  example: '1234'
+                sequencenumber:
+                  type: string
+                  description: PRISM sequence number.
+                  minLength: 0
+                  maxLength: 6
+                  example: '654321'
+                senderBIC:
+                  type: string
+                  description: Bank’s BIC.
+                  minLength: 0
+                  maxLength: 16
+                  example: BIC1234567890
+                assignPRTY:
+                  type: string
+                  description: To be assigned priority.
+                  minLength: 0
+                  maxLength: 4
+                  example: MED
+            reserveFields:
+              type: object
+              properties:
+                r1:
+                  type: string
+                  description: Reserved for future use.
+                  minLength: 0
+                  maxLength: 100
+                  example: Reserve1
+                r2:
+                  type: string
+                  description: Reserved for future use.
+                  minLength: 0
+                  maxLength: 100
+                  example: Reserve2
+                r3:
+                  type: string
+                  description: Reserved for future use.
+                  minLength: 0
+                  maxLength: 100
+                  example: Reserve3
+                r4:
+                  type: string
+                  description: Reserved for future use.
+                  minLength: 0
+                  maxLength: 100
+                  example: Reserve4
+                r5:
+                  type: string
+                  description: Reserved for future use.
+                  minLength: 0
+                  maxLength: 100
+                  example: Reserve5

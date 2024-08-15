@@ -1,0 +1,204 @@
+post:
+  summary: Request for Balance and Interim Transactions Report [MT920]
+  tags:
+    - RTGS API Specs
+  description: |
+    <a id="prty-Req"></a>
+    This enquiry request account summary report
+  operationId: tranReport
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: >-
+          ../code_samples/CURL/api_v1_paysyslabs_rtgs_outward_accsummreport/post.sh
+  responses:
+    '200':
+      description: Success response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    example: '0000'
+                  response_desc:
+                    type: string
+                    example: Success
+              info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    example: '010123'
+                  rrn:
+                    type: string
+                    example: '010123010123'
+                  correlationId:
+                    type: string
+                    example: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+              txnResult:
+                type: object
+                properties:
+                  sessionid:
+                    type: string
+                    example: '1234'
+                  sequencenumber:
+                    type: string
+                    example: abc124
+                  txndate:
+                    type: string
+                    example: '231129'
+                  txntime:
+                    type: string
+                    example: '182424'
+    '400':
+      description: Error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    example: '0468'
+                  response_desc:
+                    type: string
+                    example: Mandatory params not provided
+              info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    example: '010123'
+                  rrn:
+                    type: string
+                    example: '010123010123'
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            Info:
+              type: object
+              required:
+                - txndate
+                - txntime
+                - rrn
+                - stan
+              properties:
+                txndate:
+                  type: string
+                  description: Transaction date (Format yyyymmdd).
+                  example: '20240101'
+                  minLength: 8
+                  maxLength: 8
+                txntime:
+                  type: string
+                  description: Transaction time (Format hhmmss).
+                  example: '235959'
+                  minLength: 6
+                  maxLength: 6
+                rrn:
+                  type: string
+                  description: Retrieval reference number.
+                  example: '123456789012'
+                  minLength: 12
+                  maxLength: 12
+                stan:
+                  type: string
+                  description: System trace audit number.
+                  example: '654321'
+                  minLength: 6
+                  maxLength: 6
+            txnInfo:
+              type: object
+              required:
+                - tranRef
+                - msgType
+                - prty
+                - queryType
+                - InstAccount
+              properties:
+                tranRef:
+                  type: string
+                  description: >-
+                    This field, in conjunction with Participant’s BIC and Value
+                    Date of transfer, composes a unique key of transfer.
+                  example: TRX123456789012
+                  minLength: 16
+                  maxLength: 16
+                msgType:
+                  type: string
+                  description: Message type.
+                  example: MSG01
+                  minLength: 5
+                  maxLength: 5
+                prty:
+                  type: string
+                  description: Transaction priority.
+                  example: HIGH
+                  minLength: 4
+                  maxLength: 4
+                queryType:
+                  type: string
+                  description: Query code.
+                  example: QRY1
+                  minLength: 4
+                  maxLength: 4
+                InstAccount:
+                  type: string
+                  description: Sender’s institution settlement account in PRISM.
+                  example: ACC01
+                  minLength: 5
+                  maxLength: 5
+                flooLimit:
+                  type: number
+                  format: decimal
+                  description: >-
+                    Specifies floor limit indicator for debit and credit
+                    entries.
+                  example: 1000
+            reserveFields:
+              type: object
+              properties:
+                r1:
+                  type: string
+                  description: Reserved for future use.
+                  example: Reserve1
+                  maxLength: 100
+                r2:
+                  type: string
+                  description: Reserved for future use.
+                  example: Reserve2
+                  maxLength: 100
+                r3:
+                  type: string
+                  description: Reserved for future use.
+                  example: Reserve3
+                  maxLength: 100
+                r4:
+                  type: string
+                  description: Reserved for future use.
+                  example: Reserve4
+                  maxLength: 100
+                r5:
+                  type: string
+                  description: Reserved for future use.
+                  example: Reserve5
+                  maxLength: 100

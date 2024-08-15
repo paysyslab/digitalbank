@@ -1,0 +1,265 @@
+post:
+  summary: Financial Institution Transfer [MT 202 Direct]
+  tags:
+    - RTGS API Specs
+  description: |
+    <a id="fi-Tran"></a>
+    Facilitate financial institution transfer. 
+  operationId: fiTran
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: >-
+          ../code_samples/CURL/api_v1_paysyslabs_rtgs_outward_directtransfer/post.sh
+  responses:
+    '200':
+      description: Success response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    example: '0000'
+                  response_desc:
+                    type: string
+                    example: Success
+              info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    example: '010123'
+                  rrn:
+                    type: string
+                    example: '010123010123'
+                  correlationId:
+                    type: string
+                    example: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+              txnResult:
+                type: object
+                properties:
+                  sessionid:
+                    type: string
+                    example: '1234'
+                  sequencenumber:
+                    type: string
+                    example: abc124
+                  txndate:
+                    type: string
+                    example: '231129'
+                  txntime:
+                    type: string
+                    example: '182424'
+    '400':
+      description: Error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    example: '0600'
+                  response_desc:
+                    type: string
+                    example: Invalid input
+              info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    example: '010123'
+                  rrn:
+                    type: string
+                    example: '010123010123'
+                  correlationId:
+                    type: string
+                    example: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            Info:
+              type: object
+              properties:
+                txndate:
+                  type: string
+                  description: Transaction date (Format yyyymmdd).
+                  minLength: 8
+                  maxLength: 8
+                  example: '20240101'
+                txntime:
+                  type: string
+                  description: Transaction time (Format hhmmss).
+                  minLength: 6
+                  maxLength: 6
+                  example: '235959'
+                rrn:
+                  type: string
+                  description: Retrieval reference number.
+                  minLength: 12
+                  maxLength: 12
+                  example: '123456789012'
+                stan:
+                  type: string
+                  description: System trace audit number.
+                  minLength: 6
+                  maxLength: 6
+                  example: '654321'
+            txnInfo:
+              type: object
+              properties:
+                tranRef:
+                  type: string
+                  description: Transaction reference number.
+                  minLength: 0
+                  maxLength: 16
+                  example: TRX123456789012
+                msgType:
+                  type: string
+                  description: Message type.
+                  minLength: 0
+                  maxLength: 5
+                  example: MSG01
+                prty:
+                  type: string
+                  description: Transaction priority.
+                  minLength: 0
+                  maxLength: 4
+                  example: HIGH
+                type:
+                  type: string
+                  description: Indicates beneficiary is direct to PRISM.
+                  minLength: 0
+                  maxLength: 1
+                  example: D
+            senderInfo:
+              type: object
+              properties:
+                senderBIC:
+                  type: string
+                  description: Bank’s BIC.
+                  minLength: 0
+                  maxLength: 16
+                  example: BIC1234567890
+                senderInstAccount:
+                  type: string
+                  description: Institution settlement account in PRISM.
+                  minLength: 0
+                  maxLength: 20
+                  example: PRISM1234567890
+                fromAccountCurrency:
+                  type: string
+                  description: Currency code.
+                  minLength: 0
+                  maxLength: 3
+                  example: USD
+            intermediateInfo:
+              type: object
+              properties:
+                intermediateBIC:
+                  type: string
+                  description: Bank’s BIC.
+                  minLength: 0
+                  maxLength: 16
+                  example: BIC0987654321
+                intermediateInstAccount:
+                  type: string
+                  description: Intermediate Institution settlement account in PRISM.
+                  minLength: 0
+                  maxLength: 16
+                  example: PRISM0987654321
+            beneficiaryInfo:
+              type: object
+              properties:
+                beneficiaryBIC:
+                  type: string
+                  description: Bank’s BIC.
+                  minLength: 0
+                  maxLength: 16
+                  example: BIC1122334455
+                beneficiaryInstAccount:
+                  type: string
+                  description: Institution settlement account in PRISM.
+                  minLength: 0
+                  maxLength: 16
+                  example: PRISM2233445566
+            paymentInfo:
+              type: object
+              properties:
+                relatedRef:
+                  type: string
+                  description: Contains a reference to related transaction.
+                  minLength: 0
+                  maxLength: 20
+                  example: REF1234567890123456
+                currency:
+                  type: string
+                  description: Transaction currency.
+                  minLength: 0
+                  maxLength: 3
+                  example: USD
+                amount:
+                  type: number
+                  description: Amount of transaction.
+                  example: 1000.5
+                tranInfo:
+                  type: string
+                  description: >-
+                    This field contains sender to beneficiary Information
+                    comprising purpose of payment to notify PRISM about way of
+                    processing of this payment.
+                  minLength: 0
+                  maxLength: 40
+                  example: Payment for Services
+            reserveFields:
+              type: object
+              properties:
+                r1:
+                  type: string
+                  description: Reserved for future use.
+                  minLength: 0
+                  maxLength: 100
+                  example: Reserve1
+                r2:
+                  type: string
+                  description: Reserved for future use.
+                  minLength: 0
+                  maxLength: 100
+                  example: Reserve2
+                r3:
+                  type: string
+                  description: Reserved for future use.
+                  minLength: 0
+                  maxLength: 100
+                  example: Reserve3
+                r4:
+                  type: string
+                  description: Reserved for future use.
+                  minLength: 0
+                  maxLength: 100
+                  example: Reserve4
+                r5:
+                  type: string
+                  description: Reserved for future use.
+                  minLength: 0
+                  maxLength: 100
+                  example: Reserve5

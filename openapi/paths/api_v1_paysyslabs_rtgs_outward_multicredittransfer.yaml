@@ -1,0 +1,352 @@
+post:
+  summary: Multiple Customer Credit Transfer [MT 102]
+  tags:
+    - RTGS API Specs
+  description: >
+    <a id="mc-Tran"></a>
+
+    Facilitate multiple customer credit transfer. This message contains a list
+    of payment instructions from one financial institution to another one.
+    Payment instructions within MT102 are processed on “all-or-none” basis. It
+    is not possible to issue MT102 for Participants that have no accounts within
+    PRISM
+  operationId: mcTran
+  parameters:
+    - name: Content-Type
+      in: header
+      description: Content-Type of Request Body
+      required: true
+      schema:
+        type: string
+  x-codeSamples:
+    - lang: CURL
+      source:
+        $ref: >-
+          ../code_samples/CURL/api_v1_paysyslabs_rtgs_outward_multicredittransfer/post.sh
+  responses:
+    '200':
+      description: Success response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    example: '0000'
+                  response_desc:
+                    type: string
+                    example: Success
+              info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    example: '010123'
+                  rrn:
+                    type: string
+                    example: '010123010123'
+                  correlationId:
+                    type: string
+                    example: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+              txnResult:
+                type: object
+                properties:
+                  sessionid:
+                    type: string
+                    example: '1234'
+                  sequencenumber:
+                    type: string
+                    example: abc124
+                  txndate:
+                    type: string
+                    example: '231129'
+                  txntime:
+                    type: string
+                    example: '182424'
+    '400':
+      description: Error response
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              response:
+                type: object
+                properties:
+                  response_code:
+                    type: string
+                    example: '0600'
+                  response_desc:
+                    type: string
+                    example: Invalid input
+              info:
+                type: object
+                properties:
+                  stan:
+                    type: string
+                    example: '010123'
+                  rrn:
+                    type: string
+                    example: '010123010123'
+                  correlationId:
+                    type: string
+                    example: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            Info:
+              type: object
+              properties:
+                txndate:
+                  type: string
+                  description: Transaction date (Format yyyymmdd).
+                  minLength: 8
+                  maxLength: 8
+                  example: '20240101'
+                txntime:
+                  type: string
+                  description: Transaction time (Format hhmmss).
+                  minLength: 6
+                  maxLength: 6
+                  example: '235959'
+                rrn:
+                  type: string
+                  description: Retrieval reference number.
+                  minLength: 12
+                  maxLength: 12
+                  example: '123456789012'
+                stan:
+                  type: string
+                  description: System trace audit number.
+                  minLength: 6
+                  maxLength: 6
+                  example: '654321'
+            txnInfo:
+              type: object
+              properties:
+                fileRef:
+                  type: string
+                  description: >-
+                    MT102 file reference number, this field, in conjunction with
+                    Participant’s BIC and Value Date of transfer composes a
+                    unique key of transfer.
+                  minLength: 0
+                  maxLength: 16
+                  example: MT1021234567890
+                msgType:
+                  type: string
+                  description: Message type.
+                  minLength: 0
+                  maxLength: 5
+                  example: MSG01
+                prty:
+                  type: string
+                  description: Transaction priority.
+                  minLength: 0
+                  maxLength: 4
+                  example: HIGH
+                count:
+                  type: string
+                  description: Sum of sender and beneficiary object.
+                  minLength: 0
+                  maxLength: 5
+                  example: '10'
+            senderInfo:
+              type: object
+              properties:
+                tranRef:
+                  type: string
+                  description: Transaction reference number.
+                  minLength: 0
+                  maxLength: 6
+                  example: '123456'
+                senderBIC:
+                  type: string
+                  description: Bank’s BIC.
+                  minLength: 0
+                  maxLength: 16
+                  example: BIC1234567890
+                senderInstAccount:
+                  type: string
+                  description: Institution settlement account in PRISM.
+                  minLength: 0
+                  maxLength: 20
+                  example: PRISM1234567890
+                fromAccount:
+                  type: string
+                  description: Customer’s account.
+                  minLength: 0
+                  maxLength: 20
+                  example: CUST1234567890
+                fromAccountTitle:
+                  type: string
+                  description: Customer’s account title.
+                  minLength: 0
+                  maxLength: 40
+                  example: John Doe
+                fromAccountCurrency:
+                  type: string
+                  description: Currency code.
+                  minLength: 0
+                  maxLength: 3
+                  example: USD
+                address:
+                  type: string
+                  description: Customer’s address.
+                  minLength: 0
+                  maxLength: 40
+                  example: 123 Main Street
+                amount:
+                  type: number
+                  description: Amount of transaction.
+                  example: 1000.5
+                tranDetails:
+                  type: string
+                  description: Purpose of payment.
+                  minLength: 0
+                  maxLength: 40
+                  example: Invoice Payment
+            beneficiaryInfo:
+              type: object
+              properties:
+                tranRef:
+                  type: string
+                  description: Transaction reference number.
+                  minLength: 0
+                  maxLength: 6
+                  example: '654321'
+                intermediateBIC:
+                  type: string
+                  description: Bank’s BIC.
+                  minLength: 0
+                  maxLength: 16
+                  example: BIC0987654321
+                intermediateInstAccount:
+                  type: string
+                  description: Intermediate Institution settlement account in PRISM.
+                  minLength: 0
+                  maxLength: 16
+                  example: PRISM0987654321
+                beneficiaryBIC:
+                  type: string
+                  description: Bank’s BIC.
+                  minLength: 0
+                  maxLength: 16
+                  example: BIC1122334455
+                beneficiaryInstAccount:
+                  type: string
+                  description: Institution settlement account in PRISM.
+                  minLength: 0
+                  maxLength: 16
+                  example: PRISM2233445566
+                toAccount:
+                  type: string
+                  description: Customer’s account.
+                  minLength: 0
+                  maxLength: 24
+                  example: CUST0987654321
+                toAccountTitle:
+                  type: string
+                  description: Customer’s account title.
+                  minLength: 0
+                  maxLength: 40
+                  example: Jane Smith
+                address:
+                  type: string
+                  description: Customer’s address.
+                  minLength: 0
+                  maxLength: 40
+                  example: 456 Another St
+            paymentInfo:
+              type: object
+              properties:
+                operationCode:
+                  type: string
+                  description: >-
+                    This field should contain code CRED (the message contains a
+                    credit transfer involving no SWIFT service).
+                  minLength: 0
+                  maxLength: 4
+                  example: CRED
+                instructionCode:
+                  type: string
+                  description: >-
+                    This field should contain code SDVA (payment must be
+                    executed with the same day value to the Beneficiary).
+                  minLength: 0
+                  maxLength: 4
+                  example: SDVA
+                transactionCode:
+                  type: string
+                  description: Transaction type code.
+                  minLength: 0
+                  maxLength: 3
+                  example: TRX
+                currency:
+                  type: string
+                  description: Transaction currency.
+                  minLength: 0
+                  maxLength: 3
+                  example: USD
+                amountTotal:
+                  type: number
+                  description: Total amount of the batch transfer.
+                  example: 5000
+                chargesDetail:
+                  type: string
+                  description: >-
+                    This field specifies which party will bear the charges for
+                    the transaction.
+                  minLength: 0
+                  maxLength: 3
+                  example: OUR
+                tranInfo:
+                  type: string
+                  description: >-
+                    This field contains sender to beneficiary Information
+                    comprising purpose of payment to notify PRISM about way of
+                    processing of this payment.
+                  minLength: 0
+                  maxLength: 40
+                  example: Payment for Services
+            reserveFields:
+              type: object
+              properties:
+                r1:
+                  type: string
+                  description: Reserved for future use.
+                  minLength: 0
+                  maxLength: 100
+                  example: Reserve1
+                r2:
+                  type: string
+                  description: Reserved for future use.
+                  minLength: 0
+                  maxLength: 100
+                  example: Reserve2
+                r3:
+                  type: string
+                  description: Reserved for future use.
+                  minLength: 0
+                  maxLength: 100
+                  example: Reserve3
+                r4:
+                  type: string
+                  description: Reserved for future use.
+                  minLength: 0
+                  maxLength: 100
+                  example: Reserve4
+                r5:
+                  type: string
+                  description: Reserved for future use.
+                  minLength: 0
+                  maxLength: 100
+                  example: Reserve5
