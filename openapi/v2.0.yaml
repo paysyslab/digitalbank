@@ -289,7 +289,7 @@ info:
       | MT 986/SQDC | narrative | Field :79: | For Account Report, it contains an answer to related Request, where each row specifies the following information:<br><br><br>-Code<br>-Currency<br>Value date<br>-Amount<br>-Number of transfers | The following codes are defined for Account report:<br><br><br>SD - Sum total and the number of suspended transfers that debit the account. Transfers are suspended if debit account or Participant who owns debit account is suspended.<br><br>SC - Sum total and the number of suspended transfers that credit the account. Transfers are suspended if credit account or Participant who owns credit account is suspended.<br><br>ED - Sum total and the number of queued transfers that debit the account. Transfers are queued if there are no enough funds on any account within transaction this transfer belongs.<br><br>EC - Sum total and the number of queued transfers that credit the account. Transfers are queued if there are no enough funds on any account within transaction this transfer belongs.<br><br>LD - Sum total and the number of frozen transfers that debit the account. Transfers are frozen if settlement for this type of transfers are not allowed in the current business day period.<br><br>LC - Sum total and the number of frozen transfers that credit the account. Transfers are frozen if settlement for this type of transfers are not allowed in the current business day period.<br><br>CC or CD - Current balance on the account (CC means Credit amount and CD means debit amount)<br><br>AC or AD - Available balance on the account (AC means Credit amount and AD means debit amount) |
 
   x-logo:
-    url: 'logo.png'
+    url: 'dist/logo.png'
     altText: paysys logo
   license:
     name: Paysys Labs
