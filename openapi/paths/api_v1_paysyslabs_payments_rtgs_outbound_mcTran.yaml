@@ -35,7 +35,7 @@ post:
                 response:
                   response_code: ACK
                   response_desc: Success
-                Info:
+                info:
                   stan: '010123'
                   rrn: '002236987456'
                   sessionid: '1234'
@@ -48,7 +48,7 @@ post:
                 response:
                   response_code: NAK
                   response_desc: Error
-                Info:
+                info:
                   stan: '010123'
                   rrn: '002236987456'
                   sessionid: '1234'

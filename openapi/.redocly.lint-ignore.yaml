@@ -19,8 +19,14 @@ bundled.yaml:
     - >-
       #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1fiTran/post/requestBody/content/application~1json/schema/properties/Info/properties/stan/length
     - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1tranReport/post/requestBody/content/application~1json/schema/properties/tranInfo/properties/floorLimit/examples
+    - >-
       #/paths/~1api~1v1~1paysyslabs~1alias~1getdefaultaccount/post/responses/200/content/application~1json/schema/properties/bankBIC/minLength
   no-invalid-media-type-examples:
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1mcTran/post/responses/200/content/application~1json/examples/ACK/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1mcTran/post/responses/200/content/application~1json/examples/NAK/value/info
     - >-
       #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1fiTran/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorCode
     - >-
@@ -41,6 +47,14 @@ bundled.yaml:
       #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1prtyReq/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorCode
     - >-
       #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1prtyReq/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorDescription
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1accDetail/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorCode
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1accDetail/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorDescription
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1tranReport/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorCode
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1rtgs~1outbound~1tranReport/post/responses/200/content/application~1json/examples/NAK/value/Info/ErrorDescription
     - >-
       #/paths/~1api~1v1~1paysyslabs~1payments~1unifiedtitlefetch/post/responses/200/content/application~1json/examples/0/value
     - >-
@@ -68,6 +82,16 @@ bundled.yaml:
     - >-
       #/paths/~1api~1v1~1paysyslabs~1payments~1transactioninquiry/post/responses/200/content/application~1json/examples/411/value/response/response_desc
     - >-
+      #/paths/~1api~1v1~1paysyslabs~1merchant~1aliasInquiry/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1merchant~1aliasInquiry/post/responses/200/content/application~1json/examples/0/value/response/response_desc
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1merchant~1aliasInquiry/post/responses/200/content/application~1json/examples/0/value/merchantInfo
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1merchant~1aliasInquiry/post/responses/200/content/application~1json/examples/411/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1merchant~1aliasInquiry/post/responses/200/content/application~1json/examples/411/value/response/response_desc
+    - >-
       #/paths/~1api~1v1~1paysyslabs~1banklist/get/responses/200/content/application~1json/examples/0/value
     - >-
       #/paths/~1api~1v1~1paysyslabs~1banklist/get/responses/200/content/application~1json/examples/0/value/response
@@ -77,6 +101,18 @@ bundled.yaml:
       #/paths/~1api~1v1~1paysyslabs~1banklist/get/responses/200/content/application~1json/examples/3001/value
     - >-
       #/paths/~1api~1v1~1paysyslabs~1banklist/get/responses/200/content/application~1json/examples/3001/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1rtpAcceptance/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1rtpAcceptance/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1rtpAcceptance/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1rtpAcceptance/post/responses/200/content/application~1json/examples/405/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1rtpAcceptance/post/responses/200/content/application~1json/examples/405/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1rtpAcceptance/post/responses/200/content/application~1json/examples/405/value/info
     - >-
       #/paths/~1api~1v1~1paysyslabs~1payments~1ibfttransfer/post/responses/200/content/application~1json/examples/0/value
     - >-
@@ -117,6 +153,86 @@ bundled.yaml:
       #/paths/~1api~1v1~1paysyslabs~1payments~1billpayment/post/responses/200/content/application~1json/examples/468/value/response
     - >-
       #/paths/~1api~1v1~1paysyslabs~1payments~1billpayment/post/responses/200/content/application~1json/examples/468/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1SQRC/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1SQRC/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1SQRC/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1SQRC/post/responses/200/content/application~1json/examples/0/value/paymentInfo
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1SQRC/post/responses/200/content/application~1json/examples/405/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1SQRC/post/responses/200/content/application~1json/examples/405/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1SQRC/post/responses/200/content/application~1json/examples/405/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1SQRC/post/responses/200/content/application~1json/examples/405/value/paymentInfo
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1alias/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1alias/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1alias/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1alias/post/responses/200/content/application~1json/examples/0/value/paymentInfo
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1alias/post/responses/200/content/application~1json/examples/405/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1alias/post/responses/200/content/application~1json/examples/405/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1alias/post/responses/200/content/application~1json/examples/405/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1alias/post/responses/200/content/application~1json/examples/405/value/paymentInfo
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1DQRC/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1DQRC/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1DQRC/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1DQRC/post/responses/200/content/application~1json/examples/0/value/paymentInfo
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1DQRC/post/responses/200/content/application~1json/examples/405/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1DQRC/post/responses/200/content/application~1json/examples/405/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1DQRC/post/responses/200/content/application~1json/examples/405/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1DQRC/post/responses/200/content/application~1json/examples/405/value/paymentInfo
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1RTPL/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1RTPL/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1RTPL/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1RTPL/post/responses/200/content/application~1json/examples/0/value/paymentInfo
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1RTPL/post/responses/200/content/application~1json/examples/405/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1RTPL/post/responses/200/content/application~1json/examples/405/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1RTPL/post/responses/200/content/application~1json/examples/405/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1RTPL/post/responses/200/content/application~1json/examples/405/value/paymentInfo
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1RTPN/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1RTPN/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1RTPN/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1RTPN/post/responses/200/content/application~1json/examples/0/value/paymentInfo
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1RTPN/post/responses/200/content/application~1json/examples/405/value
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1RTPN/post/responses/200/content/application~1json/examples/405/value/response
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1RTPN/post/responses/200/content/application~1json/examples/405/value/info
+    - >-
+      #/paths/~1api~1v1~1paysyslabs~1payments~1merchant~1RTPN/post/responses/200/content/application~1json/examples/405/value/paymentInfo
     - >-
       #/paths/~1api~1v1~1paysyslabs~1billercat/get/responses/200/content/application~1json/examples/0/value
     - >-
@@ -273,5 +389,17 @@ bundled.yaml:
       #/paths/~1bank~1payments~1creditinquiry/post/responses/200/content/application~1json/examples/1/value/orgResponse/orgresponseCode
     - >-
       #/paths/~1bank~1payments~1creditinquiry/post/responses/200/content/application~1json/examples/1/value/orgResponse/orgresponseDesc
+    - >-
+      #/paths/~1bank~1channel~1rtpRequest/post/responses/200/content/application~1json/examples/0/value
+    - >-
+      #/paths/~1bank~1channel~1rtpRequest/post/responses/200/content/application~1json/examples/0/value/response
+    - >-
+      #/paths/~1bank~1channel~1rtpRequest/post/responses/200/content/application~1json/examples/0/value/info
+    - >-
+      #/paths/~1bank~1channel~1rtpRequest/post/responses/200/content/application~1json/examples/405/value
+    - >-
+      #/paths/~1bank~1channel~1rtpRequest/post/responses/200/content/application~1json/examples/405/value/response
+    - >-
+      #/paths/~1bank~1channel~1rtpRequest/post/responses/200/content/application~1json/examples/405/value/info
   operation-4xx-response:
     - '#/paths/~1bank~1payments~1titlefetch/post/responses'

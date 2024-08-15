@@ -131,16 +131,19 @@ post:
                   minLength: 5
                   maxLength: 16
                   description: Transaction reference number
+                  example: 033DBFC233480052
                 msgType:
                   type: string
                   minLength: 5
                   maxLength: 5
                   description: Message type
+                  example: MT103
                 prty:
                   type: string
                   minLength: 4
                   maxLength: 4
                   description: Transaction priority
+                  example: 20
                 type:
                   type: string
                   minLength: 3
@@ -148,6 +151,7 @@ post:
                   description: >-
                     Indicates beneficiary institution is direct participant or
                     cover to PRISM
+                  example: DIR
               required:
                 - tranRef
                 - msgType
@@ -161,31 +165,37 @@ post:
                   minLength: 8
                   maxLength: 16
                   description: Bank’s BIC
+                  example: HUGO
                 senderInstAccount:
                   type: string
                   minLength: 5
                   maxLength: 24
                   description: Institution settlement account in PRISM
+                  example: SBPPKHGRTGSACC01
                 fromAccount:
                   type: string
                   minLength: 5
                   maxLength: 24
                   description: Customer’s account
+                  example: PK56AIIN1234567890000001
                 fromAccountTitle:
                   type: string
                   minLength: 3
                   maxLength: 40
                   description: Customer’s account title
+                  example: Muhammad Ali
                 fromAccountCurrency:
                   type: string
                   minLength: 1
                   maxLength: 3
                   description: Currency code
+                  example: 586
                 address:
                   type: string
                   minLength: 3
                   maxLength: 40
                   description: Customer’s address
+                  example: ABC Karachi
               required:
                 - senderBIC
                 - senderInstAccount
@@ -201,6 +211,7 @@ post:
                   minLength: 8
                   maxLength: 16
                   description: Bank’s BIC (optional)
+                  example: ''
                 intermediateInstAccount:
                   type: string
                   minLength: 3
@@ -208,6 +219,7 @@ post:
                   description: >-
                     Intermediate Institution settlement account in PRISM
                     (optional)
+                  example: ''
               required:
                 - intermediateBIC
                 - intermediateInstAccount
@@ -218,22 +230,27 @@ post:
                   type: string
                   maxLength: 16
                   description: Bank’s BIC (mandatory)
+                  example: NBPBPKKA
                 beneficiaryInstAccount:
                   type: string
                   maxLength: 16
                   description: Institution settlement account in PRISM (optional)
+                  example: SBPPKNBPRTGSACC01
                 toAccount:
                   type: string
                   maxLength: 24
                   description: Customer’s account (mandatory)
+                  example: PK76NBPA1234567890000999
                 toAccountTitle:
                   type: string
                   maxLength: 40
                   description: Customer’s account title (mandatory)
+                  example: Waqas Nizam
                 address:
                   type: string
                   maxLength: 40
                   description: Customer’s address (mandatory)
+                  example: ABC Lahore
               required:
                 - beneficiaryBIC
                 - toAccount
@@ -246,31 +263,38 @@ post:
                   type: string
                   maxLength: 4
                   description: Bank operation code (optional)
+                  example: CREDIT
                 instructionCode:
                   type: string
                   maxLength: 4
                   description: Instruction code (mandatory)
+                  example: SDVA
                 tranCode:
                   type: string
                   maxLength: 3
                   description: Transaction type code (mandatory)
+                  example: 1
                 currency:
                   type: string
                   maxLength: 3
                   description: Transaction currency (mandatory)
+                  example: PKR
                 amount:
                   type: number
                   description: Amount of transaction (mandatory)
+                  example: 1000
                 details:
                   type: string
                   maxLength: 40
                   description: Purpose of payment (optional)
+                  example: InvoiceABC123
                 chargesDetail:
                   type: string
                   maxLength: 3
                   description: >-
                     Specifies which party will bear the charges for the
                     transaction (mandatory)
+                  example: SHA
                 tranInfo:
                   type: string
                   maxLength: 40
@@ -278,6 +302,7 @@ post:
                     Contains sender to beneficiary information, including
                     purpose of payment, to notify PRISM about the way of
                     processing this payment (mandatory)
+                  example: /CODTYPTR/001/BNF
               required:
                 - instructionCode
                 - tranCode

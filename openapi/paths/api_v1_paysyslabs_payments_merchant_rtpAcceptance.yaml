@@ -1,21 +1,14 @@
 post:
-  summary: Raast P2P Transfer
+  summary: RTP Acceptance
   tags:
-    - Payment API Specs
+    - Non Financial API Specs
   description: >-
-    <a id="direct-posting"></a>
+    <a id="rtpAcceptance"></a>
 
-    This service will be used to send P2P payment via Raast for interbank
-    transfer. The service will be sent credit request directly to RAAST without
-    sending any debit request to bank middleware/CBS. This service ideally needs
-    to be used in scenario where bank’s system can debit customer account itself
-    and sent only credit request to Raast via open connect. 
-
-
-    Open connect return additional fields upon successful response, bank’s
-    middleware needs to sent same values to CBS while debit confirmation or
-    release. These key parameters will be used for RECON purpose. 
-  operationId: directposting
+    To notify status of RTP. If customer is present on digital channel and would
+    be able to accept/authorize RTP later request then channel backend will call
+    this API of OpenConnect to notify about it.
+  operationId: rtpAcceptance
   parameters:
     - name: Content-Type
       in: header
@@ -26,7 +19,8 @@ post:
   x-codeSamples:
     - lang: CURL
       source:
-        $ref: ../code_samples/CURL/api_v1_paysyslabs_payments_directposting/post.sh
+        $ref: >-
+          ../code_samples/CURL/api_v1_paysyslabs_payments_merchant_rtpAcceptance/post.sh
   responses:
     '200':
       description: Success
@@ -43,11 +37,6 @@ post:
                   stan: '010123'
                   rrn: '010123010123'
                   correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
-                paymentInfo:
-                  instrId: TMIC230511125023876423
-                  endToEndId: 1fc66b584e77-46e6-9dcb-fb12c00e7742
-                  txId: TMIC230511125023876423
-                  msgId: TMICFBPK110523000111250233
             '405':
               summary: failure Response Example
               value:
@@ -58,8 +47,6 @@ post:
                   stan: '010123'
                   rrn: '010123010123'
                   correlationId: 7ad7fb9f-99dc-4c2c-ab88-abddb87789a0
-                paymentInfo:
-                  msgId: TMICFBPK110523000111250233
           schema:
             type: object
             properties:
@@ -104,7 +91,6 @@ post:
               - rrn
               - stan
               - correlationId
-              - msgId
     '401':
       description: Unauthorized
       content:
@@ -117,4 +103,57 @@ post:
     content:
       application/json:
         schema:
-          $ref: ..\components\schemas\p_RAASTTransfer.yaml
+          type: object
+          properties:
+            info:
+              type: object
+              properties:
+                rrn:
+                  type: string
+                  description: Retrieval reference number.
+                  minLength: 12
+                  maxLength: 12
+                  example: '123456789012'
+                stan:
+                  type: string
+                  description: System trace audit number.
+                  minLength: 6
+                  maxLength: 6
+                  example: '654321'
+                txndate:
+                  type: string
+                  description: Transaction date (Format yyyymmdd).
+                  minLength: 8
+                  maxLength: 8
+                  example: '20240101'
+                txntime:
+                  type: string
+                  description: Transaction time (Format hhmmss).
+                  minLength: 6
+                  maxLength: 6
+                  example: '235959'
+            rtpDetails:
+              type: object
+              properties:
+                rtpStatus:
+                  type: string
+                  description: |
+                    • 1 - Accepted
+                    • 2 - Rejected
+                  minLength: 1
+                  maxLength: 1
+                  example: '1'
+                rtpId:
+                  type: string
+                  description: Provided by rtpRequest[rtpId].
+                  minLength: 1
+                  maxLength: 100
+                  example: abc123def456ghi789jkl
+                rejectReason:
+                  type: string
+                  description: >-
+                    If `rtpStatus` is `2` then provide reject reason (only those
+                    which are specified by SBP).
+                  minLength: 0
+                  maxLength: 100
+                  example: ''
